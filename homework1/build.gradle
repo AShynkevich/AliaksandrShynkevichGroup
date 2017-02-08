@@ -2,4 +2,22 @@ plugins {
     id 'application'
 }
 
+repositories {
+    jcenter()
+}
+
 mainClassName = 'com.epam.lab.mentoring.Main'
+
+dependencies {
+    compile "joda-time:joda-time:$jodaTimeVersion"
+    compile "org.apache.commons:commons-lang3:$commonsLangVersion"
+    compile "org.apache.commons:commons-collections4:$commonsCollectionVersion"
+}
+
+run {
+    standardInput = System.in
+}
+
+tasks.withType(JavaExec) {
+    systemProperties System.properties
+}

@@ -1,15 +1,27 @@
+bin
+build
+target
+test-output
+work
+.checkstyle
+.classpath
+.gradle
+.project
+.settings
+.springBeans
 *.class
-
-# Log file
+*.MF
+*.iml
+*.ipr
+*.iws
+/.rup/
+/out/
+*.epoch
+*.lck
 *.log
 
-# Package Files #
-*.jar
-*.war
-*.ear
-*.zip
-*.tar.gz
-*.rar
+.idea
 
-.idea/
-.gradle/
+esdoc-output
+
+classes
