@@ -8,6 +8,7 @@ import org.apache.commons.collections4.CollectionUtils;
 import org.slf4j.Logger;
 
 import java.util.List;
+import java.util.Optional;
 
 import static com.epam.lab.mentoring.homework.support.Constants.TASK_FILE_KEY;
 
@@ -33,12 +34,13 @@ public class FileTaskRepository implements ITaskRepository {
     @Override
     public Task read(String taskId) {
         List<Task> tasks = FileRepositoryUtils.readListFromFile(FILE);
-
         if (CollectionUtils.isNotEmpty(tasks)) {
-            return tasks.stream()
+            Optional<Task> found = tasks.stream()
                     .filter(task -> taskId.equals(task.getId()))
-                    .findFirst()
-                    .orElse(null);
+                    .findFirst();
+            if (found.isPresent()) {
+                return found.get();
+            }
         }
         return null;
     }
@@ -69,9 +71,10 @@ public class FileTaskRepository implements ITaskRepository {
     public boolean delete(String id) {
         List<Task> tasks = FileRepositoryUtils.readListFromFile(FILE);
 
-        if (tasks.stream().anyMatch(task -> id.equals(task.getId()))) {
+        if (tasks.stream().noneMatch(task -> id.equals(task.getId()))) {
             return false;
         }
+
         tasks.removeIf(task -> id.equals(task.getId()));
         FileRepositoryUtils.writeListToFile(tasks, FILE);
         return true;

@@ -8,9 +8,10 @@ import java.io.IOException;
 public abstract class SafeConsoleInputHandler implements IConsoleInputHandler {
 
     protected String handleInput(BufferedReader br, String inputMessage) throws IOException {
-        System.out.println(inputMessage);
         String input;
-        while(!ConsoleUtils.validateInput(input = br.readLine())) {}
+        do {
+            System.out.println(inputMessage);
+        } while (!ConsoleUtils.validateInput(input = br.readLine()));
 
         return input;
     }

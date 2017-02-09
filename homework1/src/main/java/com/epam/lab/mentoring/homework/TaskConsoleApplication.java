@@ -68,9 +68,14 @@ public class TaskConsoleApplication {
     }
 
     private void processInput(String inputLine, BufferedReader br, ITaskService service) throws IOException {
-        LOGGER.info("Input command: [{}].\n", inputLine);
+        LOGGER.debug("Input command: [{}].\n", inputLine);
+        // check is blank
         if (StringUtils.isBlank(inputLine)) {
             System.out.println("No command provided!");
+            return;
+        }
+
+        if (QUIT_COMMAND.equals(StringUtils.trim(inputLine))) {
             return;
         }
 
