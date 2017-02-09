@@ -1,13 +1,17 @@
 package com.epam.lab.mentoring.homework.support;
 
+import com.epam.lab.mentoring.homework.LoggerProvider;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.SerializationUtils;
+import org.slf4j.Logger;
 
 import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 
 public final class FileRepositoryUtils {
+
+    private static final Logger LOGGER = LoggerProvider.getLogger();
 
     private FileRepositoryUtils() {
         throw new UnsupportedOperationException();
@@ -21,8 +25,7 @@ public final class FileRepositoryUtils {
                 return tasks;
             }
         } catch (IOException e) {
-            // TODO: add logger
-            e.printStackTrace();
+            LOGGER.error("Failed to read repository file.", e);
         }
         return new ArrayList<T>();
     }
@@ -32,8 +35,7 @@ public final class FileRepositoryUtils {
         try (FileOutputStream fos = new FileOutputStream(file)) {
             SerializationUtils.serialize((Serializable) list, fos);
         } catch (IOException e) {
-            // TODO: add logger
-            e.printStackTrace();
+            LOGGER.error("Failed to write repository file.", e);
         }
     }
 
@@ -45,8 +47,7 @@ public final class FileRepositoryUtils {
                 file.createNewFile();
             }
         } catch (IOException e) {
-            e.printStackTrace();
-
+            LOGGER.error("Failed to create file [{}]", filename, e);
             throw new IllegalStateException("Failed to create repository file!");
         }
     }

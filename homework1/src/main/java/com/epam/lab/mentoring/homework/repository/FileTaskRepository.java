@@ -1,9 +1,11 @@
 package com.epam.lab.mentoring.homework.repository;
 
+import com.epam.lab.mentoring.homework.LoggerProvider;
 import com.epam.lab.mentoring.homework.domain.Task;
 import com.epam.lab.mentoring.homework.support.AppConfig;
 import com.epam.lab.mentoring.homework.support.FileRepositoryUtils;
 import org.apache.commons.collections4.CollectionUtils;
+import org.slf4j.Logger;
 
 import java.util.List;
 
@@ -11,6 +13,7 @@ import static com.epam.lab.mentoring.homework.support.Constants.TASK_FILE_KEY;
 
 public class FileTaskRepository implements ITaskRepository {
 
+    private static final Logger LOGGER = LoggerProvider.getLogger();
     private static final String FILE = AppConfig.INSTANCE.getProperty(TASK_FILE_KEY);
 
     @Override
@@ -18,7 +21,6 @@ public class FileTaskRepository implements ITaskRepository {
         List<Task> tasks = FileRepositoryUtils.readListFromFile(FILE);
 
         if (tasks.stream().anyMatch(storedTask -> task.getId().equals(storedTask.getId()))) {
-            // log with info about
             return false;
         }
 
@@ -68,7 +70,6 @@ public class FileTaskRepository implements ITaskRepository {
         List<Task> tasks = FileRepositoryUtils.readListFromFile(FILE);
 
         if (tasks.stream().anyMatch(task -> id.equals(task.getId()))) {
-            // add logging
             return false;
         }
         tasks.removeIf(task -> id.equals(task.getId()));

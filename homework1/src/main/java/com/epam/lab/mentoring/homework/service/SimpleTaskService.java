@@ -1,12 +1,16 @@
 package com.epam.lab.mentoring.homework.service;
 
+import com.epam.lab.mentoring.homework.LoggerProvider;
 import com.epam.lab.mentoring.homework.domain.Task;
 import com.epam.lab.mentoring.homework.repository.ITaskRepository;
 import org.apache.commons.collections4.CollectionUtils;
+import org.slf4j.Logger;
 
 import java.util.List;
 
 public class SimpleTaskService implements ITaskService {
+
+    private static final Logger LOGGER = LoggerProvider.getLogger();
 
     private ITaskRepository taskRepository;
 
@@ -19,8 +23,7 @@ public class SimpleTaskService implements ITaskService {
     @Override
     public void createTask(Task task) {
         if (!taskRepository.create(task)) {
-            // TODO: switch to logger
-            System.out.println("Failed to create task. The same task possibly already exist!");
+            LOGGER.info("Failed to create task. The same task possibly already exist!");
         }
     }
 
@@ -29,7 +32,7 @@ public class SimpleTaskService implements ITaskService {
         Task task = taskRepository.read(taskId);
 
         if (null == task) {
-            System.out.println("Not task with id [".concat(taskId).concat("] found!"));
+            LOGGER.info("No task with id [{}] found!", taskId);
         }
 
         return task;
@@ -43,7 +46,7 @@ public class SimpleTaskService implements ITaskService {
     @Override
     public void deleteTask(String id) {
         if (!taskRepository.delete(id)) {
-            System.out.println("Failed to delete task. The task with that id possibly does not exist!");
+            LOGGER.info("Failed to delete task with id [{}]. The task with such id might possibly not exists!", id);
         }
     }
 
@@ -52,10 +55,10 @@ public class SimpleTaskService implements ITaskService {
         List<Task> tasks = taskRepository.findAll();
 
         if (CollectionUtils.isEmpty(tasks)) {
-            System.out.println("No tasks yet!");
+            LOGGER.info("No tasks yet!");
         } else {
-            System.out.println("Current tasks:>");
             for (Task task : tasks) {
+                // TODO: output provide in another place
                 System.out.println(task);
             }
         }

@@ -1,7 +1,9 @@
 package com.epam.lab.mentoring.homework.support.properties;
 
+import com.epam.lab.mentoring.homework.LoggerProvider;
 import com.epam.lab.mentoring.homework.support.Constants;
 import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -14,8 +16,11 @@ import static com.epam.lab.mentoring.homework.support.Constants.PROPERTY_FILE_KE
 
 public class FilePropertyLoader implements IPropertyLoader {
 
+    private static final Logger LOGGER = LoggerProvider.getLogger();
+
     @Override
     public LoadStatus load() {
+        LOGGER.info("Attempt to load properties for system environment.");
         String customPropertyFile = System.getProperty(PROPERTY_FILE_KEY);
         URL defaultPropertyFile = Constants.class.getClassLoader().getResource(DEFAULT_PROPERTY_FILE);
 
@@ -34,8 +39,7 @@ public class FilePropertyLoader implements IPropertyLoader {
         try (FileInputStream fis = new FileInputStream(input)) {
             properties.load(fis);
         } catch (IOException e) {
-            // TODO: add logger
-            e.printStackTrace();
+            LOGGER.error("Failed to load properties file.", e);
         }
 
         return new LoadStatus(true, properties);

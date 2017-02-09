@@ -1,19 +1,22 @@
 package com.epam.lab.mentoring.homework.support;
 
+import com.epam.lab.mentoring.homework.LoggerProvider;
 import com.epam.lab.mentoring.homework.support.properties.FilePropertyLoader;
 import com.epam.lab.mentoring.homework.support.properties.LoadStatus;
 import com.epam.lab.mentoring.homework.support.properties.SystemPropertyLoader;
 import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
 
 import java.util.Properties;
 
 public enum AppConfig {
     INSTANCE;
 
+    private static final Logger LOGGER = LoggerProvider.getLogger();
+
     private Properties properties;
 
     {
-        // attempt to load from files
         LoadStatus fileLoad = new FilePropertyLoader().load();
         LoadStatus consoleLoad = new SystemPropertyLoader().load();
 
@@ -33,6 +36,7 @@ public enum AppConfig {
     public String getProperty(String key) {
         String toReturn = properties.getProperty(key);
         if (StringUtils.isBlank(toReturn)) {
+            LOGGER.error("Property [{}] not found.", key);
             throw new IllegalStateException("No property [".concat(key).concat("] specified!"));
         }
 
