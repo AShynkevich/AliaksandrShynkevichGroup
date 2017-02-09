@@ -32,16 +32,20 @@ public class Main {
 
     private static void handleConsoleInput(ITaskService service) {
         try (BufferedReader br = new BufferedReader(new InputStreamReader(System.in))) {
-            String input;
-            do {
+            String input = null;
+            while (!QUIT_COMMAND.equals(StringUtils.trim(input))) {
                 // in GRADLE looks so so but it is common issue
                 System.out.println(CONSOLE_TEMPLATE);
                 System.out.print("input:> ");
-
-            } while (!QUIT_COMMAND.equals(StringUtils.trim(input = br.readLine())));
+                processInput(br.readLine());
+            }
         } catch (IOException e) {
             LOGGER.error("Failed to process input.", e);
         }
+    }
+
+    private static void processInput(String inputLine) {
+        LOGGER.info("Input command: [{}].\n", inputLine);
     }
 
     public static void main(String[] args) {
