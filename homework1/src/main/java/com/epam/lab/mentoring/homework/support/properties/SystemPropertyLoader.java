@@ -4,6 +4,7 @@ import java.util.Properties;
 
 import static com.epam.lab.mentoring.homework.support.Constants.REPOSITORY_TYPE_PARAMETER;
 import static com.epam.lab.mentoring.homework.support.Constants.SERVICE_TYPE_PARAMETER;
+import static com.epam.lab.mentoring.homework.support.Constants.TASK_FILE_KEY;
 
 public class SystemPropertyLoader implements IPropertyLoader {
 
@@ -22,8 +23,15 @@ public class SystemPropertyLoader implements IPropertyLoader {
         if (null == repositoryType) {
             return new LoadStatus(false);
         }
-        properties.setProperty(SERVICE_TYPE_PARAMETER,serviceType);
+
+        String repositoryFile = System.getProperty(TASK_FILE_KEY);
+        if (null == repositoryFile) {
+            return new LoadStatus(false);
+        }
+
+        properties.setProperty(SERVICE_TYPE_PARAMETER, serviceType);
         properties.setProperty(REPOSITORY_TYPE_PARAMETER, repositoryType);
+        properties.setProperty(TASK_FILE_KEY, repositoryFile);
         return new LoadStatus(true, properties);
     }
 }

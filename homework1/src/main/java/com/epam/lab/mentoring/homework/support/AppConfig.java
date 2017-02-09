@@ -22,6 +22,7 @@ public enum AppConfig {
         }
 
         if (fileLoad.isSuccess()) {
+            // using files log
             properties = fileLoad.getResult();
         } else {
             // both cannot be false at that stage
