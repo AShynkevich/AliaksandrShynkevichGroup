@@ -6,8 +6,13 @@ import java.io.BufferedReader;
 import java.io.IOException;
 
 public class FindTaskConsoleInputHandler extends SafeConsoleInputHandler {
+
+    public FindTaskConsoleInputHandler(BufferedReader br, ITaskService taskService) {
+        super(br, taskService);
+    }
+
     @Override
-    public void handleInput(BufferedReader br, ITaskService taskService) throws IOException {
-        taskService.readTask(this.handleInput(br, "Set task id to find:>"));
+    public void handleInput() throws IOException {
+        taskService.readTask(this.handleInput("Set task id to find:>"));
     }
 }

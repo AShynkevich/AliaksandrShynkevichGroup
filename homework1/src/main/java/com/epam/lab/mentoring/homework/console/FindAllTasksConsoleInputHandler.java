@@ -6,8 +6,13 @@ import java.io.BufferedReader;
 import java.io.IOException;
 
 public class FindAllTasksConsoleInputHandler extends SafeConsoleInputHandler{
+
+    public FindAllTasksConsoleInputHandler(BufferedReader br, ITaskService taskService) {
+        super(br, taskService);
+    }
+
     @Override
-    public void handleInput(BufferedReader br, ITaskService taskService) throws IOException {
+    public void handleInput() throws IOException {
         taskService.findTasks().forEach(System.out::println);
     }
 }

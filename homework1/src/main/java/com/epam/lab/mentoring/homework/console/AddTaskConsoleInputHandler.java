@@ -6,8 +6,13 @@ import java.io.BufferedReader;
 import java.io.IOException;
 
 public class AddTaskConsoleInputHandler extends StepTaskConsoleInputHandler {
+
+    public AddTaskConsoleInputHandler(BufferedReader br, ITaskService taskService) {
+        super(br, taskService);
+    }
+
     @Override
-    public void handleInput(BufferedReader br, ITaskService taskService) throws IOException {
-        taskService.createTask(handeTaskCreationSteps(br));
+    public void handleInput() throws IOException {
+        taskService.createTask(handleTaskCreationSteps());
     }
 }
