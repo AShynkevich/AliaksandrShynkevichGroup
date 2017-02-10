@@ -4,10 +4,6 @@ public final class Constants {
 
     public static final String QUIT_COMMAND = "quit";
 
-    // constants for AppConfig
-    public static final String PROPERTY_FILE_KEY = "propertyFile";
-    public static final String DEFAULT_PROPERTY_FILE = "app.properties";
-
     public static final String TASK_FILE_KEY = "taskFile";
 
     public static final String NO_REPOSITORY_FOUND_EXCEPTION = "No repository for resource type: %s found!";
@@ -25,7 +21,5 @@ public final class Constants {
             "Remove task: 4\n" +
             "Show all tasks: 5\n";
 
-    public static final String SERVICE_TYPE_PARAMETER = "service";
-    public static final String REPOSITORY_TYPE_PARAMETER = "repository";
     public static final String FILE_REPOSITORY = "file";
 }

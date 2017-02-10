@@ -1,6 +1,5 @@
 package com.epam.lab.mentoring.homework.support;
 
-import com.epam.lab.mentoring.homework.support.properties.FilePropertyLoader;
 import com.epam.lab.mentoring.homework.support.properties.LoadStatus;
 import com.epam.lab.mentoring.homework.support.properties.SystemPropertyLoader;
 import org.apache.commons.lang3.StringUtils;
@@ -17,20 +16,13 @@ public enum AppConfig {
     private Properties properties;
 
     {
-        LoadStatus fileLoad = new FilePropertyLoader().load();
         LoadStatus consoleLoad = new SystemPropertyLoader().load();
 
-        if (!fileLoad.isSuccess() && !consoleLoad.isSuccess()) {
+        if (!consoleLoad.isSuccess()) {
             throw new IllegalStateException("Failed to initialize application! No properties found!");
         }
 
-        if (fileLoad.isSuccess()) {
-            // using files log
-            properties = fileLoad.getResult();
-        } else {
-            // both cannot be false at that stage
-            properties = consoleLoad.getResult();
-        }
+        properties = consoleLoad.getResult();
     }
 
     public String getProperty(String key) {
