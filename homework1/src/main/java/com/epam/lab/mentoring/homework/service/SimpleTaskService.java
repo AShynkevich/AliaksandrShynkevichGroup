@@ -1,16 +1,17 @@
 package com.epam.lab.mentoring.homework.service;
 
-import com.epam.lab.mentoring.homework.LoggerProvider;
 import com.epam.lab.mentoring.homework.domain.Task;
 import com.epam.lab.mentoring.homework.repository.ITaskRepository;
 import org.apache.commons.collections4.CollectionUtils;
 import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
+import java.util.Collections;
 import java.util.List;
 
 public class SimpleTaskService implements ITaskService {
 
-    private static final Logger LOGGER = LoggerProvider.getLogger();
+    private static final Logger LOGGER = LoggerFactory.getLogger(SimpleTaskService.class);
 
     private ITaskRepository taskRepository;
 
@@ -52,16 +53,14 @@ public class SimpleTaskService implements ITaskService {
     }
 
     @Override
-    public void showTasks() {
+    public List<Task> findTasks() {
         List<Task> tasks = taskRepository.findAll();
 
         if (CollectionUtils.isEmpty(tasks)) {
             LOGGER.info("No tasks yet!");
+            return Collections.emptyList();
         } else {
-            for (Task task : tasks) {
-                // TODO: output provide in another place
-                System.out.println(task);
-            }
+            return tasks;
         }
     }
 

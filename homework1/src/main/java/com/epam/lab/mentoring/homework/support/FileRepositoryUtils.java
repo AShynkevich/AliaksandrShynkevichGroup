@@ -1,10 +1,10 @@
 package com.epam.lab.mentoring.homework.support;
 
-import com.epam.lab.mentoring.homework.LoggerProvider;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.SerializationException;
 import org.apache.commons.lang3.SerializationUtils;
 import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.*;
 import java.util.ArrayList;
@@ -12,7 +12,7 @@ import java.util.List;
 
 public final class FileRepositoryUtils {
 
-    private static final Logger LOGGER = LoggerProvider.getLogger();
+    private static final Logger LOGGER = LoggerFactory.getLogger(FileRepositoryUtils.class);
 
     private FileRepositoryUtils() {
         throw new UnsupportedOperationException();

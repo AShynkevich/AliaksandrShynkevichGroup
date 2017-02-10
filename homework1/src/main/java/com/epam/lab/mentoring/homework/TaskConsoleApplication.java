@@ -2,10 +2,10 @@ package com.epam.lab.mentoring.homework;
 
 import com.epam.lab.mentoring.homework.console.*;
 import com.epam.lab.mentoring.homework.service.ITaskService;
-import com.epam.lab.mentoring.homework.support.AppConfig;
 import org.apache.commons.collections4.map.HashedMap;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -17,12 +17,12 @@ import static com.epam.lab.mentoring.homework.support.Constants.SHOW_ALL_TASKS_C
 
 public class TaskConsoleApplication {
 
-    private static final Logger LOGGER = LoggerProvider.getLogger();
+    private static final Logger LOGGER = LoggerFactory.getLogger(TaskConsoleApplication.class);
 
     private Map<String, IConsoleInputHandler> consoleHandlers;
     private ITaskService taskService;
 
-    public void instantiate() {
+    public TaskConsoleApplication() {
         prepareConsoleHandlers();
         prepareService();
     }
@@ -41,11 +41,10 @@ public class TaskConsoleApplication {
         } catch (IOException e) {
             LOGGER.error("Failed to process input.", e);
         }
-
     }
 
     private void prepareConsoleHandlers() {
-        LOGGER.debug("Instantiating console hanlders...");
+        LOGGER.debug("Instantiating console handlers...");
         consoleHandlers = new HashedMap<>();
         consoleHandlers.put(ADD_TASK_CMD_ID, new AddTaskConsoleInputHandler());
         consoleHandlers.put(UPDATE_TASK_CMD_ID, new UpdateTaskConsoleInputHandler());
@@ -58,9 +57,8 @@ public class TaskConsoleApplication {
     private void prepareService() {
         try {
             taskService = TaskServiceFactory
-                    .getTaskService(AppConfig.INSTANCE.getProperty(SERVICE_TYPE_PARAMETER))
-                    .withRepository(TaskRepositoryFactory
-                            .getTaskRepository(AppConfig.INSTANCE.getProperty(REPOSITORY_TYPE_PARAMETER)));
+                    .getTaskService()
+                    .withRepository(TaskRepositoryFactory.getTaskRepository(FILE_REPOSITORY));
         } catch (IllegalStateException e) {
             LOGGER.error("Failed to create service.", e);
             System.exit(1);

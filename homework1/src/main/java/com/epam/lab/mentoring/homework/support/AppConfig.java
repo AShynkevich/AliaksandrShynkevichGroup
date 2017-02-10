@@ -1,18 +1,18 @@
 package com.epam.lab.mentoring.homework.support;
 
-import com.epam.lab.mentoring.homework.LoggerProvider;
 import com.epam.lab.mentoring.homework.support.properties.FilePropertyLoader;
 import com.epam.lab.mentoring.homework.support.properties.LoadStatus;
 import com.epam.lab.mentoring.homework.support.properties.SystemPropertyLoader;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.Properties;
 
 public enum AppConfig {
     INSTANCE;
 
-    private static final Logger LOGGER = LoggerProvider.getLogger();
+    private static final Logger LOGGER = LoggerFactory.getLogger(AppConfig.class);
 
     private Properties properties;
 

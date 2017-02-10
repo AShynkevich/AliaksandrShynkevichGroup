@@ -1,11 +1,9 @@
 package com.epam.lab.mentoring.homework.repository;
 
-import com.epam.lab.mentoring.homework.LoggerProvider;
 import com.epam.lab.mentoring.homework.domain.Task;
 import com.epam.lab.mentoring.homework.support.AppConfig;
 import com.epam.lab.mentoring.homework.support.FileRepositoryUtils;
 import org.apache.commons.collections4.CollectionUtils;
-import org.slf4j.Logger;
 
 import java.util.List;
 import java.util.Optional;
@@ -14,7 +12,6 @@ import static com.epam.lab.mentoring.homework.support.Constants.TASK_FILE_KEY;
 
 public class FileTaskRepository implements ITaskRepository {
 
-    private static final Logger LOGGER = LoggerProvider.getLogger();
     private static final String FILE = AppConfig.INSTANCE.getProperty(TASK_FILE_KEY);
 
     @Override
@@ -63,7 +60,6 @@ public class FileTaskRepository implements ITaskRepository {
         }
 
         FileRepositoryUtils.writeListToFile(tasks, FILE);
-
         return task;
     }
 

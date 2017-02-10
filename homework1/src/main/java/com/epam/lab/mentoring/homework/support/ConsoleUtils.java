@@ -1,6 +1,9 @@
 package com.epam.lab.mentoring.homework.support;
 
 import org.apache.commons.lang3.StringUtils;
+import org.joda.time.LocalDateTime;
+
+import java.io.BufferedReader;
 
 public final class ConsoleUtils {
 
@@ -20,5 +23,14 @@ public final class ConsoleUtils {
             return false;
         }
         return true;
+    }
+
+    public static LocalDateTime parseDate(String input) {
+        try {
+            return LocalDateTime.parse(input);
+        } catch (IllegalArgumentException exc) {
+            System.out.println("Incorrect date format!");
+        }
+        return null;
     }
 }

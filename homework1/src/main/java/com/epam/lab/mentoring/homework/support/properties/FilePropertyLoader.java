@@ -1,9 +1,9 @@
 package com.epam.lab.mentoring.homework.support.properties;
 
-import com.epam.lab.mentoring.homework.LoggerProvider;
 import com.epam.lab.mentoring.homework.support.Constants;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -16,7 +16,7 @@ import static com.epam.lab.mentoring.homework.support.Constants.PROPERTY_FILE_KE
 
 public class FilePropertyLoader implements IPropertyLoader {
 
-    private static final Logger LOGGER = LoggerProvider.getLogger();
+    private static final Logger LOGGER = LoggerFactory.getLogger(FilePropertyLoader.class);
 
     @Override
     public LoadStatus load() {
