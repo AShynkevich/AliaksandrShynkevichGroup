@@ -14,11 +14,11 @@ public final class Constants {
     public static final String REMOVE_TASK_CMD_ID = "4";
     public static final String SHOW_ALL_TASKS_CMD_ID = "5";
 
-    public static final String CONSOLE_TEMPLATE = "Available actions -->\n" +
-            "Add task: 1\n" +
-            "Update task: 2\n" +
-            "Find task: 3\n" +
-            "Remove task: 4\n" +
+    public static final String CONSOLE_TEMPLATE = "\nAvailable actions ==>\n\n" +
+            "Add task: 1\n\n" +
+            "Update task: 2\n\n" +
+            "Find task: 3\n\n" +
+            "Remove task: 4\n\n" +
             "Show all tasks: 5\n";
 
     public static final String FILE_REPOSITORY = "file";

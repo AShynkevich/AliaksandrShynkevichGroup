@@ -1,5 +1,6 @@
 package com.epam.lab.mentoring.homework.console;
 
+import com.epam.lab.mentoring.homework.domain.Task;
 import com.epam.lab.mentoring.homework.service.ITaskService;
 
 import java.io.BufferedReader;
@@ -13,6 +14,9 @@ public class FindTaskConsoleInputHandler extends SafeConsoleInputHandler {
 
     @Override
     public void handleInput() throws IOException {
-        taskService.readTask(this.handleInput("Set task id to find:>"));
+        Task result = taskService.readTask(this.handleInput("Set task id to find:>"));
+        if (null != result) {
+            System.out.println(result);
+        }
     }
 }

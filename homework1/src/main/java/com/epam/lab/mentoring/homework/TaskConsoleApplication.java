@@ -29,7 +29,7 @@ public class TaskConsoleApplication {
             while (!QUIT_COMMAND.equals(StringUtils.trim(input))) {
                 // in GRADLE looks so so but it is common issue
                 System.out.println(CONSOLE_TEMPLATE);
-                System.out.print("input:> ");
+                System.out.print("input (to exit write [quit]):> ");
                 input = br.readLine();
 
                 controller.handleInput(input);
