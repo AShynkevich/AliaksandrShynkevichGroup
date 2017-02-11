@@ -22,7 +22,7 @@ public final class ConsoleUtils {
         try {
             return LocalDateTime.parse(input);
         } catch (IllegalArgumentException exc) {
-            System.out.println("Incorrect date format!");
+            System.out.println("Incorrect date format! Supported: yyyy, yyyy-mm-dd, yyyy-mm, yyyy-mm-ddThh-mm");
         }
         return null;
     }

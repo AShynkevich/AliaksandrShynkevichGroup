@@ -14,9 +14,8 @@ public class SystemPropertyLoader implements IPropertyLoader {
 
     @Override
     public LoadStatus load() {
-        LOGGER.info("Attempt to load properties files.");
+        LOGGER.info("Attempt to load system properties.");
         Properties properties = new Properties();
-        // TODO: add some parameter support if needed though I suggest using file
 
         String repositoryFile = System.getProperty(TASK_FILE_KEY);
         if (StringUtils.isBlank(repositoryFile)) {
