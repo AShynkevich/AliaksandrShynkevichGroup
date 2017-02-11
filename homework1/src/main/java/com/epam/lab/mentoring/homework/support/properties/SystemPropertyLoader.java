@@ -1,5 +1,6 @@
 package com.epam.lab.mentoring.homework.support.properties;
 
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -18,7 +19,7 @@ public class SystemPropertyLoader implements IPropertyLoader {
         // TODO: add some parameter support if needed though I suggest using file
 
         String repositoryFile = System.getProperty(TASK_FILE_KEY);
-        if (null == repositoryFile) {
+        if (StringUtils.isBlank(repositoryFile)) {
             return new LoadStatus(false);
         }
 

@@ -19,7 +19,7 @@ public enum AppConfig {
         LoadStatus consoleLoad = new SystemPropertyLoader().load();
 
         if (!consoleLoad.isSuccess()) {
-            throw new IllegalStateException("Failed to initialize application! No properties found!");
+            throw new IllegalArgumentException("Failed to initialize application! No system property [taskFile] found!");
         }
 
         properties = consoleLoad.getResult();
@@ -29,7 +29,7 @@ public enum AppConfig {
         String toReturn = properties.getProperty(key);
         if (StringUtils.isBlank(toReturn)) {
             LOGGER.error("Property [{}] not found.", key);
-            throw new IllegalStateException("No property [".concat(key).concat("] specified!"));
+            throw new IllegalArgumentException("No property [".concat(key).concat("] specified!"));
         }
 
         return toReturn;
