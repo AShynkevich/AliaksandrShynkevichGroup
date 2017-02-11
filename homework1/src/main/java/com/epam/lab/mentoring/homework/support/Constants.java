@@ -21,5 +21,6 @@ public final class Constants {
             "Remove task: 4\n" +
             "Show all tasks: 5\n";
 
+    public static final String DEFAULT_FILE_NAME = "app.repository";
     public static final String FILE_REPOSITORY = "file";
 }

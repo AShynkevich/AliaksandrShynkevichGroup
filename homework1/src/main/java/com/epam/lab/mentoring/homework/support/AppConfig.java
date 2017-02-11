@@ -1,6 +1,5 @@
 package com.epam.lab.mentoring.homework.support;
 
-import com.epam.lab.mentoring.homework.support.properties.LoadStatus;
 import com.epam.lab.mentoring.homework.support.properties.SystemPropertyLoader;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -13,17 +12,7 @@ public enum AppConfig {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(AppConfig.class);
 
-    private Properties properties;
-
-    {
-        LoadStatus consoleLoad = new SystemPropertyLoader().load();
-
-        if (!consoleLoad.isSuccess()) {
-            throw new IllegalArgumentException("Failed to initialize application! No system property [taskFile] found!");
-        }
-
-        properties = consoleLoad.getResult();
-    }
+    private Properties  properties = new SystemPropertyLoader().load();
 
     public String getProperty(String key) {
         String toReturn = properties.getProperty(key);
