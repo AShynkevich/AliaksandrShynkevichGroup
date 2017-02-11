@@ -18,7 +18,7 @@ public abstract class StepTaskConsoleInputHandler extends SafeConsoleInputHandle
         task.setId(this.handleInput("Set task id:>"));
         task.setName(this.handleInput("Set task name:>"));
         task.setDescription(this.handleInput("Set task description:>"));
-        task.setDate(this.handleDateInput("Set task date:>"));
+        task.setDate(this.handleDateInput("Set task date (yyyy, yyyy-mm-dd, yyyy-mm, yyyy-mm-ddThh-mm) :>"));
 
         return task;
     }
