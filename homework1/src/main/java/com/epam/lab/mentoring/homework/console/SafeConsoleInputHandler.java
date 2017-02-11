@@ -16,7 +16,7 @@ public abstract class SafeConsoleInputHandler extends AbstractConsoleHandler imp
     protected String handleInput(String inputMessage) throws IOException {
         String input;
         do {
-            System.out.println(inputMessage);
+            System.out.println("\n" + inputMessage);
         } while (!ConsoleUtils.validateInput(input = br.readLine()));
 
         return input;

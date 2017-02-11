@@ -36,7 +36,6 @@ public class SimpleTaskService implements ITaskService {
             LOGGER.info("No task with id [{}] found!", taskId);
         }
 
-        System.out.println(task);
         return task;
     }
 
