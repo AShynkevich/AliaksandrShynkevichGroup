@@ -25,3 +25,5 @@ work
 esdoc-output
 
 classes
+
+*.txt
