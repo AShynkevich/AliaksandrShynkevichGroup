@@ -7,7 +7,7 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Main {
+public class Leak {
 
     private static final String FILENAME = "Task #5 - Data.txt";
 

@@ -7,8 +7,7 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Main {
-
+public class FixedLeak {
     private static final String FILENAME = "Task #5 - Data.txt";
 
     public static void main(String[] args) throws InterruptedException {
@@ -30,5 +29,4 @@ public class Main {
 
         Thread.sleep(20000);
     }
-
 }
