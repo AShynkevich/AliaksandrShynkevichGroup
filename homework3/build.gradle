@@ -7,6 +7,7 @@ mainClassName = 'com.epam.lab.mentoring.Main'
 
 repositories {
     jcenter()
+    maven { url "http://maven.clapper.org/" }
 }
 
 run {
@@ -16,4 +17,7 @@ run {
 dependencies {
     compile "org.slf4j:slf4j-api:$slf4jVersion"
     compile "org.slf4j:slf4j-simple:$slf4jVersion"
+
+    compile "org.apache.commons:commons-lang3:$commonsLangVersion"
+    compile "org.clapper:javautil:$clapperVersion"
 }
