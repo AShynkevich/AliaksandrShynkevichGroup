@@ -7,17 +7,17 @@ import java.time.LocalDateTime;
 
 public final class PluginSupportUtils {
 
-    public static Plugin createPlugin(IPluggable pluggable, LocalDateTime timestamp) {
+    public static Plugin createPlugin(Class<? extends IPluggable> pluggable, LocalDateTime timestamp) {
         Plugin plugin = new Plugin();
-        plugin.setId(pluggable.getClass().getName());
+        plugin.setId(pluggable.getName());
         plugin.setVersion(ApplicationConstants.INITIAL_PLUGIN_VERSION);
         plugin.setTimestamp(timestamp);
-        plugin.setClazz(pluggable.getClass());
+        plugin.setClazz(pluggable);
         return plugin;
     }
 
-    public static Plugin updatePlugin(Plugin plugin, IPluggable pluggable, LocalDateTime timestamp) {
-        plugin.setClazz(pluggable.getClass());
+    public static Plugin updatePlugin(Plugin plugin, Class<? extends IPluggable> pluggable, LocalDateTime timestamp) {
+        plugin.setClazz(pluggable);
         plugin.setVersion(plugin.getVersion() + 1);
         plugin.setTimestamp(timestamp);
         return plugin;
