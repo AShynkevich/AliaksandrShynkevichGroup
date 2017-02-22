@@ -11,14 +11,15 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 
 import static com.epam.lab.mentoring.ApplicationConstants.CONSOLE_TEMPLATE;
+import static com.epam.lab.mentoring.ApplicationConstants.EXTENSION_FOLDER;
 import static com.epam.lab.mentoring.ApplicationConstants.QUIT_COMMAND;
 
 public class Main {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(Main.class);
 
-    public static void main(String[] args) {
-        WatcherThread thread = new WatcherThread();
+    public static void main(String[] args) throws IOException {
+        WatcherThread thread = new WatcherThread(EXTENSION_FOLDER);
         thread.start();
 
         try(BufferedReader br = new BufferedReader(new InputStreamReader(System.in))) {

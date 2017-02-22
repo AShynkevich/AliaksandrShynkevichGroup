@@ -12,4 +12,6 @@ public final class ApplicationConstants {
 
     public static final String CONSOLE_TEMPLATE = "\nAvailable actions ==>\n" +
             "Load classes: 1\n";
+
+    public static final String PLUGIN_EXTENSION = "jar";
 }

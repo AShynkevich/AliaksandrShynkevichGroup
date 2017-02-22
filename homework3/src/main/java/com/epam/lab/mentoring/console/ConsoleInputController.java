@@ -21,9 +21,11 @@ public class ConsoleInputController {
 
     public ConsoleInputController(BufferedReader reader) {
         this.reader = reader;
+        prepareConsoleHandlers();
     }
 
     public void handleInput(String inputLine) throws IOException {
+        LOGGER.info("Attempt to process console input [{}].", inputLine);
         if (StringUtils.isBlank(inputLine)) {
             System.out.println("No command provided!");
             return;
