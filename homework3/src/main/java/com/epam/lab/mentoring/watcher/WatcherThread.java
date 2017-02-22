@@ -27,7 +27,7 @@ public class WatcherThread extends Thread {
         LOGGER.info("Artifact watching thread stopped.");
     }
 
-    public void stopThread() {
+    public void stopThread() throws IOException {
         watch = false;
     }
 }

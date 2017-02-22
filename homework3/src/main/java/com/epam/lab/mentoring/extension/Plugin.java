@@ -2,12 +2,9 @@ package com.epam.lab.mentoring.extension;
 
 import com.epam.lab.mentoring.api.IPluggable;
 
-import java.time.LocalDateTime;
-
 public class Plugin {
     private String id;
     private Class<? extends IPluggable> clazz;
-    private LocalDateTime timestamp;
     private int version;
 
     public String getId() {
@@ -24,14 +21,6 @@ public class Plugin {
 
     public void setClazz(Class<? extends IPluggable> clazz) {
         this.clazz = clazz;
-    }
-
-    public LocalDateTime getTimestamp() {
-        return timestamp;
-    }
-
-    public void setTimestamp(LocalDateTime timestamp) {
-        this.timestamp = timestamp;
     }
 
     public int getVersion() {
