@@ -1,6 +1,7 @@
 package com.epam.lab.mentoring;
 
 import com.epam.lab.mentoring.console.ConsoleInputController;
+import com.epam.lab.mentoring.watcher.WatcherThread;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -17,6 +18,9 @@ public class Main {
     private static final Logger LOGGER = LoggerFactory.getLogger(Main.class);
 
     public static void main(String[] args) {
+        WatcherThread thread = new WatcherThread();
+        thread.start();
+
         try(BufferedReader br = new BufferedReader(new InputStreamReader(System.in))) {
             String input = null;
             ConsoleInputController controller = new ConsoleInputController(br);
@@ -30,6 +34,8 @@ public class Main {
         } catch (IOException exc) {
             LOGGER.error("Failed to process input.", exc);
         }
+
+        thread.stopThread();
     }
 
 }
