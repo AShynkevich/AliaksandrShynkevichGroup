@@ -26,7 +26,10 @@ public class ExtensionLoader extends ClassLoader {
 
     @Override
     public Class<?> loadClass(String name) throws ClassNotFoundException {
-        return super.loadClass(name);
+        // iterate extension folder
+        iterateExtensionFolder();
+        // some null check or ClassNotFoundException
+        return ExtensionRegistry.REGISTRY.getPlugin(name).getClazz();
     }
 
     private void iterateExtensionFolder() {
@@ -34,7 +37,7 @@ public class ExtensionLoader extends ClassLoader {
             Files.walk(Paths.get(EXTENSION_FOLDER))
                     .filter(file -> file.toString().endsWith(".jar"))
                     .forEach(file -> {
-                        List<String> jarClasses = JarArtifactProcessor.process(file);
+                        List<String> jarClasses = JarArtifactProcessor.collectionClassInformationFromJar(file);
                         if (null != jarClasses) {
                             // timestamp is based on jar modified time for now
                             LocalDateTime timestamp =

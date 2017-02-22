@@ -20,4 +20,5 @@ dependencies {
 
     compile "org.apache.commons:commons-lang3:$commonsLangVersion"
     compile "org.clapper:javautil:$clapperVersion"
+    compile "org.apache.commons:commons-collections4:$commonsCollectionVersion"
 }

@@ -17,7 +17,7 @@ public final class JarArtifactProcessor {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(JarArtifactProcessor.class);
 
-    public static List<String> process(Path jarFile) {
+    public static List<String> collectionClassInformationFromJar(Path jarFile) {
         LOGGER.info("Attempt to process jar file [{}].", jarFile);
         ClassFinder finder = new ClassFinder();
         finder.add(jarFile.toFile());
@@ -32,7 +32,11 @@ public final class JarArtifactProcessor {
         finder.findClasses(foundClasses, filter);
 
         return foundClasses.stream()
-                .map(ClassInfo::getClassName)
+                .map(classInfo -> {
+                    LOGGER.info("Found class [{}] in location [{}].", classInfo.getClassName(),
+                            classInfo.getClassLocation());
+                    return classInfo.getClassLocation() + classInfo.getClassName();
+                })
                 .collect(Collectors.toList());
     }
 
