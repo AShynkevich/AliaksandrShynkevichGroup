@@ -1,6 +1,6 @@
 package com.epam.lab.mentoring.console;
 
-import com.epam.lab.mentoring.extension.ExtensionRegistry;
+import com.epam.lab.mentoring.classloader.JarResourceRegistry;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -13,6 +13,6 @@ public class ShowClassesConsoleInputHandler extends SafeConsoleInputHandler {
 
     @Override
     public void handleInput() throws IOException {
-        System.out.println("Available plugins: " + ExtensionRegistry.REGISTRY.listAvailablePlugins());
+        System.out.println("Available plugins: " + JarResourceRegistry.REGISTRY.getLoadedClasses());
     }
 }
