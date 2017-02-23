@@ -11,6 +11,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import static com.epam.lab.mentoring.ApplicationConstants.LOAD_CLASSES_CMD;
+import static com.epam.lab.mentoring.ApplicationConstants.TEST_CLASS_CMD;
 
 public class ConsoleInputController {
 
@@ -48,6 +49,7 @@ public class ConsoleInputController {
         LOGGER.debug("Instantiating console handlers...");
         consoleHanders = new HashMap<>();
         consoleHanders.put(LOAD_CLASSES_CMD, new ShowClassesConsoleInputHandler(reader));
+        consoleHanders.put(TEST_CLASS_CMD, new TestClassConsoleInputHandler(reader));
         LOGGER.debug("Done!");
     }
 }
