@@ -25,7 +25,7 @@ public class ConsoleInputController {
     }
 
     public void handleInput(String inputLine) throws IOException {
-        LOGGER.info("Attempt to process console input [{}].", inputLine);
+        LOGGER.debug("Attempt to process console input [{}]. \n", inputLine);
         if (StringUtils.isBlank(inputLine)) {
             System.out.println("No command provided!");
             return;
@@ -47,7 +47,7 @@ public class ConsoleInputController {
     private void prepareConsoleHandlers() {
         LOGGER.debug("Instantiating console handlers...");
         consoleHanders = new HashMap<>();
-        consoleHanders.put(LOAD_CLASSES_CMD, new LoadClassesConsoleInputHandler(reader));
+        consoleHanders.put(LOAD_CLASSES_CMD, new ShowClassesConsoleInputHandler(reader));
         LOGGER.debug("Done!");
     }
 }

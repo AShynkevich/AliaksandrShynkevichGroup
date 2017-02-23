@@ -1,10 +1,10 @@
 package com.epam.lab.mentoring.extension;
 
-import com.epam.lab.mentoring.api.IPluggable;
+import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
 
 public class Plugin {
-    private String id;
-    private Class<? extends IPluggable> clazz;
+    private String id; // unique name
     private int version;
 
     public String getId() {
@@ -15,19 +15,16 @@ public class Plugin {
         this.id = id;
     }
 
-    public Class<? extends IPluggable> getClazz() {
-        return clazz;
-    }
-
-    public void setClazz(Class<? extends IPluggable> clazz) {
-        this.clazz = clazz;
-    }
-
     public int getVersion() {
         return version;
     }
 
     public void setVersion(int version) {
         this.version = version;
+    }
+
+    @Override
+    public String toString() {
+        return ToStringBuilder.reflectionToString(this, ToStringStyle.SHORT_PREFIX_STYLE);
     }
 }

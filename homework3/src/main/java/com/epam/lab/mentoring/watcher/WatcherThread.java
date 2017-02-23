@@ -28,6 +28,8 @@ public class WatcherThread extends Thread {
     }
 
     public void stopThread() throws IOException {
+        // instead of waiting we might handling ClosedWatchServiceException I think
+        LOGGER.info("Stopping thread make to some time. Please wait...");
         watch = false;
     }
 }

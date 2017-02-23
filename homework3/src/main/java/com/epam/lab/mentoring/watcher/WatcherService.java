@@ -1,5 +1,8 @@
 package com.epam.lab.mentoring.watcher;
 
+import org.apache.commons.lang3.concurrent.BasicThreadFactory;
+import org.apache.commons.lang3.tuple.ImmutablePair;
+import org.apache.commons.lang3.tuple.Pair;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -7,7 +10,15 @@ import java.io.IOException;
 import java.nio.file.*;
 import java.nio.file.attribute.BasicFileAttributes;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
+import java.util.Queue;
+import java.util.concurrent.ConcurrentLinkedDeque;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
 
 import static java.nio.file.StandardWatchEventKinds.*;
 
@@ -18,8 +29,16 @@ class WatcherService {
     private final Map<WatchKey, Path> keys;
     private boolean trace;
 
+    // workaround for duplicating
+    private ScheduledExecutorService scheduledExecutorService = Executors
+            .newSingleThreadScheduledExecutor(new BasicThreadFactory.Builder().daemon(true).build());
+    private static final Queue<Pair<WatchEvent<Path>, Path>> EVENT_QUEUE = new ConcurrentLinkedDeque<>();
+    private final Lock lock = new ReentrantLock();
+
     WatcherService(Path dir) throws IOException {
         watcher = FileSystems.getDefault().newWatchService();
+        scheduledExecutorService.scheduleWithFixedDelay(new ResolveEventRunnable(), 2, 2, TimeUnit.SECONDS);
+
         keys = new HashMap<>();
         registerAll(dir);
         trace = true;
@@ -74,7 +93,8 @@ class WatcherService {
             WatchEvent<Path> ev = (WatchEvent<Path>) event;
             Path name = ev.context();
             Path child = dir.resolve(name);
-            WatchEventResolver.resolveEvent(ev, child);
+
+            EVENT_QUEUE.add(new ImmutablePair<>(ev, child));
         }
 
         boolean valid = key.reset();
@@ -91,5 +111,27 @@ class WatcherService {
 
     public void stopWatcher() throws IOException {
         watcher.close();
+    }
+
+    private class ResolveEventRunnable implements Runnable {
+
+        @Override
+        public void run() {
+            try {
+                for (Iterator<Pair<WatchEvent<Path>, Path>> iterator = EVENT_QUEUE.iterator(); iterator.hasNext();) {
+                    if (lock.tryLock()) {
+                        try {
+                            Pair<WatchEvent<Path>, Path> pair = iterator.next();
+                            WatchEventResolver.resolveEvent(pair.getLeft(), pair.getRight());
+                            iterator.remove();
+                        } finally {
+                            lock.unlock();
+                        }
+                    }
+                }
+            } catch (Throwable e) {
+                LOGGER.error("Threading error.", e);
+            }
+        }
     }
 }

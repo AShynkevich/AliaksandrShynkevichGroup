@@ -5,16 +5,14 @@ import com.epam.lab.mentoring.api.IPluggable;
 
 public final class PluginSupportUtils {
 
-    public static Plugin createPlugin(Class<? extends IPluggable> pluggable) {
+    public static Plugin createPlugin(String id) {
         Plugin plugin = new Plugin();
-        plugin.setId(pluggable.getName());
+        plugin.setId(id);
         plugin.setVersion(ApplicationConstants.INITIAL_PLUGIN_VERSION);
-        plugin.setClazz(pluggable);
         return plugin;
     }
 
-    public static Plugin updatePlugin(Plugin plugin, Class<? extends IPluggable> pluggable) {
-        plugin.setClazz(pluggable);
+    public static Plugin updatePlugin(Plugin plugin) {
         plugin.setVersion(plugin.getVersion() + 1);
         return plugin;
     }

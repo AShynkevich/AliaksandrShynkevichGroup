@@ -22,8 +22,8 @@ class WatchEventResolver {
     private static Map<WatchEvent.Kind<Path>, IEventResolver> resolvers = new HashMap<>();
 
     static {
+        // entry modify happens with ENTRY_CREATE
         resolvers.put(ENTRY_CREATE, new CreateEventResolver());
-        resolvers.put(ENTRY_MODIFY, new CreateEventResolver());
     }
 
     static void resolveEvent(WatchEvent<Path> event, Path file) {
