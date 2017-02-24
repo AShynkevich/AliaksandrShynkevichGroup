@@ -22,7 +22,7 @@ import java.util.concurrent.locks.ReentrantLock;
 
 import static java.nio.file.StandardWatchEventKinds.*;
 
-class WatcherService {
+public class WatcherService {
     private static final Logger LOGGER = LoggerFactory.getLogger(WatcherThread.class);
 
     private final WatchService watcher;

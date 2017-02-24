@@ -1,6 +1,5 @@
 package com.epam.lab.mentoring.watcher.resolver;
 
-import com.epam.lab.mentoring.classloader.ExtensionLoader;
 import com.epam.lab.mentoring.classloader.JarResourceLoader;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

@@ -6,7 +6,6 @@ import java.io.BufferedReader;
 import java.io.IOException;
 
 public class ShowClassesConsoleInputHandler extends SafeConsoleInputHandler {
-
     public ShowClassesConsoleInputHandler(BufferedReader br) {
         super(br);
     }

@@ -15,7 +15,6 @@ import static com.epam.lab.mentoring.ApplicationConstants.EXTENSION_FOLDER;
 import static com.epam.lab.mentoring.ApplicationConstants.QUIT_COMMAND;
 
 public class Main {
-
     private static final Logger LOGGER = LoggerFactory.getLogger(Main.class);
 
     public static void main(String[] args) throws IOException {
@@ -38,5 +37,4 @@ public class Main {
 
         thread.stopThread();
     }
-
 }

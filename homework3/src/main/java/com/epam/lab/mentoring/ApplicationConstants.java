@@ -1,7 +1,6 @@
 package com.epam.lab.mentoring;
 
 public final class ApplicationConstants {
-
     public static final String EXTENSION_FOLDER = ".";
 
     public static final String QUIT_COMMAND = "quit";

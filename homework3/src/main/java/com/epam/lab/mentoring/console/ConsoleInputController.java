@@ -14,7 +14,6 @@ import static com.epam.lab.mentoring.ApplicationConstants.LOAD_CLASSES_CMD;
 import static com.epam.lab.mentoring.ApplicationConstants.TEST_CLASS_CMD;
 
 public class ConsoleInputController {
-
     private static final Logger LOGGER = LoggerFactory.getLogger(ConsoleInputController.class);
 
     private BufferedReader reader;

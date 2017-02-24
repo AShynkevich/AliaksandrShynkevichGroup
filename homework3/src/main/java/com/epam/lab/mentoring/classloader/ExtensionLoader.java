@@ -6,7 +6,6 @@ import org.slf4j.LoggerFactory;
 import java.io.IOException;
 
 public class ExtensionLoader extends ClassLoader {
-
     private static final Logger LOGGER = LoggerFactory.getLogger(ExtensionLoader.class);
 
     public ExtensionLoader() {

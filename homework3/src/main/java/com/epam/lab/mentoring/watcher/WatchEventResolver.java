@@ -16,7 +16,7 @@ import static com.epam.lab.mentoring.ApplicationConstants.PLUGIN_EXTENSION;
 import static java.nio.file.StandardWatchEventKinds.ENTRY_CREATE;
 import static java.nio.file.StandardWatchEventKinds.ENTRY_MODIFY;
 
-class WatchEventResolver {
+public class WatchEventResolver {
     private static final Logger LOGGER = LoggerFactory.getLogger(WatchEventResolver.class);
 
     private static Map<WatchEvent.Kind<Path>, IEventResolver> resolvers = new HashMap<>();
@@ -37,5 +37,4 @@ class WatchEventResolver {
             }
         }
     }
-
 }

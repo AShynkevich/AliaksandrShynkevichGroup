@@ -4,7 +4,6 @@ import java.io.BufferedReader;
 import java.io.IOException;
 
 public abstract class SafeConsoleInputHandler extends AbstractConsoleHandler implements IConsoleInputHandler {
-
     public SafeConsoleInputHandler(BufferedReader br) {
         super(br);
     }
@@ -17,5 +16,4 @@ public abstract class SafeConsoleInputHandler extends AbstractConsoleHandler imp
 
         return input;
     }
-
 }
