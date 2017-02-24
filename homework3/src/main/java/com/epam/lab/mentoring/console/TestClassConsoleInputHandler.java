@@ -17,7 +17,7 @@ public class TestClassConsoleInputHandler extends SafeConsoleInputHandler {
     public void handleInput() throws IOException {
         String classId = this.handleInput("Provide class name:>");
         try {
-            Class<?> clz = new ExtensionLoader(this.getClass().getClassLoader()).loadClass(classId);
+            Class<?> clz = new ExtensionLoader().loadClass(classId);
             if (null != clz) {
                 IPluggable pluggable = (IPluggable) clz.newInstance();
                 pluggable.executeCommand("my command");

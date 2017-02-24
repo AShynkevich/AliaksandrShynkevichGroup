@@ -9,8 +9,8 @@ public class ExtensionLoader extends ClassLoader {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ExtensionLoader.class);
 
-    public ExtensionLoader(ClassLoader classLoader) {
-        super(classLoader);
+    public ExtensionLoader() {
+        super();
     }
 
     @Override
