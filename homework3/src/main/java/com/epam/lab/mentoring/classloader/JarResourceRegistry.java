@@ -9,18 +9,22 @@ public enum JarResourceRegistry {
 
     private Map<String, File> jarResources = new ConcurrentHashMap<>();
 
-    public void populateJarResources(File jar, List<String> associatedClasses) {
+    public synchronized void populateJarResources(File jar, List<String> associatedClasses) {
         associatedClasses.forEach(className -> jarResources.put(className, jar));
     }
 
-    public List<String> getLoadedClasses() {
+    public synchronized void unloadClass(String name) {
+        jarResources.remove(name);
+    }
+
+    public synchronized List<String> getLoadedClasses() {
         if (jarResources.isEmpty()) {
             return Collections.emptyList();
         } else {
             return new ArrayList<>(jarResources.keySet());
         }
     }
-    public File getJarResource(String className) {
+    public synchronized File getJarResource(String className) {
         return jarResources.get(className);
     }
 }

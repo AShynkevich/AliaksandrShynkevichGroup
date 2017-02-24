@@ -8,10 +8,6 @@ import java.io.IOException;
 public class ExtensionLoader extends ClassLoader {
     private static final Logger LOGGER = LoggerFactory.getLogger(ExtensionLoader.class);
 
-    public ExtensionLoader() {
-        super();
-    }
-
     @Override
     public Class<?> loadClass(String name) throws ClassNotFoundException {
         try {
