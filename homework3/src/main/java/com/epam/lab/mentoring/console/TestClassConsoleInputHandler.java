@@ -15,7 +15,7 @@ public class TestClassConsoleInputHandler extends SafeConsoleInputHandler {
 
     @Override
     public void handleInput() throws IOException {
-        String classId = this.handleInput("Provide class name invoke:>");
+        String classId = this.handleInput("Provide class id invoke:>");
         try {
             Class<?> clz = new ExtensionLoader().loadClass(classId);
             if (null != clz) {

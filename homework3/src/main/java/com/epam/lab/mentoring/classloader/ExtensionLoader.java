@@ -14,12 +14,13 @@ public class ExtensionLoader extends ClassLoader {
             // have to check whether some chained classes require system classloader
             if (JarResourceLoader.isCurrentClassLoaderSupported(name)) {
                 byte[] b = loadClassData(name);
-                Class<?> clazz = this.defineClass(name, b, 0, b.length);
+                String className = JarResourceRegistry.REGISTRY.translateToClassNameFromId(name);
+                Class<?> clazz = this.defineClass(className, b, 0, b.length);
                 resolveClass(clazz);
                 return clazz;
             }
         } catch (IOException exc) {
-            LOGGER.warn("Failed to load class with extension class loader [{}].", name);
+            LOGGER.warn("Failed to load class with extension class loader by id [{}].", name);
         }
         return super.loadClass(name);
     }

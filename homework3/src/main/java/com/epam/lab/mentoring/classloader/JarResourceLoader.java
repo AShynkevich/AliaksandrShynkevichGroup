@@ -30,16 +30,16 @@ public class JarResourceLoader {
     }
 
     public static boolean isCurrentClassLoaderSupported(String name) {
-        return JarResourceRegistry.REGISTRY.getJarResource(name) != null;
+        return JarResourceRegistry.REGISTRY.verifyClassExistenceById(name);
     }
 
-    public static byte[] getClassByteArray(String name) {
-        File resource = JarResourceRegistry.REGISTRY.getJarResource(name);
-        if (null == resource) {
-            LOGGER.info("No registry record find for class [{}]!", name);
+    public static byte[] getClassByteArray(String id) {
+        JarResourceRegistry.JarClassPair resource = JarResourceRegistry.REGISTRY.getJarResource(id);
+        if (null == resource.getJarFile()) {
+            LOGGER.info("No registry record find for class with id [{}]!", id);
             return null;
         }
-        return getClassBytesFromJar(resource, name);
+        return getClassBytesFromJar(resource.getJarFile(), resource.getClassName());
     }
 
     private static List<String> findPluginClasses(Path jar) {
