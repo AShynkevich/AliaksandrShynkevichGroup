@@ -45,13 +45,18 @@ public class WatcherService {
     }
 
     private void registerAll(final Path start) throws IOException {
-        Files.walkFileTree(start, new SimpleFileVisitor<Path>() {
-            @Override
-            public FileVisitResult preVisitDirectory(Path dir, BasicFileAttributes attrs) throws IOException {
-                register(dir);
-                return FileVisitResult.CONTINUE;
-            }
-        });
+        try {
+            Files.walkFileTree(start, new SimpleFileVisitor<Path>() {
+                @Override
+                public FileVisitResult preVisitDirectory(Path dir, BasicFileAttributes attrs) throws IOException {
+                    register(dir);
+                    return FileVisitResult.CONTINUE;
+                }
+            });
+        } catch (NoSuchFileException exc) {
+            LOGGER.error("No path [{}] found!", start);
+            throw new IllegalStateException("Failed to start application due to incorect configuration!");
+        }
     }
 
     private void register(Path dir) throws IOException {

@@ -12,8 +12,6 @@ import java.util.Map;
 
 import static com.epam.lab.mentoring.ApplicationConstants.LOAD_CLASSES_CMD;
 import static com.epam.lab.mentoring.ApplicationConstants.TEST_CLASS_CMD;
-import static com.epam.lab.mentoring.ApplicationConstants.UNLOAD_CLASS_CMD;
-
 public class ConsoleInputController {
     private static final Logger LOGGER = LoggerFactory.getLogger(ConsoleInputController.class);
 
@@ -50,7 +48,6 @@ public class ConsoleInputController {
         consoleHanders = new HashMap<>();
         consoleHanders.put(LOAD_CLASSES_CMD, new ShowClassesConsoleInputHandler(reader));
         consoleHanders.put(TEST_CLASS_CMD, new TestClassConsoleInputHandler(reader));
-        consoleHanders.put(UNLOAD_CLASS_CMD, new UnloadClassConsoleInputHandler(reader));
         LOGGER.debug("Done!");
     }
 }
