@@ -19,10 +19,14 @@ public class WatcherThread extends Thread {
     @Override
     public void run() {
         LOGGER.info("Artifact watching thread started.");
-        while(watch) {
-            if (!watcherService.watch()) {
-                break;
+        try {
+            while (watch) {
+                if (!watcherService.watch()) {
+                    break;
+                }
             }
+        } catch (ClosedWatchServiceException exc) {
+            // just as planned
         }
         LOGGER.info("Artifact watching thread stopped.");
     }
@@ -30,6 +34,7 @@ public class WatcherThread extends Thread {
     public void stopThread() throws IOException {
         // instead of waiting we might handling ClosedWatchServiceException I think
         LOGGER.info("Stopping thread may take some time. Please wait...");
+        watcherService.stopWatcher();
         watch = false;
     }
 }
