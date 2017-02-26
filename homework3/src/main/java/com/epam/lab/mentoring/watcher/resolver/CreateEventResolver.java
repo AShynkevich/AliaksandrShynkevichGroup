@@ -15,7 +15,7 @@ public class CreateEventResolver implements IEventResolver {
         LOGGER.info("File creation event occurred in [{}].", file);
         try {
             JarResourceLoader.load(file);
-        } catch (IOException exc) {
+        } catch (Exception exc) {
             LOGGER.error("Failed to load [{}].", file, exc);
         }
     }

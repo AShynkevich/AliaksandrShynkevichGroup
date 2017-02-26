@@ -15,6 +15,7 @@ public final class ApplicationConstants {
             "Invoke class: 2\n";
 
     public static final String PLUGIN_EXTENSION = "jar";
+    public static final String PLUGIN_EXTENSION_WITH_POINT = ".jar";
 
     public static final String CLASS_FILE_EXTENSION = ".class";
 }

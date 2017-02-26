@@ -23,7 +23,7 @@ import static com.epam.lab.mentoring.ApplicationConstants.CLASS_FILE_EXTENSION;
 public class JarResourceLoader {
     private static final Logger LOGGER = LoggerFactory.getLogger(JarResourceLoader.class);
 
-    public static void load(Path jar) throws IOException {
+    public static void load(Path jar) {
         LOGGER.info("Attempt to load classes from jar: [{}].", jar);
         List<String> classNames = findPluginClasses(jar);
         JarResourceRegistry.REGISTRY.populateJarResources(jar.toFile(), classNames);
