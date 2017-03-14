@@ -1,0 +1,19 @@
+plugins {
+    id 'jetty'
+}
+
+repositories {
+    jcenter()
+}
+
+dependencies {
+    compile "javax.servlet:servlet-api:$servletApi"
+    compile "javax.jcr:jcr:$jcrVersion"
+
+    compile "org.slf4j:slf4j-api:$slf4jVersion"
+    compile "org.slf4j:slf4j-simple:$slf4jVersion"
+
+    compile "org.apache.cxf:cxf-rt-frontend-jaxws:$cxfVersion"
+    compile "org.apache.cxf:cxf-rt-frontend-jaxrs:$cxfVersion"
+    compile "org.apache.cxf:cxf-rt-transports-http:$cxfVersion"
+}
