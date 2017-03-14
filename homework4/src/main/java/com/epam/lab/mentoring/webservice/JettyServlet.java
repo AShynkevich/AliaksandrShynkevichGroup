@@ -13,8 +13,6 @@ import javax.xml.ws.Endpoint;
 public class JettyServlet extends CXFNonSpringServlet {
     private static final Logger LOGGER = LoggerFactory.getLogger(JettyServlet.class);
 
-    private static final String ENDPOINT = "/fileSharingService";
-
     @Override
     protected void loadBus(ServletConfig sc) {
         super.loadBus(sc);
@@ -26,6 +24,6 @@ public class JettyServlet extends CXFNonSpringServlet {
         Bus bus = getBus();
         BusFactory.setDefaultBus(bus);
 
-        Endpoint.publish(ENDPOINT, new FileSharingWebService());
+        Endpoint.publish(FileSharingWebService.SERVICE_ENDPOINT, new FileSharingWebService());
     }
 }
