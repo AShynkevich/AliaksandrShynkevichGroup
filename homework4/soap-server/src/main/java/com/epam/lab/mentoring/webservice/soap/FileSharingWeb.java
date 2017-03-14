@@ -8,10 +8,12 @@ import javax.jws.WebService;
 @WebService(endpointInterface = "com.epam.lab.mentoring.webservice.soap.IFileSharingWebService")
 public class FileSharingWeb implements IFileSharingWebService {
     private static final Logger LOGGER = LoggerFactory.getLogger(FileSharingWeb.class);
+    private static final String SHARED_FOLDER = "shared-folder";
     public static final String SERVICE_ENDPOINT = "/fileSharingService";
 
     @Override
     public String listFiles() {
+        LOGGER.info("Attempt to list files");
         return null;
     }
 
