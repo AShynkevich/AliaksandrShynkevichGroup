@@ -1,0 +1,54 @@
+<wsdl:definitions xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:tns="http://soap.webservice.mentoring.lab.epam.com/" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:ns1="http://schemas.xmlsoap.org/soap/http" name="FileSharingWebServiceService" targetNamespace="http://soap.webservice.mentoring.lab.epam.com/">
+    <wsdl:types>
+        <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://soap.webservice.mentoring.lab.epam.com/" elementFormDefault="unqualified" targetNamespace="http://soap.webservice.mentoring.lab.epam.com/" version="1.0">
+
+            <xs:element name="listResources" type="tns:listResources"/>
+
+            <xs:element name="listResourcesResponse" type="tns:listResourcesResponse"/>
+
+            <xs:complexType name="listResources">
+                <xs:sequence/>
+            </xs:complexType>
+
+            <xs:complexType name="listResourcesResponse">
+                <xs:sequence>
+                    <xs:element minOccurs="0" name="return" type="xs:string"/>
+                </xs:sequence>
+            </xs:complexType>
+
+        </xs:schema>
+    </wsdl:types>
+    <wsdl:message name="listResources">
+        <wsdl:part element="tns:listResources" name="parameters">
+        </wsdl:part>
+    </wsdl:message>
+    <wsdl:message name="listResourcesResponse">
+        <wsdl:part element="tns:listResourcesResponse" name="parameters">
+        </wsdl:part>
+    </wsdl:message>
+    <wsdl:portType name="IFileSharingWebService">
+        <wsdl:operation name="listResources">
+            <wsdl:input message="tns:listResources" name="listResources">
+            </wsdl:input>
+            <wsdl:output message="tns:listResourcesResponse" name="listResourcesResponse">
+            </wsdl:output>
+        </wsdl:operation>
+    </wsdl:portType>
+    <wsdl:binding name="FileSharingWebServiceServiceSoapBinding" type="tns:IFileSharingWebService">
+        <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+        <wsdl:operation name="listResources">
+            <soap:operation soapAction="" style="document"/>
+            <wsdl:input name="listResources">
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output name="listResourcesResponse">
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+    </wsdl:binding>
+    <wsdl:service name="FileSharingWebServiceService">
+        <wsdl:port binding="tns:FileSharingWebServiceServiceSoapBinding" name="FileSharingWebServicePort">
+            <soap:address location="http://localhost:8080/soap-server/fileSharingService"/>
+        </wsdl:port>
+    </wsdl:service>
+</wsdl:definitions>

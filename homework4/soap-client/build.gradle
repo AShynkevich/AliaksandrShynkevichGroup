@@ -1,0 +1,63 @@
+apply plugin: 'application'
+
+buildscript {
+    repositories {
+        jcenter()
+    }
+    dependencies {
+        classpath "commons-io:commons-io:2.4"
+    }
+}
+
+repositories {
+    jcenter()
+}
+
+dependencies {
+    compile "org.apache.cxf:cxf-tools-wsdlto-core:$cxfVersion"
+    compile "org.apache.cxf:cxf-tools-wsdlto-frontend-jaxws:$cxfVersion"
+    compile "org.apache.cxf:cxf-tools-wsdlto-databinding-jaxb:$cxfVersion"
+}
+
+mainClassName = 'com.epam.lab.mentoring.SoapClient'
+
+configurations {
+    java2wsdl
+}
+
+dependencies {
+    java2wsdl "commons-io:commons-io:2.4"
+    java2wsdl "org.apache.cxf:cxf-tools-wsdlto-core:2.7.0"
+    java2wsdl "org.apache.cxf:cxf-tools-wsdlto-frontend-jaxws:2.7.0"
+    java2wsdl "org.apache.cxf:cxf-tools-wsdlto-databinding-jaxb:2.7.0"
+}
+
+import org.apache.commons.io.output.ByteArrayOutputStream
+import org.apache.commons.io.output.TeeOutputStream
+
+def java2wsdl = task generateJavaFromWsdl(type: JavaExec) {
+    def wsdl = file('src/main/resources/soap-schema.wsdl')
+    def genSrcDir = file("${sourceSets.main.java.srcDirs[0]}")
+
+    inputs.file  wsdl
+    outputs.dir genSrcDir
+
+    classpath configurations.java2wsdl
+    main "org.apache.cxf.tools.wsdlto.WSDLToJava"
+
+    args '-d', genSrcDir.toString(), wsdl.toString()
+
+    def byteArrayOutputStream = new ByteArrayOutputStream()
+    errorOutput = new TeeOutputStream(System.err, byteArrayOutputStream)
+    doLast {
+        def str = byteArrayOutputStream.toString()
+        if (str.contains('Usage : wsdl2java') || str.contains('WSDLToJava Error')) {
+            throw new TaskExecutionException(
+                    tasks[name],
+                    new IOException("WSDLToJava has failed. Please see output")
+            )
+        }
+    }
+}
+compileJava.dependsOn += java2wsdl
+compileJava.source java2wsdl.outputs.files, sourceSets.main.java
