@@ -35,7 +35,7 @@ dependencies {
 import org.apache.commons.io.output.ByteArrayOutputStream
 import org.apache.commons.io.output.TeeOutputStream
 
-task generateJavaFromWsdl(type: JavaExec) {
+task wsdl2java(type: JavaExec) {
     def wsdl = file('src/main/resources/soap-schema.wsdl')
     def genSrcDir = file("${sourceSets.main.java.srcDirs[0]}")
 

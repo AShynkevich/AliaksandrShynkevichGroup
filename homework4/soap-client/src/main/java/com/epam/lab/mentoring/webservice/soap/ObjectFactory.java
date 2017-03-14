@@ -24,8 +24,14 @@ import javax.xml.namespace.QName;
 @XmlRegistry
 public class ObjectFactory {
 
-    private final static QName _ListResources_QNAME = new QName("http://soap.webservice.mentoring.lab.epam.com/", "listResources");
-    private final static QName _ListResourcesResponse_QNAME = new QName("http://soap.webservice.mentoring.lab.epam.com/", "listResourcesResponse");
+    private final static QName _DeleteFileResponse_QNAME = new QName("http://soap.webservice.mentoring.lab.epam.com/", "deleteFileResponse");
+    private final static QName _DeleteFile_QNAME = new QName("http://soap.webservice.mentoring.lab.epam.com/", "deleteFile");
+    private final static QName _CreateFileResponse_QNAME = new QName("http://soap.webservice.mentoring.lab.epam.com/", "createFileResponse");
+    private final static QName _ReadFile_QNAME = new QName("http://soap.webservice.mentoring.lab.epam.com/", "readFile");
+    private final static QName _ListFilesResponse_QNAME = new QName("http://soap.webservice.mentoring.lab.epam.com/", "listFilesResponse");
+    private final static QName _ReadFileResponse_QNAME = new QName("http://soap.webservice.mentoring.lab.epam.com/", "readFileResponse");
+    private final static QName _ListFiles_QNAME = new QName("http://soap.webservice.mentoring.lab.epam.com/", "listFiles");
+    private final static QName _CreateFile_QNAME = new QName("http://soap.webservice.mentoring.lab.epam.com/", "createFile");
 
     /**
      * Create a new ObjectFactory that can be used to create new instances of schema derived classes for package: com.epam.lab.mentoring.webservice.soap
@@ -35,37 +41,139 @@ public class ObjectFactory {
     }
 
     /**
-     * Create an instance of {@link ListResources }
+     * Create an instance of {@link CreateFileResponse }
      * 
      */
-    public ListResources createListResources() {
-        return new ListResources();
+    public CreateFileResponse createCreateFileResponse() {
+        return new CreateFileResponse();
     }
 
     /**
-     * Create an instance of {@link ListResourcesResponse }
+     * Create an instance of {@link CreateFile }
      * 
      */
-    public ListResourcesResponse createListResourcesResponse() {
-        return new ListResourcesResponse();
+    public CreateFile createCreateFile() {
+        return new CreateFile();
     }
 
     /**
-     * Create an instance of {@link JAXBElement }{@code <}{@link ListResources }{@code >}}
+     * Create an instance of {@link ReadFile }
      * 
      */
-    @XmlElementDecl(namespace = "http://soap.webservice.mentoring.lab.epam.com/", name = "listResources")
-    public JAXBElement<ListResources> createListResources(ListResources value) {
-        return new JAXBElement<ListResources>(_ListResources_QNAME, ListResources.class, null, value);
+    public ReadFile createReadFile() {
+        return new ReadFile();
     }
 
     /**
-     * Create an instance of {@link JAXBElement }{@code <}{@link ListResourcesResponse }{@code >}}
+     * Create an instance of {@link DeleteFile }
      * 
      */
-    @XmlElementDecl(namespace = "http://soap.webservice.mentoring.lab.epam.com/", name = "listResourcesResponse")
-    public JAXBElement<ListResourcesResponse> createListResourcesResponse(ListResourcesResponse value) {
-        return new JAXBElement<ListResourcesResponse>(_ListResourcesResponse_QNAME, ListResourcesResponse.class, null, value);
+    public DeleteFile createDeleteFile() {
+        return new DeleteFile();
+    }
+
+    /**
+     * Create an instance of {@link ReadFileResponse }
+     * 
+     */
+    public ReadFileResponse createReadFileResponse() {
+        return new ReadFileResponse();
+    }
+
+    /**
+     * Create an instance of {@link ListFiles }
+     * 
+     */
+    public ListFiles createListFiles() {
+        return new ListFiles();
+    }
+
+    /**
+     * Create an instance of {@link ListFilesResponse }
+     * 
+     */
+    public ListFilesResponse createListFilesResponse() {
+        return new ListFilesResponse();
+    }
+
+    /**
+     * Create an instance of {@link DeleteFileResponse }
+     * 
+     */
+    public DeleteFileResponse createDeleteFileResponse() {
+        return new DeleteFileResponse();
+    }
+
+    /**
+     * Create an instance of {@link JAXBElement }{@code <}{@link DeleteFileResponse }{@code >}}
+     * 
+     */
+    @XmlElementDecl(namespace = "http://soap.webservice.mentoring.lab.epam.com/", name = "deleteFileResponse")
+    public JAXBElement<DeleteFileResponse> createDeleteFileResponse(DeleteFileResponse value) {
+        return new JAXBElement<DeleteFileResponse>(_DeleteFileResponse_QNAME, DeleteFileResponse.class, null, value);
+    }
+
+    /**
+     * Create an instance of {@link JAXBElement }{@code <}{@link DeleteFile }{@code >}}
+     * 
+     */
+    @XmlElementDecl(namespace = "http://soap.webservice.mentoring.lab.epam.com/", name = "deleteFile")
+    public JAXBElement<DeleteFile> createDeleteFile(DeleteFile value) {
+        return new JAXBElement<DeleteFile>(_DeleteFile_QNAME, DeleteFile.class, null, value);
+    }
+
+    /**
+     * Create an instance of {@link JAXBElement }{@code <}{@link CreateFileResponse }{@code >}}
+     * 
+     */
+    @XmlElementDecl(namespace = "http://soap.webservice.mentoring.lab.epam.com/", name = "createFileResponse")
+    public JAXBElement<CreateFileResponse> createCreateFileResponse(CreateFileResponse value) {
+        return new JAXBElement<CreateFileResponse>(_CreateFileResponse_QNAME, CreateFileResponse.class, null, value);
+    }
+
+    /**
+     * Create an instance of {@link JAXBElement }{@code <}{@link ReadFile }{@code >}}
+     * 
+     */
+    @XmlElementDecl(namespace = "http://soap.webservice.mentoring.lab.epam.com/", name = "readFile")
+    public JAXBElement<ReadFile> createReadFile(ReadFile value) {
+        return new JAXBElement<ReadFile>(_ReadFile_QNAME, ReadFile.class, null, value);
+    }
+
+    /**
+     * Create an instance of {@link JAXBElement }{@code <}{@link ListFilesResponse }{@code >}}
+     * 
+     */
+    @XmlElementDecl(namespace = "http://soap.webservice.mentoring.lab.epam.com/", name = "listFilesResponse")
+    public JAXBElement<ListFilesResponse> createListFilesResponse(ListFilesResponse value) {
+        return new JAXBElement<ListFilesResponse>(_ListFilesResponse_QNAME, ListFilesResponse.class, null, value);
+    }
+
+    /**
+     * Create an instance of {@link JAXBElement }{@code <}{@link ReadFileResponse }{@code >}}
+     * 
+     */
+    @XmlElementDecl(namespace = "http://soap.webservice.mentoring.lab.epam.com/", name = "readFileResponse")
+    public JAXBElement<ReadFileResponse> createReadFileResponse(ReadFileResponse value) {
+        return new JAXBElement<ReadFileResponse>(_ReadFileResponse_QNAME, ReadFileResponse.class, null, value);
+    }
+
+    /**
+     * Create an instance of {@link JAXBElement }{@code <}{@link ListFiles }{@code >}}
+     * 
+     */
+    @XmlElementDecl(namespace = "http://soap.webservice.mentoring.lab.epam.com/", name = "listFiles")
+    public JAXBElement<ListFiles> createListFiles(ListFiles value) {
+        return new JAXBElement<ListFiles>(_ListFiles_QNAME, ListFiles.class, null, value);
+    }
+
+    /**
+     * Create an instance of {@link JAXBElement }{@code <}{@link CreateFile }{@code >}}
+     * 
+     */
+    @XmlElementDecl(namespace = "http://soap.webservice.mentoring.lab.epam.com/", name = "createFile")
+    public JAXBElement<CreateFile> createCreateFile(CreateFile value) {
+        return new JAXBElement<CreateFile>(_CreateFile_QNAME, CreateFile.class, null, value);
     }
 
 }

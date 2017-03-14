@@ -11,8 +11,22 @@ public class FileSharingWeb implements IFileSharingWebService {
     public static final String SERVICE_ENDPOINT = "/fileSharingService";
 
     @Override
-    public String listResources() {
-        LOGGER.info("Attempt to retrieve list of resources.");
-        return "nothing to do here!";
+    public String listFiles() {
+        return null;
+    }
+
+    @Override
+    public void createFile(String filename, byte[] fileBytes) {
+
+    }
+
+    @Override
+    public void deleteFile(String filename) {
+
+    }
+
+    @Override
+    public byte[] readFile(String filename) {
+        return new byte[0];
     }
 }
