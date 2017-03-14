@@ -7,7 +7,7 @@ public class SoapClient {
 
     public static void main(String[] args) {
         FileSharingWebService service = new FileSharingWebService();
-        IFileSharingWebService port = service.getFileSharingWebServicePort();
+        IFileSharingWebService port = service.getFileSharingWebPort();
 
         System.out.println("Well SOAP response: " + port.listResources());
     }

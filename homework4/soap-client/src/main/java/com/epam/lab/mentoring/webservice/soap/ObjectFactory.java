@@ -35,19 +35,19 @@ public class ObjectFactory {
     }
 
     /**
-     * Create an instance of {@link ListResourcesResponse }
-     * 
-     */
-    public ListResourcesResponse createListResourcesResponse() {
-        return new ListResourcesResponse();
-    }
-
-    /**
      * Create an instance of {@link ListResources }
      * 
      */
     public ListResources createListResources() {
         return new ListResources();
+    }
+
+    /**
+     * Create an instance of {@link ListResourcesResponse }
+     * 
+     */
+    public ListResourcesResponse createListResourcesResponse() {
+        return new ListResourcesResponse();
     }
 
     /**

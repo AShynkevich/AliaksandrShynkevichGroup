@@ -1,6 +1,6 @@
 package com.epam.lab.mentoring.webservice;
 
-import com.epam.lab.mentoring.webservice.soap.FileSharingWebService;
+import com.epam.lab.mentoring.webservice.soap.FileSharingWeb;
 import org.apache.cxf.Bus;
 import org.apache.cxf.BusFactory;
 import org.apache.cxf.transport.servlet.CXFNonSpringServlet;
@@ -24,6 +24,6 @@ public class JettyServlet extends CXFNonSpringServlet {
         Bus bus = getBus();
         BusFactory.setDefaultBus(bus);
 
-        Endpoint.publish(FileSharingWebService.SERVICE_ENDPOINT, new FileSharingWebService());
+        Endpoint.publish(FileSharingWeb.SERVICE_ENDPOINT, new FileSharingWeb());
     }
 }
