@@ -1,0 +1,42 @@
+--- delete file by name
+<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:soap="http://soap.webservice.mentoring.lab.epam.com/">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <soap:deleteFile>
+         <!--Optional:-->
+         <arg0>file.txt</arg0>
+      </soap:deleteFile>
+   </soapenv:Body>
+</soapenv:Envelope>
+
+--- list files
+<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:soap="http://soap.webservice.mentoring.lab.epam.com/">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <soap:listFiles/>
+   </soapenv:Body>
+</soapenv:Envelope>
+
+--- read file
+<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:soap="http://soap.webservice.mentoring.lab.epam.com/">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <soap:readFile>
+         <!--Optional:-->
+         <arg0>file.txt</arg0>
+      </soap:readFile>
+   </soapenv:Body>
+</soapenv:Envelope>
+
+--- create file
+<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:soap="http://soap.webservice.mentoring.lab.epam.com/">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <soap:createFile>
+         <!--Optional:-->
+         <arg0>file.txt</arg0>
+         <!--Optional:-->
+         <arg1>aGVsbG8sIHdvcmsh</arg1>
+      </soap:createFile>
+   </soapenv:Body>
+</soapenv:Envelope>

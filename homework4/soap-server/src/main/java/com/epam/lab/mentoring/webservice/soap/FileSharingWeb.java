@@ -10,7 +10,6 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.file.Files;
-import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
@@ -21,10 +20,11 @@ public class FileSharingWeb implements IFileSharingWebService {
     private static final String SHARED_PATH = "./shared-repository";
     public static final String SERVICE_ENDPOINT = "/fileSharingService";
 
-    {
-        File sharedRepository = new File(SHARED_PATH);
-        if (!sharedRepository.exists()) {
-            sharedRepository.mkdir();
+    static {
+        try {
+            Files.createDirectories(Paths.get(SHARED_PATH));
+        } catch (IOException e) {
+            LOGGER.error("Failed to create directory: [{}].", SHARED_PATH, e);
         }
     }
 
