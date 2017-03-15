@@ -1,0 +1,168 @@
+<?xml version='1.0' encoding='UTF-8'?><wsdl:definitions xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:tns="http://soap.webservice.mentoring.lab.epam.com/" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:ns1="http://schemas.xmlsoap.org/soap/http" name="FileSharingWebService" targetNamespace="http://soap.webservice.mentoring.lab.epam.com/">
+    <wsdl:types>
+        <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://soap.webservice.mentoring.lab.epam.com/" elementFormDefault="unqualified" targetNamespace="http://soap.webservice.mentoring.lab.epam.com/" version="1.0">
+
+            <xs:element name="createFile" type="tns:createFile"/>
+
+            <xs:element name="createFileResponse" type="tns:createFileResponse"/>
+
+            <xs:element name="deleteFile" type="tns:deleteFile"/>
+
+            <xs:element name="deleteFileResponse" type="tns:deleteFileResponse"/>
+
+            <xs:element name="listFiles" type="tns:listFiles"/>
+
+            <xs:element name="listFilesResponse" type="tns:listFilesResponse"/>
+
+            <xs:element name="readFile" type="tns:readFile"/>
+
+            <xs:element name="readFileResponse" type="tns:readFileResponse"/>
+
+            <xs:complexType name="deleteFile">
+                <xs:sequence>
+                    <xs:element minOccurs="0" name="arg0" type="xs:string"/>
+                </xs:sequence>
+            </xs:complexType>
+
+            <xs:complexType name="deleteFileResponse">
+                <xs:sequence/>
+            </xs:complexType>
+
+            <xs:complexType name="listFiles">
+                <xs:sequence/>
+            </xs:complexType>
+
+            <xs:complexType name="listFilesResponse">
+                <xs:sequence>
+                    <xs:element maxOccurs="unbounded" minOccurs="0" name="return" type="xs:string"/>
+                </xs:sequence>
+            </xs:complexType>
+
+            <xs:complexType name="createFile">
+                <xs:sequence>
+                    <xs:element minOccurs="0" name="arg0" type="xs:string"/>
+                    <xs:element minOccurs="0" name="arg1" type="xs:base64Binary"/>
+                </xs:sequence>
+            </xs:complexType>
+
+            <xs:complexType name="createFileResponse">
+                <xs:sequence/>
+            </xs:complexType>
+
+            <xs:complexType name="readFile">
+                <xs:sequence>
+                    <xs:element minOccurs="0" name="arg0" type="xs:string"/>
+                </xs:sequence>
+            </xs:complexType>
+
+            <xs:complexType name="readFileResponse">
+                <xs:sequence>
+                    <xs:element minOccurs="0" name="return" type="xs:base64Binary"/>
+                </xs:sequence>
+            </xs:complexType>
+
+        </xs:schema>
+    </wsdl:types>
+    <wsdl:message name="deleteFileResponse">
+        <wsdl:part element="tns:deleteFileResponse" name="parameters">
+        </wsdl:part>
+    </wsdl:message>
+    <wsdl:message name="deleteFile">
+        <wsdl:part element="tns:deleteFile" name="parameters">
+        </wsdl:part>
+    </wsdl:message>
+    <wsdl:message name="createFileResponse">
+        <wsdl:part element="tns:createFileResponse" name="parameters">
+        </wsdl:part>
+    </wsdl:message>
+    <wsdl:message name="readFile">
+        <wsdl:part element="tns:readFile" name="parameters">
+        </wsdl:part>
+    </wsdl:message>
+    <wsdl:message name="listFilesResponse">
+        <wsdl:part element="tns:listFilesResponse" name="parameters">
+        </wsdl:part>
+    </wsdl:message>
+    <wsdl:message name="readFileResponse">
+        <wsdl:part element="tns:readFileResponse" name="parameters">
+        </wsdl:part>
+    </wsdl:message>
+    <wsdl:message name="listFiles">
+        <wsdl:part element="tns:listFiles" name="parameters">
+        </wsdl:part>
+    </wsdl:message>
+    <wsdl:message name="createFile">
+        <wsdl:part element="tns:createFile" name="parameters">
+        </wsdl:part>
+    </wsdl:message>
+    <wsdl:portType name="IFileSharingWebService">
+        <wsdl:operation name="deleteFile">
+            <wsdl:input message="tns:deleteFile" name="deleteFile">
+            </wsdl:input>
+            <wsdl:output message="tns:deleteFileResponse" name="deleteFileResponse">
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="listFiles">
+            <wsdl:input message="tns:listFiles" name="listFiles">
+            </wsdl:input>
+            <wsdl:output message="tns:listFilesResponse" name="listFilesResponse">
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="createFile">
+            <wsdl:input message="tns:createFile" name="createFile">
+            </wsdl:input>
+            <wsdl:output message="tns:createFileResponse" name="createFileResponse">
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="readFile">
+            <wsdl:input message="tns:readFile" name="readFile">
+            </wsdl:input>
+            <wsdl:output message="tns:readFileResponse" name="readFileResponse">
+            </wsdl:output>
+        </wsdl:operation>
+    </wsdl:portType>
+    <wsdl:binding name="FileSharingWebServiceSoapBinding" type="tns:IFileSharingWebService">
+        <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+        <wsdl:operation name="deleteFile">
+            <soap:operation soapAction="" style="document"/>
+            <wsdl:input name="deleteFile">
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output name="deleteFileResponse">
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="listFiles">
+            <soap:operation soapAction="" style="document"/>
+            <wsdl:input name="listFiles">
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output name="listFilesResponse">
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="createFile">
+            <soap:operation soapAction="" style="document"/>
+            <wsdl:input name="createFile">
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output name="createFileResponse">
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="readFile">
+            <soap:operation soapAction="" style="document"/>
+            <wsdl:input name="readFile">
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output name="readFileResponse">
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+    </wsdl:binding>
+    <wsdl:service name="FileSharingWebService">
+        <wsdl:port binding="tns:FileSharingWebServiceSoapBinding" name="FileSharingWebPort">
+            <soap:address location="http://localhost:8080/soap-server/fileSharingService"/>
+        </wsdl:port>
+    </wsdl:service>
+</wsdl:definitions>
