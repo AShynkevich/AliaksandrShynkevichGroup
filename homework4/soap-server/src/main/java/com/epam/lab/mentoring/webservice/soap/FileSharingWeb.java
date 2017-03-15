@@ -35,7 +35,7 @@ public class FileSharingWeb implements IFileSharingWebService {
         try {
             Files.walk(Paths.get(SHARED_PATH))
                     .filter(Files::isRegularFile)
-                    .forEach(path -> { files.add(path.toFile().getName()); });
+                    .forEach(path -> { files.add(path.toFile().getPath()); });
         } catch (IOException e) {
             LOGGER.error("Failed to process repository: [{}].", SHARED_PATH, e);
         }
