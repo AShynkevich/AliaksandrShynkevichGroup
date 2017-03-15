@@ -15,4 +15,6 @@ dependencies {
     compile "org.apache.cxf:cxf-rt-frontend-jaxws:$cxfVersion"
     compile "org.apache.cxf:cxf-rt-frontend-jaxrs:$cxfVersion"
     compile "org.apache.cxf:cxf-rt-transports-http:$cxfVersion"
+
+    compile "commons-io:commons-io:2.5"
 }
