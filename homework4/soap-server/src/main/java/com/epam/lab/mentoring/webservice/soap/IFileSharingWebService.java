@@ -17,5 +17,5 @@ public interface IFileSharingWebService {
     void deleteFile(@WebParam(name = "fileName") String filename);
 
     @WebMethod
-    byte[] readFile(@WebParam(name="fileName") String filename);
+    String readFile(@WebParam(name="fileName") String filename);
 }

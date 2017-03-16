@@ -12,7 +12,16 @@
 
     <servlet-mapping>
         <servlet-name>JettyServlet</servlet-name>
-        <url-pattern>/*</url-pattern>
+        <url-pattern>/soap/*</url-pattern>
     </servlet-mapping>
 
+    <servlet>
+        <servlet-name>DownloadServlet</servlet-name>
+        <servlet-class>com.epam.lab.mentoring.webservice.DownloadServlet</servlet-class>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>DownloadServlet</servlet-name>
+        <url-pattern>/download/*</url-pattern>
+    </servlet-mapping>
 </web-app>

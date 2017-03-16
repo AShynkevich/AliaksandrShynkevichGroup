@@ -58,7 +58,7 @@
 
             <xs:complexType name="readFileResponse">
                 <xs:sequence>
-                    <xs:element minOccurs="0" name="return" type="xs:base64Binary"/>
+                    <xs:element minOccurs="0" name="return" type="xs:string"/>
                 </xs:sequence>
             </xs:complexType>
 
@@ -163,7 +163,7 @@
     </wsdl:binding>
     <wsdl:service name="FileSharingWebService">
         <wsdl:port binding="tns:FileSharingWebServiceSoapBinding" name="FileSharingWebPort">
-            <soap:address location="http://localhost:8080/soap-server/fileSharingService"/>
+            <soap:address location="http://localhost:8080/soap-server/soap/fileSharingService"/>
         </wsdl:port>
     </wsdl:service>
 </wsdl:definitions>
