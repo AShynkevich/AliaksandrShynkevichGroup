@@ -9,38 +9,39 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 
-public final class FileSharingSupport {
+public enum FileSharingSupport {
+    INSTANCE;
+
     private static final Logger LOGGER = LoggerFactory.getLogger(FileSharingSupport.class);
-    private static final String SHARED_PATH = "./shared-repository";
+    private static final String SHARED_PATH = "shared-repository";
+    private static final File SHARED_FOLDER = new File(SHARED_PATH);
 
-    static {
-        try {
-            Files.createDirectories(Paths.get(SHARED_PATH));
-        } catch (IOException e) {
-            LOGGER.error("Failed to create directory: [{}].", SHARED_PATH, e);
-        }
-    }
-
-    public static List<String> listFiles() {
+    public List<String> listFiles() {
         List<String> files = new ArrayList<>();
         try {
-            Files.walk(Paths.get(SHARED_PATH))
+            Files.walk(Paths.get(SHARED_FOLDER.getCanonicalPath()))
                     .filter(Files::isRegularFile)
-                    .forEach(path -> { files.add(path.toFile().getPath()); });
+                    .forEach(path -> {
+                        try {
+                            files.add(Paths.get(SHARED_FOLDER.getCanonicalPath()).relativize(path).toString());
+                        } catch (IOException e) {
+                            LOGGER.info("Failed to get canonical path of [{}].", SHARED_FOLDER);
+                        }
+                    });
         } catch (IOException e) {
             LOGGER.error("Failed to process repository: [{}].", SHARED_PATH, e);
         }
         return files;
     }
 
-    public static void createFile(String filename, byte[] fileBytes) {
+    public void createFile(String filename, byte[] fileBytes) {
         File file = new File(makePath(filename));
         file.getParentFile().mkdirs();
-
         try (FileOutputStream fos = new FileOutputStream(file)) {
             file.createNewFile();
             if (null == fileBytes) {
@@ -53,7 +54,7 @@ public final class FileSharingSupport {
         }
     }
 
-    public static void deleteFile(String filename) {
+    public void deleteFile(String filename) {
         File file = new File(makePath(filename));
 
         if (file.exists()) {
@@ -65,8 +66,8 @@ public final class FileSharingSupport {
         }
     }
 
-    public static byte[] readFile(String filename) {
-        try (FileInputStream fis = new FileInputStream(makePath(filename))) {
+    public byte[] readFile(String filename) {
+        try (FileInputStream fis = new FileInputStream(new File(makePath(filename)))) {
             return IOUtils.toByteArray(fis);
         } catch (IOException exc) {
             LOGGER.error("Failed to read file: [{}].", exc);

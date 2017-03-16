@@ -27,7 +27,7 @@ public class DownloadServlet extends HttpServlet {
     }
 
     private void writeFileToStream(OutputStream os, String filepath) throws IOException {
-        byte[] file = FileSharingSupport.readFile(filepath);
+        byte[] file = FileSharingSupport.INSTANCE.readFile(filepath);
         os.write(file);
         os.flush();
     }
@@ -35,6 +35,6 @@ public class DownloadServlet extends HttpServlet {
     private String getFilePath(HttpServletRequest req) {
         LOGGER.info("Attempt to get file path from request.");
         String requestUri = req.getRequestURI();
-        return requestUri.substring(FileSharingWeb.SERVER_PATH.length(), requestUri.length());
+        return requestUri.substring(FileSharingWeb.SERVER_PATH.length() + 2, requestUri.length());
     }
 }

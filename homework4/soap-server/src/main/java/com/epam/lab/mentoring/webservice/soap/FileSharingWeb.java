@@ -12,33 +12,29 @@ public class FileSharingWeb implements IFileSharingWebService {
     private static final Logger LOGGER = LoggerFactory.getLogger(FileSharingWeb.class);
     public static final String SERVICE_ENDPOINT = "/fileSharingService";
     private static final String HOST = "http://localhost:8080";
-    public static final String SERVER_PATH= "/soap-server/download";
+    public static final String SERVER_PATH= "soap-server/download";
 
     @Override
     public List<String> listFiles() {
         LOGGER.info("Attempt to list files");
-        return FileSharingSupport.listFiles();
+        return FileSharingSupport.INSTANCE.listFiles();
     }
 
     @Override
     public void createFile(String filename, byte[] fileBytes) {
         LOGGER.info("Attempt to create file [{}].", filename);
-        FileSharingSupport.createFile(filename, fileBytes);
+        FileSharingSupport.INSTANCE.createFile(filename, fileBytes);
     }
 
     @Override
     public void deleteFile(String filename) {
         LOGGER.info("Attempt to delete file [{}].", filename);
-        FileSharingSupport.deleteFile(filename);
+        FileSharingSupport.INSTANCE.deleteFile(filename);
     }
 
     @Override
     public String readFile(String filename) {
         LOGGER.info("Attempt to provide link to file [{}].", filename);
-        if (filename.startsWith("/")) {
-            return HOST + SERVER_PATH + filename;
-        } else {
-            return HOST + SERVER_PATH + "/" + filename;
-        }
+        return String.format("%s/%s/%s", HOST, SERVER_PATH, filename.replaceFirst("^/", ""));
     }
 }
