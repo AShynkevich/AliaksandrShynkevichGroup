@@ -4,7 +4,7 @@
    <soapenv:Body>
       <soap:deleteFile>
          <!--Optional:-->
-         <arg0>file.txt</arg0>
+         <fileName>file.txt</fileName>
       </soap:deleteFile>
    </soapenv:Body>
 </soapenv:Envelope>
@@ -23,7 +23,7 @@
    <soapenv:Body>
       <soap:readFile>
          <!--Optional:-->
-         <arg0>file.txt</arg0>
+         <fileName>file.txt</fileName>
       </soap:readFile>
    </soapenv:Body>
 </soapenv:Envelope>
@@ -34,9 +34,9 @@
    <soapenv:Body>
       <soap:createFile>
          <!--Optional:-->
-         <arg0>file.txt</arg0>
+         <fileName>/grab/file.txt</fileName>
          <!--Optional:-->
-         <arg1>aGVsbG8sIHdvcmsh</arg1>
+         <bytes>aGVsbG8sIHdvcmsh</bytes>
       </soap:createFile>
    </soapenv:Body>
 </soapenv:Envelope>
