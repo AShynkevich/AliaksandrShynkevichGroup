@@ -1,0 +1,14 @@
+plugins {
+    id 'application'
+}
+
+mainClassName = 'com.epam.lab.mentoring.Main'
+
+repositories {
+    jcenter()
+}
+
+dependencies {
+    compile "org.reflections:reflections:0.9.11"
+    runtime "com.h2database:h2:1.4.194"
+}
