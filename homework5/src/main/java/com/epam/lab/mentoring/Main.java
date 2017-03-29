@@ -1,11 +1,8 @@
 package com.epam.lab.mentoring;
 
-import java.io.IOException;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
-import java.util.Properties;
+import com.epam.lab.mentoring.orm.DatabaseConnectivity;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Write your own annotation-based or XML-based ORM which parses
@@ -15,46 +12,19 @@ import java.util.Properties;
  * Inheritance support will be a plus.
  */
 public class Main {
-
-    private static final String DB_URL = "database.url";
-    private static final String DB_USERNAME = "database.username";
-    private static final String DB_PWD = "database.password";
-    private static final String DB_DRIVER = "database.driver";
+    private static final Logger LOGGER = LoggerFactory.getLogger(Main.class);
 
     public static void main(String[] args) {
-        Connection dbConnection = null;
-        try {
-            Properties props = loadConfig();
-            Class.forName(props.getProperty(DB_DRIVER));
-            dbConnection = DriverManager.getConnection(
-                    props.getProperty(DB_URL),
-                    props.getProperty(DB_USERNAME),
-                    props.getProperty(DB_PWD));
-            dbConnection.setAutoCommit(true);
+        DatabaseConnectivity.INSTANCE.initialize("com.epam.lab.mentoring.sample"); // load properties, driver
 
-            // create tables in the database
-            String createTableQuery = "CREATE TABLE USERS (id int PRIMARY KEY, name VARCHAR(128))";
-            PreparedStatement createTableStatement = dbConnection.prepareStatement(createTableQuery);
-            createTableStatement.executeUpdate();
-            createTableStatement.close();
+        // necessary if no tables exist
+        // files are being read from /resources folder
+        DatabaseConnectivity.INSTANCE.prepareDatabase("create_tables.sql");
 
-            dbConnection.commit();
-        } catch (Exception e) {
-            e.printStackTrace();
-        } finally {
-            if (null != dbConnection) {
-                try {
-                    dbConnection.close();
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                }
-            }
-        }
+        DatabaseConnectivity.INSTANCE.createSession(); // create connection instance
+        DatabaseConnectivity.INSTANCE.populateRepositoryRegistry(); // process classes for ORM support
+
+        DatabaseConnectivity.INSTANCE.destroySession(); // close connection instance
     }
 
-    private static Properties loadConfig() throws IOException {
-        Properties props = new Properties();
-        props.load(Main.class.getClassLoader().getResourceAsStream("database.properties"));
-        return props;
-    }
 }
