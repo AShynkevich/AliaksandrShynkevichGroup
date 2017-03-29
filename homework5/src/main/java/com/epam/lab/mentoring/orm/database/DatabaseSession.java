@@ -1,6 +1,7 @@
 package com.epam.lab.mentoring.orm.database;
 
 import com.epam.lab.mentoring.orm.OrmException;
+import com.epam.lab.mentoring.orm.OrmTemplateRegistry;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -9,16 +10,15 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
-import java.util.List;
 
 public class DatabaseSession {
     private static final Logger LOGGER = LoggerFactory.getLogger(DatabaseSession.class);
 
-    public <T> T readForObject(String templateId, Class<T> expectedObject, String... args) {
+    public <T> T readForObject(String templateId, String... args) {
         T toReturn = null;
         DatabaseConnectivity.INSTANCE.createSession();
         try {
-            String queryTemplate = DatabaseConnectivity.INSTANCE.getTemplate(templateId);
+            String queryTemplate = OrmTemplateRegistry.INSTANCE.getTemplate(templateId);
             PreparedStatement statement = DatabaseQueryUtils.createPreparedStatement(queryTemplate,
                     DatabaseConnectivity.INSTANCE.getConnection(), args);
 
@@ -30,6 +30,7 @@ public class DatabaseSession {
 
             // do object conversion
             ResultSetMetaData resultSetMetaData = result.getMetaData();
+            Class<T> expectedObject = (Class<T>) OrmTemplateRegistry.INSTANCE.getTemplateReturnType(templateId);
             toReturn = expectedObject.newInstance();
             int numberOfColumns = resultSetMetaData.getColumnCount();
             while (result.next()) {
@@ -56,10 +57,4 @@ public class DatabaseSession {
         return toReturn;
     }
 
-    public <T> List<T> readForObjectList(String templateId, Class<T> expectedObject, String... args) {
-        DatabaseConnectivity.INSTANCE.createSession();
-
-        DatabaseConnectivity.INSTANCE.destroySession();
-        return null;
-    }
 }
