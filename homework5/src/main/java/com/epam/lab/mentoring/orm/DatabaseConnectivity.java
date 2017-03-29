@@ -84,6 +84,8 @@ public enum DatabaseConnectivity {
     }
 
     public void populateRepositoryRegistry() {
+        createSession();
+
         LOGGER.info("Processing package [{}] for classes.", repositoryPackage);
         Reflections reflections = new Reflections(repositoryPackage, new MethodAnnotationsScanner());
         Set<Method> ormSupportedMethods = reflections.getMethodsAnnotatedWith(Query.class);
@@ -100,6 +102,8 @@ public enum DatabaseConnectivity {
                 throw new OrmException("Failed to create sql query!");
             }
         });
+
+        destroySession();
     }
 
     private void loadProperties() {
