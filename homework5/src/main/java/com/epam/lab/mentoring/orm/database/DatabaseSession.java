@@ -10,17 +10,32 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
+import java.util.Arrays;
+import java.util.stream.Collectors;
 
 public class DatabaseSession {
     private static final Logger LOGGER = LoggerFactory.getLogger(DatabaseSession.class);
 
-    public <T> T readForObject(String templateId, String... args) {
-        T toReturn = null;
+    public void startSession() {
+        LOGGER.debug("Starting session");
         DatabaseConnectivity.INSTANCE.createSession();
+    }
+
+    public void closeSession() {
+        LOGGER.debug("Closing session");
+        DatabaseConnectivity.INSTANCE.destroySession();
+    }
+
+    public <T> T readForObject(String templateId, String... args) {
+        LOGGER.info("Attempt to read object: [{}].", args);
+        T toReturn = null;
+        OrmTemplateRegistry.TemplatePair pair = OrmTemplateRegistry.INSTANCE.getTemplateWithReturnType(templateId);
+        String queryTemplate = pair.getLeft();
+        Class<T> expectedObject = (Class<T>) pair.getRight();
+        PreparedStatement statement = DatabaseQueryUtils.createPreparedStatement(queryTemplate,
+                DatabaseConnectivity.INSTANCE.getConnection(), args);
         try {
-            String queryTemplate = OrmTemplateRegistry.INSTANCE.getTemplate(templateId);
-            PreparedStatement statement = DatabaseQueryUtils.createPreparedStatement(queryTemplate,
-                    DatabaseConnectivity.INSTANCE.getConnection(), args);
+            toReturn = expectedObject.newInstance();
 
             ResultSet result = statement.executeQuery();
             int rowsCount = DatabaseQueryUtils.getRowsCount(result);
@@ -30,8 +45,6 @@ public class DatabaseSession {
 
             // do object conversion
             ResultSetMetaData resultSetMetaData = result.getMetaData();
-            Class<T> expectedObject = (Class<T>) OrmTemplateRegistry.INSTANCE.getTemplateReturnType(templateId);
-            toReturn = expectedObject.newInstance();
             int numberOfColumns = resultSetMetaData.getColumnCount();
             while (result.next()) {
                 for (int i = 1; i <= numberOfColumns; i++) {
@@ -43,18 +56,74 @@ public class DatabaseSession {
                         field.setAccessible(true);
                         field.set(toReturn, resultSetValue);
                     } catch (NoSuchFieldException e) {
-                        LOGGER.warn("Object [{}] does not contain field [{}].", expectedObject, columnName.toLowerCase());
+                        LOGGER.warn("Object [{}] does not contain field [{}].", expectedObject,
+                                columnName.toLowerCase());
                     }
                 }
             }
-
-            statement.close();
         } catch (SQLException | IllegalAccessException | InstantiationException e) {
-            LOGGER.error("Failure during query processing!", e);
+            LOGGER.error("Failure during query processing [{}].", queryTemplate, e);
+        } finally {
+            try {
+                statement.close();
+            } catch (SQLException e) {
+                LOGGER.error("Failed to close execution statement!");
+            }
         }
-
-        DatabaseConnectivity.INSTANCE.destroySession();
         return toReturn;
+    }
+
+    public void deleteObject(String templateId, String... args) {
+        LOGGER.info("Attempt to delete object: [{}].", args);
+        modifyObject(templateId, args);
+    }
+
+    public void updateObject(String templateId, String... args) {
+        LOGGER.info("Attempt to update object: [{}].", args);
+        modifyObject(templateId, args);
+    }
+
+    public <T> void insertObject(String templateId, T object) {
+        LOGGER.info("Attempt to insert object: [{}].", object);
+        Field[] fields = object.getClass().getDeclaredFields();
+        String[] fieldValues = new String[fields.length];
+
+        Arrays.stream(fields).map(field -> {
+            try {
+                field.setAccessible(true);
+                return field.get(object).toString();
+            } catch (IllegalAccessException e) {
+                LOGGER.error("Failed to set object [{}] field [{}].", object, field.getName(), e);
+                throw new OrmException("Failed to execute insert statement!");
+            }
+        }).collect(Collectors.toList()).toArray(fieldValues);
+
+        modifyObject(templateId, fieldValues);
+    }
+
+    private void modifyObject(String templateId, String... args) {
+        OrmTemplateRegistry.TemplatePair pair = OrmTemplateRegistry.INSTANCE.getTemplateWithReturnType(templateId);
+        String queryTemplate = pair.getLeft();
+
+        PreparedStatement statement = DatabaseQueryUtils.createPreparedStatement(queryTemplate,
+                DatabaseConnectivity.INSTANCE.getConnection(), args);
+        try {
+            int result = statement.executeUpdate();
+            LOGGER.info("Number of affected queries: [{}].", result);
+        } catch (SQLException e) {
+            if (e.getMessage().contains("violation")) {
+                LOGGER.warn("Record with such parameters [{}] already exist!", Arrays.asList(args));
+            } else {
+                LOGGER.error("Failed to execute query [{}]!", queryTemplate, e);
+                throw new OrmException("Failed to execute query!");
+            }
+        } finally {
+            try {
+                statement.close();
+            } catch (SQLException e) {
+                LOGGER.error("Failed to close execution statement", e);
+            }
+        }
     }
 
 }

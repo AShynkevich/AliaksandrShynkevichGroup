@@ -2,7 +2,7 @@ package com.epam.lab.mentoring.sample;
 
 import com.epam.lab.mentoring.orm.annotation.Query;
 
-public interface IRepositorySample {
+public interface IUserRepository {
 
     @Query("SELECT id, name FROM USERS WHERE id = ?")
     User readUser(String id);

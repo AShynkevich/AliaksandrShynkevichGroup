@@ -17,8 +17,7 @@ public enum OrmTemplateRegistry {
     private static final Logger LOGGER = LoggerFactory.getLogger(OrmTemplateRegistry.class);
 
     private String repositoryPackage;
-    private Map<String, String> queryRegistry;
-    private Map<String, Class<?>> queryReturnTypeRegistry;
+    private Map<String, TemplatePair> queryRegistry;
 
     public void initialize(String repositoryPackage) {
         this.repositoryPackage = repositoryPackage;
@@ -26,11 +25,7 @@ public enum OrmTemplateRegistry {
         populateRepositoryRegistry();
     }
 
-    public Class<?> getTemplateReturnType(String id) {
-        return queryReturnTypeRegistry.get(id);
-    }
-
-    public String getTemplate(String id) {
+    public TemplatePair getTemplateWithReturnType(String id) {
         return queryRegistry.get(id);
     }
 
@@ -39,15 +34,31 @@ public enum OrmTemplateRegistry {
         Reflections reflections = new Reflections(repositoryPackage, new MethodAnnotationsScanner());
         Set<Method> ormSupportedMethods = reflections.getMethodsAnnotatedWith(Query.class);
         queryRegistry = new HashMap<>();
-        queryReturnTypeRegistry = new HashMap<>();
 
         ormSupportedMethods.forEach(method -> {
             String statement = method.getAnnotation(Query.class).value();
             String uniqueKey = method.getDeclaringClass().getSimpleName().concat(".").concat(method.getName());
             LOGGER.debug("Unique key: [{}].", uniqueKey);
 
-            queryRegistry.put(uniqueKey, statement);
-            queryReturnTypeRegistry.put(uniqueKey, method.getReturnType());
+            queryRegistry.put(uniqueKey, new TemplatePair(statement, method.getReturnType()));
         });
+    }
+
+    public static class TemplatePair {
+        private String left;
+        private Class<?> right;
+
+        public TemplatePair(String left, Class<?> right) {
+            this.left = left;
+            this.right = right;
+        }
+
+        public String getLeft() {
+            return left;
+        }
+
+        public Class<?> getRight() {
+            return right;
+        }
     }
 }

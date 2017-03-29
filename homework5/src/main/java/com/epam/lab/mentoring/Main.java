@@ -55,7 +55,7 @@ public class Main {
     }
 
     private static void init() {
-        OrmTemplateRegistry.INSTANCE.initialize("com.epam.lab.mentoring.sample");
+        OrmTemplateRegistry.INSTANCE.initialize("com.epam.lab.mentoring");
         DatabaseConnectivity.INSTANCE.initialize();
         prepareDatabase();
     }
@@ -64,9 +64,26 @@ public class Main {
         init();
 
         DatabaseSession session = new DatabaseSession();
-        User readUser = session.readForObject("IRepositorySample.readUser", "1");
-        if (null != readUser) {
-            System.out.println("Processed user from database => " + readUser); // User{id='1', name='James'}
+        session.startSession();
+
+        User readUser1 = session.readForObject("IUserRepository.readUser", "1");
+        if (null != readUser1) {
+            LOGGER.info("Processed user from database first read => [{}].", readUser1); // User{id='1', name='James'}
         }
+
+        session.insertObject("IUserRepository.insertUser", new User("2", "Makko"));
+        session.updateObject("IUserRepository.updateUser", "JamesU", "1");
+
+        readUser1 = session.readForObject("IUserRepository.readUser", "1");
+        if (null != readUser1) {
+            LOGGER.info("Processed user from database after update => [{}].", readUser1); // User{id='1', name='James'}
+        }
+        readUser1 = session.readForObject("IUserRepository.readUser", "2");
+        if (null != readUser1) {
+            LOGGER.info("Processed user from database after insert => [{}].", readUser1); // User{id='1', name='James'}
+        }
+
+        session.deleteObject("IUserRepository.deleteUser", "1");
+        session.closeSession();
     }
 }
