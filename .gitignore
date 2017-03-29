@@ -27,3 +27,4 @@ esdoc-output
 classes
 
 *.txt
+*.db
