@@ -1,5 +1,6 @@
-package com.epam.lab.mentoring.orm;
+package com.epam.lab.mentoring.orm.database;
 
+import com.epam.lab.mentoring.orm.OrmException;
 import com.epam.lab.mentoring.orm.annotation.Query;
 import org.apache.commons.io.IOUtils;
 import org.reflections.Reflections;
@@ -21,7 +22,7 @@ public enum DatabaseConnectivity {
     private static final Logger LOGGER = LoggerFactory.getLogger(DatabaseConnectivity.class);
 
     private String repositoryPackage;
-    private Map<String, PreparedStatement> queryRegistry;
+    private Map<String, String> queryRegistry;
     private Properties databaseProperties;
     private Connection dbConnection;
 
@@ -31,7 +32,16 @@ public enum DatabaseConnectivity {
         this.repositoryPackage = repositoryPackage;
     }
 
+    public Connection getConnection() {
+        return dbConnection;
+    }
+
+    public String getTemplate(String id) {
+        return queryRegistry.get(id);
+    }
+
     public void prepareDatabase(String... sqlFiles) {
+        LOGGER.info("Preparing database for the first time...");
         createSession();
 
         ClassLoader currentClassloader = this.getClass().getClassLoader();
@@ -39,14 +49,14 @@ public enum DatabaseConnectivity {
             InputStream fileStream = currentClassloader.getResourceAsStream(file);
             try {
                 String query = IOUtils.toString(fileStream, Charset.defaultCharset());
-                LOGGER.info("Read query: [\n{}].", query);
+                LOGGER.debug("Read query: [\n{}].", query);
 
                 Statement statement = dbConnection.createStatement();
                 statement.execute(query);
                 statement.close();
             } catch (SQLException | IOException e) {
-                if (e.getMessage().contains("already exists")) {
-                    LOGGER.info("Ignoring [adlready exists] exception.");
+                if (e.getMessage().contains("already exists") || e.getMessage().contains("violation")) {
+                    LOGGER.warn("Ignoring [already exists] exception.");
                 } else {
                     LOGGER.error("Failed to create sql statement for [{}].", file, e);
                     throw new OrmException("Failed to read sql files!");
@@ -73,6 +83,13 @@ public enum DatabaseConnectivity {
     }
 
     public void destroySession() {
+        try {
+            dbConnection.commit();
+        } catch (SQLException e) {
+            LOGGER.info("Failed to commit session actions!", e);
+            throw new OrmException("Commit failure!");
+        }
+
         if (null != dbConnection) {
             try {
                 dbConnection.close();
@@ -84,26 +101,16 @@ public enum DatabaseConnectivity {
     }
 
     public void populateRepositoryRegistry() {
-        createSession();
-
-        LOGGER.info("Processing package [{}] for classes.", repositoryPackage);
+        LOGGER.debug("Processing package [{}] for classes.", repositoryPackage);
         Reflections reflections = new Reflections(repositoryPackage, new MethodAnnotationsScanner());
         Set<Method> ormSupportedMethods = reflections.getMethodsAnnotatedWith(Query.class);
         queryRegistry = new HashMap<>();
         ormSupportedMethods.forEach(method -> {
             String statement = method.getAnnotation(Query.class).value();
-            System.out.println("Method class: " + method.getDeclaringClass());
-            System.out.println("Method name: " + method.getName());
-
-            try {
-                queryRegistry.put("id", dbConnection.prepareStatement(statement));
-            } catch (SQLException e) {
-                LOGGER.error("Failed to create sql query [{}].", statement, e);
-                throw new OrmException("Failed to create sql query!");
-            }
+            String uniqueKey = method.getDeclaringClass().getSimpleName().concat(".").concat(method.getName());
+            LOGGER.debug("Unique key: [{}].", uniqueKey);
+            queryRegistry.put(uniqueKey, statement);
         });
-
-        destroySession();
     }
 
     private void loadProperties() {

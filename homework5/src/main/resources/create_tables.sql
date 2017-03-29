@@ -1,4 +1,4 @@
 CREATE TABLE USERS (
     id INT PRIMARY KEY,
     name VARCHAR(128)
-)
+);
