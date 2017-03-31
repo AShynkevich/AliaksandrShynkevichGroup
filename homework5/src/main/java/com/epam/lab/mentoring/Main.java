@@ -26,6 +26,39 @@ import java.util.Arrays;
 public class Main {
     private static final Logger LOGGER = LoggerFactory.getLogger(Main.class);
 
+    public static void main(String[] args) {
+        init();
+
+        DatabaseSession session = new DatabaseSession();
+        session.startSession();
+
+        User readUser1 = session.readForObject("IUserRepository.readUser", "1");
+        if (null != readUser1) {
+            LOGGER.info("Processed user from database first read => [{}].", readUser1); // User{id='1', name='James'}
+        }
+
+        session.insertObject("IUserRepository.insertUser", new User("2", "Makko"));
+        session.updateObject("IUserRepository.updateUser", "JamesU", "1");
+
+        readUser1 = session.readForObject("IUserRepository.readUser", "1");
+        if (null != readUser1) {
+            LOGGER.info("Processed user from database after update => [{}].", readUser1); // User{id='1', name='James'}
+        }
+        readUser1 = session.readForObject("IUserRepository.readUser", "2");
+        if (null != readUser1) {
+            LOGGER.info("Processed user from database after insert => [{}].", readUser1); // User{id='1', name='James'}
+        }
+
+        session.deleteObject("IUserRepository.deleteUser", "1");
+        session.closeSession();
+    }
+
+    private static void init() {
+        OrmTemplateRegistry.INSTANCE.initialize("com.epam.lab.mentoring");
+        DatabaseConnectivity.INSTANCE.initialize();
+        prepareDatabase();
+    }
+
     private static void prepareDatabase() {
         String[] sqlFiles = { "create_tables.sql", "insert_data.sql" };
         LOGGER.info("Preparing database for the first time...");
@@ -52,38 +85,5 @@ public class Main {
         });
 
         DatabaseConnectivity.INSTANCE.destroySession();
-    }
-
-    private static void init() {
-        OrmTemplateRegistry.INSTANCE.initialize("com.epam.lab.mentoring");
-        DatabaseConnectivity.INSTANCE.initialize();
-        prepareDatabase();
-    }
-
-    public static void main(String[] args) {
-        init();
-
-        DatabaseSession session = new DatabaseSession();
-        session.startSession();
-
-        User readUser1 = session.readForObject("IUserRepository.readUser", "1");
-        if (null != readUser1) {
-            LOGGER.info("Processed user from database first read => [{}].", readUser1); // User{id='1', name='James'}
-        }
-
-        session.insertObject("IUserRepository.insertUser", new User("2", "Makko"));
-        session.updateObject("IUserRepository.updateUser", "JamesU", "1");
-
-        readUser1 = session.readForObject("IUserRepository.readUser", "1");
-        if (null != readUser1) {
-            LOGGER.info("Processed user from database after update => [{}].", readUser1); // User{id='1', name='James'}
-        }
-        readUser1 = session.readForObject("IUserRepository.readUser", "2");
-        if (null != readUser1) {
-            LOGGER.info("Processed user from database after insert => [{}].", readUser1); // User{id='1', name='James'}
-        }
-
-        session.deleteObject("IUserRepository.deleteUser", "1");
-        session.closeSession();
     }
 }

@@ -41,25 +41,11 @@ public class DatabaseSession {
             int rowsCount = DatabaseQueryUtils.getRowsCount(result);
             if (rowsCount > 1) {
                 throw new OrmException("More then 1 result found!");
-            }
-
-            // do object conversion
-            ResultSetMetaData resultSetMetaData = result.getMetaData();
-            int numberOfColumns = resultSetMetaData.getColumnCount();
-            while (result.next()) {
-                for (int i = 1; i <= numberOfColumns; i++) {
-                    String columnName = resultSetMetaData.getColumnName(i);
-                    String resultSetValue = result.getString(i);
-
-                    try {
-                        Field field = expectedObject.getDeclaredField(columnName.toLowerCase());
-                        field.setAccessible(true);
-                        field.set(toReturn, resultSetValue);
-                    } catch (NoSuchFieldException e) {
-                        LOGGER.warn("Object [{}] does not contain field [{}].", expectedObject,
-                                columnName.toLowerCase());
-                    }
-                }
+            } else if (rowsCount == 0) {
+                return null;
+            } else {
+                result.next(); // there must only one element or zero
+                toReturn = populateObject(toReturn, result, expectedObject);
             }
         } catch (SQLException | IllegalAccessException | InstantiationException e) {
             LOGGER.error("Failure during query processing [{}].", queryTemplate, e);
@@ -68,6 +54,27 @@ public class DatabaseSession {
                 statement.close();
             } catch (SQLException e) {
                 LOGGER.error("Failed to close execution statement!");
+            }
+        }
+        return toReturn;
+    }
+
+    private <T> T populateObject(T toReturn, ResultSet resultSet, Class<T> objectClass) throws SQLException {
+        ResultSetMetaData resultSetMetaData = resultSet.getMetaData();
+        int numberOfColumns = resultSetMetaData.getColumnCount();
+        for (int i = 1; i <= numberOfColumns; i++) {
+            String columnName = resultSetMetaData.getColumnName(i);
+            String resultSetValue = resultSet.getString(i);
+
+            try {
+                Field field = objectClass.getDeclaredField(columnName.toLowerCase());
+                field.setAccessible(true);
+                field.set(toReturn, resultSetValue);
+            } catch (NoSuchFieldException e) {
+                LOGGER.warn("Object [{}] does not contain field [{}].", objectClass,
+                        columnName.toLowerCase());
+            } catch (IllegalAccessException e) {
+                LOGGER.error("Failed to access object field!", e);
             }
         }
         return toReturn;
@@ -125,5 +132,4 @@ public class DatabaseSession {
             }
         }
     }
-
 }
