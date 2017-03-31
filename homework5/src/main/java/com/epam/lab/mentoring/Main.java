@@ -32,24 +32,28 @@ public class Main {
         DatabaseSession session = new DatabaseSession();
         session.startSession();
 
+        // read inserted object from .sql script
         User readUser1 = session.readForObject("IUserRepository.readUser", "1");
-        if (null != readUser1) {
-            LOGGER.info("Processed user from database first read => [{}].", readUser1); // User{id='1', name='James'}
-        }
+        LOGGER.info("Processed user from database first read => [{}].", readUser1); // User{id='1', name='James'}
 
+        // insert new object
         session.insertObject("IUserRepository.insertUser", new User("2", "Makko"));
-        session.updateObject("IUserRepository.updateUser", "JamesU", "1");
-
-        readUser1 = session.readForObject("IUserRepository.readUser", "1");
-        if (null != readUser1) {
-            LOGGER.info("Processed user from database after update => [{}].", readUser1); // User{id='1', name='James'}
-        }
+        // check if it was inserted for real
         readUser1 = session.readForObject("IUserRepository.readUser", "2");
-        if (null != readUser1) {
-            LOGGER.info("Processed user from database after insert => [{}].", readUser1); // User{id='1', name='James'}
-        }
+        LOGGER.info("Processed user from database after insert => [{}].", readUser1);
 
+        // update existing object
+        session.updateObject("IUserRepository.updateUser", "JamesU", "1");
+        // check if it was updated
+        readUser1 = session.readForObject("IUserRepository.readUser", "1");
+        LOGGER.info("Processed user from database after update => [{}].", readUser1); // User{id='1', name='James'}
+
+        // delete object
         session.deleteObject("IUserRepository.deleteUser", "1");
+        // check if it was deleted
+        readUser1 = session.readForObject("IUserRepository.readUser", "1");
+        LOGGER.info("Check that object was deleted => [{}].", readUser1);
+
         session.closeSession();
     }
 

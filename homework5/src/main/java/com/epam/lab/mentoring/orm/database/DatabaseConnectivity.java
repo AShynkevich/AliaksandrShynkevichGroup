@@ -21,8 +21,28 @@ public enum DatabaseConnectivity {
         loadDriver();
     }
 
-    public Connection getConnection() {
-        return dbConnection;
+    private void loadProperties() {
+        LOGGER.info("Reading [database.properties] file...");
+        databaseProperties = new Properties();
+        try {
+            databaseProperties.load(this.getClass()
+                    .getClassLoader()
+                    .getResourceAsStream(PROPERTIES_FILE)
+            );
+        } catch (Exception exc) {
+            LOGGER.error("Failed to read properties from [database.properties] file!", exc);
+            throw new OrmException("Failed to read [database.properties]!");
+        }
+    }
+
+    private void loadDriver() {
+        LOGGER.info("Reading database driver...");
+        try {
+            Class.forName(databaseProperties.getProperty(DB_DRIVER));
+        } catch (ClassNotFoundException e) {
+            LOGGER.error("Failed to load [{}] property.", DB_DRIVER, e);
+            throw new OrmException("Failed to load database driver!");
+        }
     }
 
     public void createSession() {
@@ -58,27 +78,7 @@ public enum DatabaseConnectivity {
         }
     }
 
-    private void loadProperties() {
-        LOGGER.info("Reading [database.properties] file...");
-        databaseProperties = new Properties();
-        try {
-            databaseProperties.load(this.getClass()
-                    .getClassLoader()
-                    .getResourceAsStream(PROPERTIES_FILE)
-            );
-        } catch (Exception exc) {
-            LOGGER.error("Failed to read properties from [database.properties] file!", exc);
-            throw new OrmException("Failed to read [database.properties]!");
-        }
-    }
-
-    private void loadDriver() {
-        LOGGER.info("Reading database driver...");
-        try {
-            Class.forName(databaseProperties.getProperty(DB_DRIVER));
-        } catch (ClassNotFoundException e) {
-            LOGGER.error("Failed to load [{}] property.", DB_DRIVER, e);
-            throw new OrmException("Failed to load database driver!");
-        }
+    public Connection getConnection() {
+        return dbConnection;
     }
 }

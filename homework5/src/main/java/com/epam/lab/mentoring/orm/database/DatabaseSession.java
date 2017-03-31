@@ -27,7 +27,7 @@ public class DatabaseSession {
     }
 
     public <T> T readForObject(String templateId, String... args) {
-        LOGGER.info("Attempt to read object: [{}].", args);
+        LOGGER.debug("Attempt to read object: [{}].", Arrays.asList(args));
         T toReturn = null;
         OrmTemplateRegistry.TemplatePair pair = OrmTemplateRegistry.INSTANCE.getTemplateWithReturnType(templateId);
         String queryTemplate = pair.getLeft();
@@ -47,7 +47,7 @@ public class DatabaseSession {
                 result.next(); // there must only one element or zero
                 toReturn = populateObject(toReturn, result, expectedObject);
             }
-        } catch (SQLException | IllegalAccessException | InstantiationException e) {
+        } catch (Exception e) {
             LOGGER.error("Failure during query processing [{}].", queryTemplate, e);
         } finally {
             try {
@@ -81,17 +81,17 @@ public class DatabaseSession {
     }
 
     public void deleteObject(String templateId, String... args) {
-        LOGGER.info("Attempt to delete object: [{}].", args);
+        LOGGER.debug("Attempt to delete object: [{}].",  Arrays.asList(args));
         modifyObject(templateId, args);
     }
 
     public void updateObject(String templateId, String... args) {
-        LOGGER.info("Attempt to update object: [{}].", args);
+        LOGGER.debug("Attempt to update object: [{}].",  Arrays.asList(args));
         modifyObject(templateId, args);
     }
 
     public <T> void insertObject(String templateId, T object) {
-        LOGGER.info("Attempt to insert object: [{}].", object);
+        LOGGER.debug("Attempt to insert object: [{}].", object);
         Field[] fields = object.getClass().getDeclaredFields();
         String[] fieldValues = new String[fields.length];
 
@@ -116,7 +116,7 @@ public class DatabaseSession {
                 DatabaseConnectivity.INSTANCE.getConnection(), args);
         try {
             int result = statement.executeUpdate();
-            LOGGER.info("Number of affected queries: [{}].", result);
+            LOGGER.debug("Number of affected queries: [{}].", result);
         } catch (SQLException e) {
             if (e.getMessage().contains("violation")) {
                 LOGGER.warn("Record with such parameters [{}] already exist!", Arrays.asList(args));
