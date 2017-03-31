@@ -1,0 +1,17 @@
+plugins {
+    id 'application'
+}
+
+mainClassName = 'com.epam.lab.mentoring.Main'
+
+repositories {
+    jcenter()
+}
+
+dependencies {
+    compile "org.reflections:reflections:$reflectionsVersion"
+    runtime "com.h2database:h2:$h2Version"
+    compile "org.slf4j:slf4j-api:$slf4jVersion"
+    compile "org.slf4j:slf4j-simple:$slf4jVersion"
+    compile "commons-io:commons-io:2.5"
+}
