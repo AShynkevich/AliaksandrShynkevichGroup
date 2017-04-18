@@ -1,0 +1,2 @@
+include 'basic-application-web'
+include 'basic-application-service'
