@@ -1,11 +1,11 @@
 allprojects {
-	group = 'com.epam.lab.mentoring'
+    group = 'com.epam.lab.mentoring'
 }
 subprojects {
 
-	apply plugin: 'java'
+    apply plugin: 'java'
 
-	repositories {
-		jcenter()
-	}
+    repositories {
+        jcenter()
+    }
 }
