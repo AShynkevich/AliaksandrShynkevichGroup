@@ -6,7 +6,7 @@
         <title>Basic web page</title>
     </head>
     <body>
-        <h2>Data provided by server:</h2>
+        <h2>Data provided by Tomcat servlet:</h2>
         <p>
             <c:choose>
                 <c:when test="${ not empty message }">
@@ -17,5 +17,8 @@
                 </c:otherwise>
             </c:choose>
         </p>
+    
+        <h2>Image provided by HTTP server:</h2>
+        <img src="images/asf_logo.png">
     </body>
 </html>
