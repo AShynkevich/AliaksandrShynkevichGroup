@@ -35,9 +35,13 @@ Static  publish to apache, dynamic to tomcat. Test and write readme, how mentor 
 ```xml
 LoadModule    jk_module  modules/mod_jk.so
 <IfModule mod_jk.c>
-    JkWorkersFile $PATH_TO_FILE/workers.properties
-    JkMount /basic-web-application/* worker1
+    JkWorkersFile conf/workers.properties
+    JkMount /basic-application-web/* worker1
 </IfModule>
+<Directory tomcat8/webapps/basic-application-web>
+    Options Indexes MultiViews
+    Require all granted
+</Directory>
 ```
 
 - configure worker.properties by adding these lines
@@ -45,9 +49,9 @@ LoadModule    jk_module  modules/mod_jk.so
 ```
 worker.list=worker1
 
-worker.ajp13.port=8009
-worker.ajp13.host=localhost
-worker.ajp13.type=ajp13
+worker.worker1.port=8009
+worker.worker1.host=localhost
+worker.worker1.type=ajp13
 ```
 
 3) develop simple servlet application
@@ -56,10 +60,9 @@ worker.ajp13.type=ajp13
     - build a war and deploy in Tomcat using manager
         -- check that it works fine (provides server message but does not show the image) using
         
-            `localhost:8080/basic-application-web/home`
+    localhost:8080/basic-application-web
 
-5) configure Apache HTTPd to provide static files for application (image)
-- web application assumes that content provided from the folder `static_content/`
-- go to `conf/extra/httpd-vhosts.conf` and configure virtual host to point to tomcat
+5) configure Apache HTTPd to provide static files for the application (image)
+- web application assumes that content provided from the folder `static_content/` in Apache `htdocs`
 
 6) check that everything works
