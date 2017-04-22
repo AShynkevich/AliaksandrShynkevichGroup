@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>Basic web page</title>
+        <script src="http://code.jquery.com/jquery-latest.min.js"></script>
+        <script>
+            $.get('messaging', function(data) {
+                document.getElementById("server-data").innerHTML = "<h4>" + data + "</h4>"
+            });
+        </script>
+    </head>
+    <body>
+        <h2>Data provided by Tomcat servlet:</h2>
+        <p id="server-data"></p>
+    
+        <h2>Image provided by HTTP server:</h2>
+        <img src="static_content/asf_logo.png">
+    </body>
+</html>
