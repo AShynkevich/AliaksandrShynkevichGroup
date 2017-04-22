@@ -19,6 +19,6 @@
         </p>
     
         <h2>Image provided by HTTP server:</h2>
-        <img src="images/asf_logo.png">
+        <img src="static_content/asf_logo.png">
     </body>
 </html>
