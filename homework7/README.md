@@ -26,17 +26,17 @@ Static  publish to apache, dynamic to tomcat. Test and write readme, how mentor 
         http://www.apachehaus.com/cgi-bin/download.plx
 - install it somewhere (I recommend some root directory like `L://`)
 - configure it if needed (like adjust ServerRoot, DocumentRoot etc.)
-    - install & uninstall as service in windows
+    - install & uninstall as service in windows (run command line as administrator)
         `httpd -k install/uninstall`
-    - start & stop httpd
+    - start & stop httpd (run command line as administrator)
         `httpd -k start/stop`
-    - though I recommend to use `httpd` as service
+    - though I recommend to use `httpd` as service throught `apache monitor`
 - put `images\` folder from the application to `htdocs\` folder of `Apache24`
 
 4) Download corresponding mod_jk (I used 1.2.40-windows-x86_64-httpd-2.4.x) for http server
 - for example from here
         https://archive.apache.org/dist/tomcat/tomcat-connectors/jk/binaries/windows
-- rename to `mod_jk.so` and move to `Apache24/modules`
+- rename (if needed) to `mod_jk.so` and move to `Apache24/modules`
 - adjust `Apache22/conf/httpd.conf` and add next lines there
 
 ```xml
@@ -45,7 +45,7 @@ JkWorkersFile conf/workers.properties
 ```
 
 - uncomment lines `Include conf/extra/httpd-vhosts.conf` and `LoadModule access_compat_module modules/mod_access_compat.so`
-- create file `worker.properties` in `conf\` repository and these lines there
+- create file `workers.properties` in `conf\` repository and these lines there
 
 ```
 worker.list=worker1
@@ -55,7 +55,7 @@ worker.worker1.host=localhost
 worker.worker1.type=ajp13
 ```
 
-- open file `conf/extra/httpd-vhosts.conf` and these lines there
+- open file `conf/extra/httpd-vhosts.conf` and add these lines there
 
 ```xml
 <VirtualHost *:80>
@@ -67,6 +67,14 @@ worker.worker1.type=ajp13
     </Directory>
     JkMount /basic-application-web/ worker1
     JkMount /basic-application-web/messaging worker1
+</VirtualHost>
+```
+- uncomment `#ServerName` in that block
+
+```xml
+<VirtualHost _default_:80>
+ DocumentRoot "${SRVROOT}/htdocs"
+ #ServerName www.example.com:80
 </VirtualHost>
 ```
 
