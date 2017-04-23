@@ -1,0 +1,11 @@
+allprojects {
+    group = 'com.epam.lab.mentoring'
+}
+subprojects {
+
+    apply plugin: 'java'
+
+    repositories {
+        jcenter()
+    }
+}

@@ -1,0 +1,7 @@
+apply plugin: 'war'
+
+dependencies {
+    compile project(":basic-application-service")
+
+    providedCompile 'javax.servlet:javax.servlet-api:3.1.0'
+}
