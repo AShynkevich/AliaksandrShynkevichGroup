@@ -14,7 +14,7 @@ public class RootFilter implements Filter {
         HttpServletRequest req = (HttpServletRequest) request;
         HttpServletResponse resp = (HttpServletResponse) response;
         if (req.getRequestURI().equals("/basic%2Dapplication%2Dweb/")) {
-            req.getRequestDispatcher("/WEB-INF/index.html").forward(req, resp);
+            req.getRequestDispatcher("/index.html").forward(req, resp);
         }
         chain.doFilter(request, response);
     }
