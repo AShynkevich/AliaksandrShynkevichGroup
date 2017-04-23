@@ -10,7 +10,7 @@
         <servlet-name>serviceServlet</servlet-name>
         <servlet-class>com.epam.lab.mentoring.ServiceServlet</servlet-class>
     </servlet>
-    
+
     <servlet-mapping>
         <servlet-name>serviceServlet</servlet-name>
         <url-pattern>/messaging</url-pattern>
