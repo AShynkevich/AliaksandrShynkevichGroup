@@ -3,7 +3,6 @@ package com.epam.lab.mentoring.domain;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "books")
 public class Book {
     private Long id;
     private String name;

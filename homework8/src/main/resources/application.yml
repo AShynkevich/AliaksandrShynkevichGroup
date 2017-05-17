@@ -8,6 +8,6 @@ spring:
         show-sql: true
         hibernate:
             ddl-auto: create
-    data:
-        rest:
-            base-path: /books-app
+repository:
+    filesystem:
+        path:  /books-storage

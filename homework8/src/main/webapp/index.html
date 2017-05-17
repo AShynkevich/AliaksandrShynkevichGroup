@@ -1,0 +1,70 @@
+<html>
+    <head>
+        <title>Simple book page</title>
+        <script>
+            function listFiles() {
+                var xmlHttp = new XMLHttpRequest()
+                xmlHttp.onreadystatechange = function() {
+                    if (xmlHttp.readyState == 4 && xmlHttp.status == 200) {
+                        var booksMeta = JSON.parse(this.responseText)
+
+                        var booksArray = booksMeta._embedded.books
+                        buildBooksTable(booksArray)
+                    }
+                };
+                xmlHttp.open("GET",  "http://localhost:8080/books", true)
+                xmlHttp.send()
+            }
+
+            function buildBooksTable(books) {
+                var table = document.createElement('table');
+
+                var headers = ['bookId', 'bookName'];
+                var tr = document.createElement('tr');
+                for (var i = 0, l=headers.length; i < l; i++) {
+                    var th = document.createElement('th');
+                    th.appendChild(document.createTextNode(headers[i]));
+                    tr.appendChild(th);
+                }
+                table.appendChild(tr);
+
+                for (var j = 0, jl=books.length; i < l; i++) {
+                    tr = document.createElement('tr');
+                    for (var k =0, kl=headers.length; j < jl; j++) {
+                        var td = document.createElement('td');
+                        td.appendChild(document.createTextNode(books[j] || ''));
+                        tr.appendChild(td);
+                    }
+                    table.appendChild(tr);
+                }
+            }
+        </script>
+    </head>
+    <body>
+        <script>
+            window.onload = function() {
+                listFiles()
+            }
+        </script>
+        <h2>Simple books list</h2>
+        <table>
+            <tr>
+                <td></td>
+                <td>
+                    <form method="POST" enctype="multipart/form-data" action="/books-rest/upload">
+                        <table>
+                            <tr>
+                                <td>File to upload:</td>
+                                <td><input type="file" name="file" /></td>
+                            </tr>
+                            <tr>
+                                <td></td>
+                                <td><input type="submit" value="Upload" /></td>
+                            </tr>
+                        </table>
+                    </form>
+                </td>
+            </tr>
+        </table>
+    </body>
+</html>
