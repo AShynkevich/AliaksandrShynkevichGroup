@@ -11,3 +11,6 @@ spring:
 repository:
     filesystem:
         path:  /books-storage
+mail:
+    to: sebastrident@gmail.com
+    from: custom@mail.ru

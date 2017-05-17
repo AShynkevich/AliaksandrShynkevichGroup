@@ -1,6 +1,7 @@
 package com.epam.lab.mentoring.repository.filesystem;
 
 import com.epam.lab.mentoring.domain.Book;
+import com.epam.lab.mentoring.mail.SendMailService;
 import com.epam.lab.mentoring.repository.web.IBooksRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -18,14 +19,26 @@ public class BooksFileRepository implements IBooksFileRepository {
     @Autowired
     private IBooksRepository dbRepository;
 
+    @Autowired
+    private SendMailService mailService;
+
+    @Value("${mail.from}")
+    private String from;
+
+    @Value("${mail.to}")
+    private String to;
+
     @PostConstruct
     public void init() {
-        this.listFiles().forEach(filename -> {
+        List<String> newFiles = this.listFiles();
+        newFiles.forEach(filename -> {
             Book book = new Book();
             book.setName(filename);
 
             dbRepository.save(book);
         });
+
+        mailService.notifyUser(newFiles, to, from);
     }
 
     @Override
