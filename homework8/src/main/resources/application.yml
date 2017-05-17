@@ -8,9 +8,14 @@ spring:
         show-sql: true
         hibernate:
             ddl-auto: create
+    mail:
+        host: smtp.gmail.com
+        port: 587
+        username:
+        password:
 repository:
     filesystem:
         path:  /books-storage
 mail:
-    to: sebastrident@gmail.com
-    from: custom@mail.ru
+    to:
+    from:
