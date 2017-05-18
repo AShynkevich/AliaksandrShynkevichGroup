@@ -8,14 +8,15 @@ Application requires some configuration. You need to create the file
 `application.properties`, put it beside `jar` and write there these
 properties
 
-    spring.mail.host=smtp.gmail.com
-    spring.mail.post=587
+    spring.mail.host=
+    spring.mail.port=
     spring.mail.username=
     spring.mail.password=
     mail.to=
     mail.from=
 
-They are responsible for sending notification emails.
+They are responsible for sending notification emails. Also you might need to do
+some changes in your email account.
 
 Application can be accessed at
 
