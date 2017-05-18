@@ -22,7 +22,7 @@ public class SendMailService {
     private EmailService emailService;
 
     @Async
-    public void notifyUser(List<String> newBooks, String to, String from) {
+    public void notifyUser(List<String> newBooks, String from, String to) {
         try {
             Email email = DefaultEmail.builder()
                     .from(new InternetAddress(from))

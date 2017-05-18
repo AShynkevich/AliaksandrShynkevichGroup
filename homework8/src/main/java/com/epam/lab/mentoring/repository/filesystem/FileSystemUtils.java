@@ -15,6 +15,10 @@ import java.util.List;
 public class FileSystemUtils {
     private static final Logger log = LoggerFactory.getLogger(FileSystemUtils.class);
 
+    public static boolean isFileExist(String directory, String filename) {
+        return new File(makePath(directory, filename)).exists();
+    }
+
     public static List<String> listFiles(String directory) {
         File folder = new File(directory);
         List<String> files = new ArrayList<>();

@@ -36,9 +36,7 @@
 
                     // getting id
                     var id_td = document.createElement('td');
-                    var getUrl = books[j]._links.self.href;
-                    var id = getUrl.substring(getUrl.length - 1);
-                    id_td.appendChild(document.createTextNode(id));
+                    id_td.appendChild(document.createTextNode(books[j].id));
                     tr.appendChild(id_td);
 
                     // getting name
