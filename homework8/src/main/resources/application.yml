@@ -13,6 +13,19 @@ spring:
         port: 587
         username:
         password:
+        properties:
+            mail:
+                smtp:
+                    auth: true
+                    starttls:
+                        enable: true
+                        required: true
+        scheduler:
+            persistence:
+                enabled: false
+                redis:
+                    embedded: false
+                    enabled: false
 repository:
     filesystem:
         path:  /books-storage

@@ -1,17 +1,19 @@
 package com.epam.lab.mentoring.repository.filesystem;
 
 import com.epam.lab.mentoring.domain.Book;
-import com.epam.lab.mentoring.mail.SendMailService;
 import com.epam.lab.mentoring.repository.web.IBooksRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Repository;
 
 import javax.annotation.PostConstruct;
 import java.util.List;
 
-@Component
+@Repository
 public class BooksFileRepository implements IBooksFileRepository {
+    private static final Logger log = LoggerFactory.getLogger(BooksFileRepository.class);
 
     @Value("${repository.filesystem.path}")
     private String fileDirectory;
@@ -19,26 +21,13 @@ public class BooksFileRepository implements IBooksFileRepository {
     @Autowired
     private IBooksRepository dbRepository;
 
-    @Autowired
-    private SendMailService mailService;
-
-    @Value("${mail.from}")
-    private String from;
-
-    @Value("${mail.to}")
-    private String to;
-
     @PostConstruct
     public void init() {
+        log.info("Initializing repository [{}] for the first time.", fileDirectory);
         List<String> newFiles = this.listFiles();
         newFiles.forEach(filename -> {
-            Book book = new Book();
-            book.setName(filename);
-
-            dbRepository.save(book);
+            dbRepository.save(new Book(filename));
         });
-
-        mailService.notifyUser(newFiles, to, from);
     }
 
     @Override

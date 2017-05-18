@@ -3,12 +3,19 @@ package com.epam.lab.mentoring.domain;
 import javax.persistence.*;
 
 @Entity
+@Table(name = "books")
 public class Book {
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     private String name;
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    public Book() {}
+
+    public Book(String name) {
+        this.name = name;
+    }
+
     @Column(name = "id", unique = true, nullable = false)
     public Long getId() {
         return id;

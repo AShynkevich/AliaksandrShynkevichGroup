@@ -9,7 +9,9 @@
                         var booksMeta = JSON.parse(this.responseText)
 
                         var booksArray = booksMeta._embedded.books
-                        buildBooksTable(booksArray)
+                        var builtTable = buildBooksTable(booksArray)
+
+                        document.getElementById('books-list').appendChild(builtTable)
                     }
                 };
                 xmlHttp.open("GET",  "http://localhost:8080/books", true)
@@ -18,6 +20,7 @@
 
             function buildBooksTable(books) {
                 var table = document.createElement('table');
+                table.border="1";
 
                 var headers = ['bookId', 'bookName'];
                 var tr = document.createElement('tr');
@@ -28,15 +31,25 @@
                 }
                 table.appendChild(tr);
 
-                for (var j = 0, jl=books.length; i < l; i++) {
+                for (var j = 0, jl=books.length; j < jl; j++) {
                     tr = document.createElement('tr');
-                    for (var k =0, kl=headers.length; j < jl; j++) {
-                        var td = document.createElement('td');
-                        td.appendChild(document.createTextNode(books[j] || ''));
-                        tr.appendChild(td);
-                    }
+
+                    // getting id
+                    var id_td = document.createElement('td');
+                    var getUrl = books[j]._links.self.href;
+                    var id = getUrl.substring(getUrl.length - 1);
+                    id_td.appendChild(document.createTextNode(id));
+                    tr.appendChild(id_td);
+
+                    // getting name
+                    var name_td = document.createElement('td');
+                    name_td.appendChild(document.createTextNode(books[j].name));
+                    tr.appendChild(name_td);
+
                     table.appendChild(tr);
                 }
+
+                return table
             }
         </script>
     </head>
@@ -47,9 +60,9 @@
             }
         </script>
         <h2>Simple books list</h2>
-        <table>
+        <table border="1">
             <tr>
-                <td></td>
+                <td id="books-list"></td>
                 <td>
                     <form method="POST" enctype="multipart/form-data" action="/books-rest/upload">
                         <table>
