@@ -9,10 +9,10 @@ spring:
         hibernate:
             ddl-auto: create
     mail:
-        host: smtp.gmail.com
-        port: 587
-        username: sebastrident@gmail.com
-        password: star treksg-1
+        host:
+        port:
+        username:
+        password:
         properties:
             mail:
                 smtp:
@@ -21,7 +21,7 @@ spring:
                         enable: true
                         required: true
                     ssl:
-                        trust: smtp.gmail.com
+                        trust:
         scheduler:
             persistence:
                 enabled: false
@@ -32,5 +32,5 @@ repository:
     filesystem:
         path:  /books-storage
 mail:
-    to: artemii1992@gmail.com
-    from: sebastrident@gmail.com
+    to:
+    from:
