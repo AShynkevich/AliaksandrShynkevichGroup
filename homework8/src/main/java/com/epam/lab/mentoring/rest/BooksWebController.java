@@ -18,7 +18,7 @@ public class BooksWebController {
     public ModelAndView uploadFile(@RequestParam("file") MultipartFile file) {
         try {
             if (!file.isEmpty()) {
-                fileRepository.writeFile(file.getName(), file.getBytes());
+                fileRepository.writeFile(file.getOriginalFilename(), file.getBytes());
             }
         } catch (IOException e) {
             e.printStackTrace();
