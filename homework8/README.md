@@ -25,4 +25,4 @@ Application can be accessed at
 Application creates folder `/books-storage` where all the files that
 were uploaded through the application are stored. The folder is located
 in the root directory of the current disk. For example if `jar` located in
-`D:\\file\project.jar` then the folder will be created in `D:\\file`
+`D:\\file\project.jar` then the folder will be created in `D:\\`

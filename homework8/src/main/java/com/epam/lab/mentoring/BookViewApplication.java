@@ -16,4 +16,3 @@ public class BookViewApplication {
         SpringApplication.run(BookViewApplication.class, args);
     }
 }
-
