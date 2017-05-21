@@ -1,0 +1,36 @@
+spring:
+    datasource:
+        url: jdbc:h2:mem:books;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
+        driverClassName: org.h2.Driver
+        username: sa
+    jpa:
+        database-platform: org.hibernate.dialect.H2Dialect
+        show-sql: true
+        hibernate:
+            ddl-auto: create
+    mail:
+        host:
+        port:
+        username:
+        password:
+        properties:
+            mail:
+                smtp:
+                    auth: true
+                    starttls:
+                        enable: true
+                        required: true
+                    ssl:
+                        trust:
+        scheduler:
+            persistence:
+                enabled: false
+                redis:
+                    embedded: false
+                    enabled: false
+repository:
+    filesystem:
+        path:  /books-storage
+mail:
+    to:
+    from:

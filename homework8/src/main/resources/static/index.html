@@ -1,0 +1,81 @@
+<html>
+    <head>
+        <title>Simple book page</title>
+        <script>
+            function listFiles() {
+                var xmlHttp = new XMLHttpRequest()
+                xmlHttp.onreadystatechange = function() {
+                    if (xmlHttp.readyState == 4 && xmlHttp.status == 200) {
+                        var booksMeta = JSON.parse(this.responseText)
+
+                        var booksArray = booksMeta._embedded.books
+                        var builtTable = buildBooksTable(booksArray)
+
+                        document.getElementById('books-list').appendChild(builtTable)
+                    }
+                };
+                xmlHttp.open("GET",  "http://localhost:8080/books", true)
+                xmlHttp.send()
+            }
+
+            function buildBooksTable(books) {
+                var table = document.createElement('table');
+                table.border="1";
+
+                var headers = ['bookId', 'bookName'];
+                var tr = document.createElement('tr');
+                for (var i = 0, l=headers.length; i < l; i++) {
+                    var th = document.createElement('th');
+                    th.appendChild(document.createTextNode(headers[i]));
+                    tr.appendChild(th);
+                }
+                table.appendChild(tr);
+
+                for (var j = 0, jl=books.length; j < jl; j++) {
+                    tr = document.createElement('tr');
+
+                    // getting id
+                    var id_td = document.createElement('td');
+                    id_td.appendChild(document.createTextNode(books[j].id));
+                    tr.appendChild(id_td);
+
+                    // getting name
+                    var name_td = document.createElement('td');
+                    name_td.appendChild(document.createTextNode(books[j].name));
+                    tr.appendChild(name_td);
+
+                    table.appendChild(tr);
+                }
+
+                return table
+            }
+        </script>
+    </head>
+    <body>
+        <script>
+            window.onload = function() {
+                listFiles()
+            }
+        </script>
+        <h2>Simple books list</h2>
+        <table border="1">
+            <tr>
+                <td id="books-list"></td>
+                <td>
+                    <form method="POST" enctype="multipart/form-data" action="/upload">
+                        <table>
+                            <tr>
+                                <td>File to upload:</td>
+                                <td><input type="file" name="file" /></td>
+                            </tr>
+                            <tr>
+                                <td></td>
+                                <td><input type="submit" value="Upload" /></td>
+                            </tr>
+                        </table>
+                    </form>
+                </td>
+            </tr>
+        </table>
+    </body>
+</html>
