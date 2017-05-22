@@ -15,6 +15,11 @@ properties
     mail.to=
     mail.from=
 
+Additionally you may set properties, specific for file uploading
+
+    spring.http.multipart.max-file-size=
+    spring.http.multipart.max-request-size=
+
 They are responsible for sending notification emails. Also you might need to do
 some changes in your email account.
 
