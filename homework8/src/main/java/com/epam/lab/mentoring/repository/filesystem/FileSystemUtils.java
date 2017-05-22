@@ -59,6 +59,15 @@ public class FileSystemUtils {
         }
     }
 
+    public static void deleteFile(String directory, String filename) {
+        File file = new File(makePath(directory, filename));
+        if (file.exists()) {
+            if (!file.delete()) {
+                log.error("Failed to delete file [{}] from repository [{}].", filename, directory);
+            }
+        }
+    }
+
     private static String makePath(String folder, String filename) {
         return folder + File.separator + filename;
     }

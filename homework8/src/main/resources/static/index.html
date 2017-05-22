@@ -1,6 +1,7 @@
 <html>
     <head>
         <title>Simple book page</title>
+        <meta charset="UTF-8">
         <script>
             function listFiles() {
                 var xmlHttp = new XMLHttpRequest()
@@ -18,11 +19,32 @@
                 xmlHttp.send()
             }
 
+            function removeFileById(id) {
+                var xmlHttp = new XMLHttpRequest()
+                xmlHttp.onreadystatechange = function() {
+                    if (xmlHttp.readyState == 4 && xmlHttp.status == 200) {
+                        var booksTable = document.getElementById('books-list').getElementsByTagName('table')[0];
+                        var index = -1;
+                        for (var i = 0; i < booksTable.rows.length; i++) {
+                            if (booksTable.rows[i].cells[0].innerHTML == id) {
+                                index = i;
+                            }
+                        }
+
+                        if (index >= 0) {
+                            booksTable.deleteRow(index);
+                        }
+                    }
+                };
+                xmlHttp.open("DELETE",  "http://localhost:8080/books/" + id, true)
+                xmlHttp.send()
+            }
+
             function buildBooksTable(books) {
                 var table = document.createElement('table');
                 table.border="1";
 
-                var headers = ['bookId', 'bookName'];
+                var headers = ['bookId', 'bookName', 'action'];
                 var tr = document.createElement('tr');
                 for (var i = 0, l=headers.length; i < l; i++) {
                     var th = document.createElement('th');
@@ -43,6 +65,21 @@
                     var name_td = document.createElement('td');
                     name_td.appendChild(document.createTextNode(books[j].name));
                     tr.appendChild(name_td);
+
+                    // remove button
+                    var btn_td = document.createElement('td');
+                    var button = document.createElement('button');
+                    button.innerHTML = 'delete';
+                    button.id = books[j].id;
+                    button.onclick = function(e) {
+                        e = e || window.event;
+                        e = e.target || e.srcElement;
+                        if (e.nodeName == 'BUTTON') {
+                            removeFileById(e.id);
+                        }
+                    };
+                    btn_td.appendChild(button);
+                    tr.appendChild(btn_td);
 
                     table.appendChild(tr);
                 }
