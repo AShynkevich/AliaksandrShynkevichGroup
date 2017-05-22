@@ -20,30 +20,25 @@ public class BooksFileRepository implements IBooksFileRepository {
     @Value("${repository.filesystem.path}")
     private String fileDirectory;
 
-    @Autowired
-    private IBooksRepository dbRepository;
-
-    @Autowired
-    private SendMailService mailService;
-
     @Value("${mail.from}")
     private String from;
 
     @Value("${mail.to}")
     private String to;
 
+    @Autowired
+    private IBooksRepository dbRepository;
+
+    @Autowired
+    private SendMailService mailService;
+
     @PostConstruct
     public void init() {
         log.info("Initializing repository [{}] for the first time.", fileDirectory);
-        List<String> newFiles = this.listFiles();
+        List<String> newFiles = listFiles();
         newFiles.forEach(filename -> {
             dbRepository.save(new Book(filename));
         });
-    }
-
-    @Override
-    public List<String> listFiles() {
-        return FileSystemUtils.listFiles(fileDirectory);
     }
 
     @Override
@@ -57,9 +52,21 @@ public class BooksFileRepository implements IBooksFileRepository {
         book.setName(filename);
 
         dbRepository.save(book);
-
         FileSystemUtils.createFile(fileDirectory, filename, bytes);
-
         mailService.notifyUser(Collections.singletonList(filename), from, to);
+    }
+
+    @Override
+    public List<String> listFiles() {
+        return FileSystemUtils.listFiles(fileDirectory);
+    }
+
+    @Override
+    public void delete(Long aLong) {
+        Book book = dbRepository.findOne(aLong);
+        if (null != book) {
+            dbRepository.delete(book);
+            FileSystemUtils.deleteFile(fileDirectory, book.getName());
+        }
     }
 }
