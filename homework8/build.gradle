@@ -29,11 +29,21 @@ springBoot {
 }
 
 dependencies {
-    compile('org.springframework.boot:spring-boot-starter-data-jpa')
-    compile('org.springframework.boot:spring-boot-starter-data-rest')
-    compile('org.springframework.boot:spring-boot-starter-web')
-    compile('it.ozimov:spring-boot-email-core:0.6.2')
+    compile('org.springframework.boot:spring-boot-starter-data-jpa') {
+        exclude group: 'org.springframework', module: 'spring-core'
+        exclude group: 'org.springframework.boot', module: 'spring-boot-starter-logging'
+        exclude group: 'org.springframework.boot', module: 'spring-boot-starter-aop'
+        exclude group: 'org.springframework.boot', module: 'spring-boot-starter-jdbc'
+        exclude group: 'org.springframework', module: 'spring-aspects'
+    }
+    compile('org.springframework.boot:spring-boot-starter-data-rest') {
+        exclude group: 'org.springframework.boot', module: 'spring-boot-starter'
+    }
+    compile('it.ozimov:spring-boot-email-core:0.6.2') {
+        exclude group: 'org.springframework', module: 'spring-boot-starter-web'
+        exclude group: 'org.springframework.boot', module: 'spring-boot-starter-data-redis'
+        exclude group: 'it.ozimov', module: 'embedded-redis'
+    }
     runtime('com.h2database:h2')
     providedRuntime('org.springframework.boot:spring-boot-starter-tomcat')
-    testCompile('org.springframework.boot:spring-boot-starter-test')
 }
