@@ -6,7 +6,7 @@ package com.epam.lab.mentoring.task;
 public class Task5 {
 
     public static void execute() {
-        System.out.println("Task 5 ==> ");
+        System.out.println("Task 5 ==> create custom functional interfaces with default and static methods");
 
         IPrinter anon1 = new IPrinter() {
             @Override

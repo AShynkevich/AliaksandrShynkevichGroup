@@ -10,7 +10,7 @@ import java.util.List;
 public class Task3 {
 
     public static void execute() {
-        System.out.println("Task 3 ==> ");
+        System.out.println("Task 3 ==> print information using forEach");
         List<Person> people = Arrays.asList(
                 new Person("John", 20),
                 new Person("Pjotr", 19),

@@ -8,13 +8,13 @@ import java.util.stream.IntStream;
 public class Task1 {
 
     public static void execute() {
-        System.out.println("Task 1 ==> ");
+        System.out.println("Task 1 ==> several runnable instances with implementations");
         IntStream
                 .generate(new AtomicInteger()::getAndIncrement)
                 .limit(5)
                 .forEach(i -> {
                     Thread thread = new Thread(() ->
-                            System.out.println("Iteration: " + i));
+                            System.out.println("Runnable instance: " + i));
                     thread.start();
                 });
     }

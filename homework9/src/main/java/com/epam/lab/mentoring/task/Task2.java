@@ -15,7 +15,7 @@ import java.util.stream.Collectors;
 public class Task2 {
 
     public static void execute() {
-        System.out.println("Task 2 ==> ");
+        System.out.println("Task 2 ==> several actions with Person class");
         List<Person> people = Arrays.asList(
                 new Person("John", 20),
                 new Person("Pjotr", 19),
