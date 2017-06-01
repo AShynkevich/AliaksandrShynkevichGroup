@@ -1,9 +1,6 @@
 package com.epam.lab.mentoring;
 
-import com.epam.lab.mentoring.task.Task1;
-import com.epam.lab.mentoring.task.Task2;
-import com.epam.lab.mentoring.task.Task3;
-import com.epam.lab.mentoring.task.Task5;
+import com.epam.lab.mentoring.task.*;
 
 public class Main {
 
@@ -11,6 +8,7 @@ public class Main {
         Task1.execute();
         Task2.execute();
         Task3.execute();
+        Task4.execute();
         Task5.execute();
     }
 }
