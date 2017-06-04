@@ -25,10 +25,6 @@ public class Task2 {
         Comparator<Person> nameComparator = (Person o1, Person o2) -> {
             String name1 = o1.getName();
             String name2 = o2.getName();
-
-            if (name1 == name2) { return 0; }
-            if (null == name1) { return -1; }
-            if (null == name2) { return 1; }
             return name1.toLowerCase().compareTo(name2.toLowerCase());
         };
 

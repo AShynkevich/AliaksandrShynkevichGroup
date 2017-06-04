@@ -14,6 +14,8 @@ import java.util.stream.Stream;
 // Implement each of main Java Standard Library functional interfaces (supplier, predicate etc.)
 // using lambda expressions
 public class Task4 {
+    private static final int GENERATOR_LIMIT = 3;
+
     public static void execute() {
         System.out.println("Task 4 ==>  implement main JSL functional interfaces");
         // Supplier<T>
@@ -44,8 +46,8 @@ public class Task4 {
 
         List<String> names = Arrays.asList("John", "Pjotr", "Michelle");
         System.out.println("Create adult people using supplier.");
-        List<Person> peopleGen = Stream.generate(() -> new Person(names.get(new Random().nextInt(3)), 21))
-                .limit(3)
+        List<Person> peopleGen = Stream.generate(() -> new Person(names.get(new Random().nextInt(GENERATOR_LIMIT)), 21))
+                .limit(GENERATOR_LIMIT)
                 .collect(Collectors.toList());
         System.out.println(peopleGen);
     }
