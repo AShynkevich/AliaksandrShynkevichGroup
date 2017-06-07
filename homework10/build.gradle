@@ -1,3 +1,4 @@
 apply plugin: 'application'
 
 mainClassName='com.epam.lab.mentoring.Main'
+sourceCompatibility=1.8
