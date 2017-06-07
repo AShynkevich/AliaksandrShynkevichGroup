@@ -2,3 +2,12 @@ apply plugin: 'application'
 
 mainClassName='com.epam.lab.mentoring.Main'
 sourceCompatibility=1.8
+
+repositories {
+    jcenter()
+}
+
+dependencies {
+    compile group: 'net.sourceforge.jeval', name: 'jeval', version: '0.9.4'
+    compile group: 'org.apache.commons', name: 'commons-lang3', version: '3.5'
+}
