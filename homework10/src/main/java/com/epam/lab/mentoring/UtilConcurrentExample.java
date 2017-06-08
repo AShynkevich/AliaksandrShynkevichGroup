@@ -2,6 +2,7 @@ package com.epam.lab.mentoring;
 
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 import java.util.stream.IntStream;
 
 public class UtilConcurrentExample extends AbstractExample {
@@ -13,7 +14,12 @@ public class UtilConcurrentExample extends AbstractExample {
         });
         executorService.shutdown();
 
-        while (!executorService.isTerminated()) {}
+        try {
+            executorService.awaitTermination(5, TimeUnit.SECONDS);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
         System.out.println("Calculation result => " + output);
     }
 }
