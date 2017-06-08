@@ -1,36 +1,31 @@
 package com.epam.lab.mentoring;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.concurrent.ForkJoinTask;
-import java.util.concurrent.RecursiveTask;
-import java.util.stream.IntStream;
-
 public class ForkJoinExample extends AbstractExample {
     @Override
     public void calculate() {
-        List<CalculationTask> tasks = new ArrayList<>();
-        IntStream.range(0, getInputSize()).forEach(idx -> {
-            tasks.add(new CalculationTask(idx, this));
-        });
+        /*
 
-        ForkJoinTask.invokeAll(tasks);
+            def list = [1, 2, 3, 4]
+
+            task0
+                1, 2, 3, 4 - list size 4 can be split
+
+                task01
+                    1 2 - list size 2 can be split
+                        task011
+                            1 - process element
+                        task012
+                            2 - process element
+                task02
+                    3 4 - list size 2 can be split
+                        task021
+                            3 - process element
+                        task022
+                            4 - process element
+
+            Q: how to keep persistent index of elements position?
+
+         */
         System.out.println("Calculation result => " + output);
-    }
-
-    public static class CalculationTask extends RecursiveTask {
-        private int indexToWorkWith;
-        private AbstractExample actor;
-
-        public CalculationTask(int indexToWorkWith, AbstractExample actor) {
-            this.indexToWorkWith = indexToWorkWith;
-            this.actor = actor;
-        }
-
-        @Override
-        protected Object compute() {
-            actor.calculate(indexToWorkWith);
-            return null;
-        }
     }
 }
