@@ -10,9 +10,7 @@ public class ClassicModelExample extends AbstractExample {
         IntStream.range(0, getInputSize()).forEach(idx -> {
             Pair<Integer, Integer> pair = getByIndex(idx);
 
-            Thread threadWrapper = new Thread(
-                    () -> this.calculate(idx)
-            );
+            Thread threadWrapper = new Thread(() -> this.calculate(idx));
             threadWrapper.start();
         });
 
