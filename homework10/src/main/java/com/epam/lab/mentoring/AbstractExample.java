@@ -46,5 +46,4 @@ public abstract class AbstractExample {
     protected Pair<Integer, Integer> getByIndex(int index) {
         return input.get(index);
     }
-
 }

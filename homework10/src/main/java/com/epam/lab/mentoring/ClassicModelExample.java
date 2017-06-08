@@ -23,5 +23,4 @@ public class ClassicModelExample extends AbstractExample {
             e.printStackTrace();
         }
     }
-
 }
