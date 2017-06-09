@@ -1,65 +1,60 @@
 package com.epam.lab.mentoring;
 
-import org.apache.commons.lang3.tuple.Pair;
-
-import java.util.ArrayList;
-import java.util.List;
+import java.math.BigInteger;
 import java.util.concurrent.ForkJoinPool;
-import java.util.concurrent.RecursiveAction;
-import java.util.concurrent.TimeUnit;
+import java.util.concurrent.RecursiveTask;
 
-public class ForkJoinExample extends AbstractExample {
-    @Override
+public class ForkJoinExample {
     public void calculate() {
-        ElementSetAction action = new ElementSetAction(this.input, 0, this);
-        ForkJoinPool pool = ForkJoinPool.commonPool();
-        pool.invoke(action);
-        pool.shutdown();
-        try {
-            pool.awaitTermination(5, TimeUnit.SECONDS);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
+        ForkJoinPool forkJoinPool = ForkJoinPool.commonPool();
+        for (int i = 0; i < 15; i++) {
+            System.out.println("Factorial " + i + " => " + factorial(i));
         }
-
-        System.out.println("Calculation result => " + output);
     }
 
-    public static class ElementSetAction extends RecursiveAction {
-        private AbstractExample core;
-        private int persistentIndex;
-        private List<Pair<Integer, Integer>> input;
+    private BigInteger factorial(int n) {
+        ForkJoinPool forkJoinPool = ForkJoinPool.commonPool();
+        return forkJoinPool.invoke(new FactorialTask(BigInteger.ONE, BigInteger.valueOf(n)));
+    }
+    /*
+            1 * 2 * 3 * 4 * 5 * 6 * 7 * 8 * 9
+     */
+    static class FactorialTask extends RecursiveTask<BigInteger> {
+        private BigInteger left, right;
 
-        public ElementSetAction(List<Pair<Integer, Integer>> input, int persistentIndex, AbstractExample core) {
-            this.input = input;
-            this.persistentIndex = persistentIndex;
-            this.core = core;
+        public FactorialTask(BigInteger left, BigInteger right) {
+            this.left = left;
+            this.right = right;
         }
 
         @Override
-        protected void compute() {
-            if (input.size() == 1) {
-                core.calculate(persistentIndex);
-            } else {
-                List<ElementSetAction> actions = new ArrayList<>();
-                int leftStartIndex = input.size() / 2;
-
-                List<Pair<Integer, Integer>> subList1 =
-                        input.subList(0, leftStartIndex);
-                ElementSetAction action1 = new ElementSetAction(subList1, persistentIndex, core);
-                action1.fork();
-
-                List<Pair<Integer, Integer>> subList2 =
-                        input.subList(leftStartIndex, input.size());
-                ElementSetAction action2 = new ElementSetAction(subList2, persistentIndex + leftStartIndex, core);
-                action2.fork();
-
-                actions.add(action1);
-                actions.add(action2);
-
-                for (RecursiveAction action: actions) {
-                    action.join();
-                }
+        protected BigInteger compute() {
+            if (right.subtract(left).equals(BigInteger.ONE)) {
+                return right.multiply(left);
             }
+
+            if (right.subtract(left).compareTo(BigInteger.ONE) <= 0) {
+                return right;
+            }
+
+            BigInteger diff = right.subtract(left).divide(BigInteger.valueOf(2));
+            FactorialTask task1 = new FactorialTask(left, left.add(diff));
+            task1.fork();
+
+            FactorialTask task2;
+            if ((isOdd(right) && isOdd(left)) || (!isOdd(right) && !isOdd(left))) {
+                task2 = new FactorialTask(right.subtract(diff).add(BigInteger.ONE), right);
+            } else if (isOdd(right) && isOdd(left)) {
+                task2 = new FactorialTask(right.subtract(diff).subtract(BigInteger.ONE), right);
+            } else {
+                task2 = new FactorialTask(right.subtract(diff), right);
+            }
+
+            return task2.compute().multiply(task1.join());
+        }
+
+        private boolean isOdd(BigInteger i) {
+            return !i.mod(BigInteger.valueOf(2)).equals(BigInteger.ZERO);
         }
     }
 }
