@@ -6,19 +6,15 @@ import java.util.concurrent.RecursiveTask;
 
 public class ForkJoinExample {
     public void calculate() {
-        ForkJoinPool forkJoinPool = ForkJoinPool.commonPool();
         for (int i = 0; i < 15; i++) {
             System.out.println("Factorial " + i + " => " + factorial(i));
         }
     }
 
     private BigInteger factorial(int n) {
-        ForkJoinPool forkJoinPool = ForkJoinPool.commonPool();
-        return forkJoinPool.invoke(new FactorialTask(BigInteger.ONE, BigInteger.valueOf(n)));
+        return ForkJoinPool.commonPool().invoke(new FactorialTask(BigInteger.ONE, BigInteger.valueOf(n)));
     }
-    /*
-            1 * 2 * 3 * 4 * 5 * 6 * 7 * 8 * 9
-     */
+
     static class FactorialTask extends RecursiveTask<BigInteger> {
         private BigInteger left, right;
 
@@ -29,6 +25,10 @@ public class ForkJoinExample {
 
         @Override
         protected BigInteger compute() {
+            if (right.equals(BigInteger.ZERO)) {
+                return BigInteger.ONE;
+            }
+
             if (right.subtract(left).equals(BigInteger.ONE)) {
                 return right.multiply(left);
             }
