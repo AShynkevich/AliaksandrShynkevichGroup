@@ -37,5 +37,4 @@ public class Application {
             System.out.println("Garbage collectors: " + beans);
         };
     }
-
 }
