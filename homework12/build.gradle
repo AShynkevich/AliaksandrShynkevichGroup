@@ -1,15 +1,20 @@
 buildscript {
     repositories {
         mavenCentral()
+        maven {
+            url "https://plugins.gradle.org/m2/"
+        }
     }
     dependencies {
         classpath("org.springframework.boot:spring-boot-gradle-plugin:1.5.2.RELEASE")
+        classpath "gradle.plugin.com.sourcemuse.gradle.plugin:gradle-mongo-plugin:1.0.0"
     }
 }
 
 apply plugin: 'java'
 apply plugin: 'idea'
 apply plugin: 'org.springframework.boot'
+apply plugin: 'com.sourcemuse.mongo'
 
 jar {
     baseName = 'homework-12'
@@ -20,12 +25,21 @@ repositories {
     mavenCentral()
 }
 
+mongo {
+    port 12345
+    logging 'console'
+}
+
 sourceCompatibility = 1.8
 targetCompatibility = 1.8
 
 dependencies {
     compile("org.springframework.boot:spring-boot-starter-data-mongodb")
     compile("org.springframework.boot:spring-boot-starter-web")
-
+    runtime("org.apache.tomcat.embed:tomcat-embed-jasper")
+    runtime("javax.servlet:jstl")
     compileOnly('org.projectlombok:lombok')
 }
+
+// to stop it you had to run stopMongDb -> there should be a solution though
+bootRun.dependsOn(startMongoDb)
