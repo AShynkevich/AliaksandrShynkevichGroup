@@ -41,5 +41,5 @@ dependencies {
     compileOnly('org.projectlombok:lombok')
 }
 
-// to stop it you had to run stopMongDb -> there should be a solution though
+// to stop it you had to run stopMongoDb -> there should be a solution though using daemons
 bootRun.dependsOn(startMongoDb)
