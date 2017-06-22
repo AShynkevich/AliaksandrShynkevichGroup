@@ -2,50 +2,39 @@ package com.epam.lab.mentoring.rest;
 
 import com.epam.lab.mentoring.domain.Note;
 import com.epam.lab.mentoring.repository.NoteRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-
-@RestController("/notes-rest")
+@RestController
 public class NoteRest {
+    private static final Logger LOGGER = LoggerFactory.getLogger(NoteRest.class);
 
     @Autowired
     private NoteRepository noteRepository;
 
-    @GetMapping("/search/owner")
-    public List<Note> findNotesByOwner(@RequestParam("owner") String owner) {
-        return null;
-    }
-
-    @GetMapping("/search/all")
-    public List<Note> findNotes() {
-        return null;
-    }
-
-    @GetMapping("/search/tags")
-    public List<Note> findNotesByTags(@RequestParam("tag") List<String> tags) {
-        return null;
-    }
-
-    @GetMapping("/search/noteId")
+    @GetMapping("/notes-rest/note/{noteId}")
     public Note findNoteById(@PathVariable String noteId) {
-        return null;
+        LOGGER.info("Attempt to find note by id: [{}].", noteId);
+        return noteRepository.findOne(noteId);
     }
 
-    @PutMapping("/note")
-    public Note updateNote(Note note) {
-        return null;
+    @PostMapping("/notes-rest/note")
+    public void addNote(@RequestBody Note note) {
+        LOGGER.info("Attempt to insert note: [{}].", note);
+        noteRepository.insert(note);
     }
 
-    @DeleteMapping("/note")
-    public void deleteNote(@RequestParam("id") String id) {
-
+    @PutMapping("/notes-rest/note")
+    public Note updateNote(@RequestBody Note note) {
+        LOGGER.info("Attempt to update note: [{}].", note);
+        return noteRepository.save(note);
     }
 
-    // full text search
-    @GetMapping("/search")
-    public List<Note> searchNotes(@RequestParam("criteria") String searchCriteria) {
-        return null;
+    @DeleteMapping("/notes-rest/note/{noteId}")
+    public void deleteNote(@PathVariable String noteId) {
+        LOGGER.info("Attempt to delete note by id: [{}].", noteId);
+        noteRepository.delete(noteId);
     }
 }

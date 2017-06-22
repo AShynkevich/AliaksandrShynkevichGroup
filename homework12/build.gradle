@@ -36,8 +36,11 @@ targetCompatibility = 1.8
 dependencies {
     compile("org.springframework.boot:spring-boot-starter-data-mongodb")
     compile("org.springframework.boot:spring-boot-starter-web")
-    runtime("org.apache.tomcat.embed:tomcat-embed-jasper")
+    compile ("com.fasterxml.jackson.datatype:jackson-datatype-jsr310")
+
     runtime("javax.servlet:jstl")
+    runtime("org.apache.tomcat.embed:tomcat-embed-jasper")
+
     compileOnly('org.projectlombok:lombok')
 }
 

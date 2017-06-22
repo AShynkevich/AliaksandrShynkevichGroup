@@ -3,9 +3,9 @@
     <head>
         <meta charset="UTF-8">
         <title>Notes Application</title>
-        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css"
-              integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ" crossorigin="anonymous">
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+        <link rel="stylesheet" href="/css/bootstrap.min.css">
+        <link rel="stylesheet" href="/css/bootstrap-datepicker3.standalone.min.css">
+        <script src="js/jquery-3.2.1.min.js"></script>
         <script>
             $(function () {
                 $("#tableComponent").load("components/table-component.html");
@@ -15,10 +15,22 @@
     </head>
     <body>
         <div class="container">
-            <div id="tableComponent"></div>
-            <div id="functions"></div>
+            <ul class="nav nav-pills nav-justfied">
+                <li class="nav-item">
+                    <a class="nav-link active" href="#all-notes" role="tab">List notes</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#all-tags" role="tab">Tags</a>
+                </li>
+            </ul>
         </div>
-        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js"
-                integrity="sha384-vBWWzlZJ8ea9aCX4pEW3rVHjgjt7zpkNpZk+02D9phzyeVkE+jo0ieGizqPLForn" crossorigin="anonymous"></script>
+        <div class="tab-content">
+            <div class="tab-pane active" id="all-notes" role="tabpanel">
+                <div id="tableComponent"></div>
+                <div id="functions"></div>
+            </div>
+            <div class="tab-pane" id="all-tags" role="tabpanel"></div>
+        </div>
+        <script src="js/bootstrap.min.js"></script>
     </body>
 </html>
