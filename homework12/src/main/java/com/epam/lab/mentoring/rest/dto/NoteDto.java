@@ -1,24 +1,22 @@
-package com.epam.lab.mentoring.domain;
+package com.epam.lab.mentoring.rest.dto;
 
-import lombok.Data;
-import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.index.TextIndexed;
-import org.springframework.data.mongodb.core.mapping.Document;
+import com.epam.lab.mentoring.domain.Tag;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateDeserializer;
+import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateSerializer;
 
 import java.time.LocalDate;
 import java.util.List;
 
-@Document
-public @Data class Note {
-
-    @Id
+public class NoteDto {
     private String noteId;
     private String owner;
-    @TextIndexed
     private String name;
-    @TextIndexed
     private String text;
     private List<Tag> tags;
+    @JsonDeserialize(using = LocalDateDeserializer.class)
+    @JsonSerialize(using = LocalDateSerializer.class)
     private LocalDate date;
 
     public String getNoteId() {

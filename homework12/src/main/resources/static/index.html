@@ -9,28 +9,18 @@
         <script>
             $(function () {
                 $("#tableComponent").load("components/table-component.html");
-                $("#functions").load("components/table-functions.html");
+                $("#tableButtons").load("components/table-buttons.html");
             });
         </script>
     </head>
     <body>
         <div class="container">
-            <ul class="nav nav-pills nav-justfied">
-                <li class="nav-item">
-                    <a class="nav-link active" href="#all-notes" role="tab">List notes</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#all-tags" role="tab">Tags</a>
-                </li>
-            </ul>
-        </div>
-        <div class="tab-content">
-            <div class="tab-pane active" id="all-notes" role="tabpanel">
-                <div id="tableComponent"></div>
-                <div id="functions"></div>
-            </div>
-            <div class="tab-pane" id="all-tags" role="tabpanel"></div>
+            <div id="tableComponent"></div>
+            <div id="tableButtons"></div>
         </div>
         <script src="js/bootstrap.min.js"></script>
+        <script>
+            $('.datepicker').datepicker();
+        </script>
     </body>
 </html>

@@ -23,6 +23,7 @@ public class SearchRest {
     private ISearchRepository searchRepository;
 
     // owner -> tag -> all
+    // search by tags does not work
     @GetMapping("/notes-rest/search")
     public List<Note> findNotesByOwner(@RequestParam(value = "owner", required = false) String owner,
                                        @RequestParam(value = "tag", required = false) List<String> tags) {

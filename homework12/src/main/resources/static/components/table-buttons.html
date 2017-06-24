@@ -1,9 +1,17 @@
 <script src="js/bootstrap-datepicker.min.js"></script>
 <script>
-    $('.datepicker').datepicker();
+    $('#create-note').click(function(e) {
+        e.preventDefault();
+        $.post(
+                '/notes-rest/note',
+                $('#new-note-form').serialize(),
+                function(data, status, xhr) {
+                    alert(status);
+                }
+        );
+    });
     $('#modal-place').load("components/create-note-component.html");
 </script>
-<script src="js/table-functions.js"></script>
 <button type="button" class="btn btn-secondary float-md-right" data-toggle="modal" data-target="#add-note-dialog">
     Add new note
 </button>
