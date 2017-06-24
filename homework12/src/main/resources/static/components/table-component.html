@@ -1,6 +1,7 @@
 <!-- columns owner name text tags date -->
+<script src="../js/jquery-dateFormat.min.js"></script>
 <table class="table table-hover table-bordered" id="notes-table">
-    <thead class="thead-inverse">
+    <thead>
         <tr>
             <th data-type="date">Date</th>
             <th>Owner</th>
@@ -22,16 +23,25 @@
             success: function(data) {
                 $('#notes-table tbody').append(
                     $.map(data, function(note, index) {
+                         var value = processTags(note.tags);
                          return '<tr>' +
                                      '<td style="display:none;">' + note.noteId + '</td>' +
-                                     '<td>' + note.date + '</td>' +
+                                     '<td>' + $.format.date(new Date(note.date), "dd-MM-yyyy") + '</td>' +
                                      '<td>' + note.owner + '</td>' +
                                      '<td>' + note.name + '</td>' +
                                      '<td>' + note.text + '</td>' +
-                                     '<td>' + note.tags + '</td>'
+                                     '<td><div><input type="text" id="noteTags" data-role="tagsinput" value="name,name,name"/></div></td>'
                                 + '</tr>';
                     }).join());
             }
         });
     });
+    function processTags(tagList) {
+        if (tagList !== 'null') {
+            return $.map(tagList, function (tag, index) {
+                return tag.tag
+            }).join(',');
+        }
+    }
 </script>
+<script src="../js/bootstrap-tagsinput.js"></script>
