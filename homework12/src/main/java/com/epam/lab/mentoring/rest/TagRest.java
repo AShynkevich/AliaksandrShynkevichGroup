@@ -22,12 +22,6 @@ public class TagRest {
         return tagRepository.findOne(tagId);
     }
 
-    @GetMapping("/tags-rest/search")
-    public List<Tag> findAll() {
-        LOGGER.info("Attempt to find all tags.");
-        return tagRepository.findAll();
-    }
-
     @PostMapping("/tags-rest/tag")
     public void addTag(@RequestBody Tag tag) {
         LOGGER.info("Attempt to insert tag: [{}].", tag);

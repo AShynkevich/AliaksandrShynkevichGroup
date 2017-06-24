@@ -1,6 +1,5 @@
 package com.epam.lab.mentoring.rest.dto;
 
-import com.epam.lab.mentoring.domain.Tag;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateDeserializer;
@@ -14,7 +13,7 @@ public class NoteDto {
     private String owner;
     private String name;
     private String text;
-    private List<Tag> tags;
+    private List<TagDto> tags;
     @JsonDeserialize(using = LocalDateDeserializer.class)
     @JsonSerialize(using = LocalDateSerializer.class)
     private LocalDate date;
@@ -51,11 +50,11 @@ public class NoteDto {
         this.text = text;
     }
 
-    public List<Tag> getTags() {
+    public List<TagDto> getTags() {
         return tags;
     }
 
-    public void setTags(List<Tag> tags) {
+    public void setTags(List<TagDto> tags) {
         this.tags = tags;
     }
 
