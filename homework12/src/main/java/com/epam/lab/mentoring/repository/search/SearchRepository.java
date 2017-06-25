@@ -18,7 +18,7 @@ public class SearchRepository implements ISearchRepository {
 
     @Override
     public List<Note> findNotesByCriteria(String searchCriteria) {
-        TextCriteria criteria = TextCriteria.forDefaultLanguage().matching(searchCriteria);
+        TextCriteria criteria = TextCriteria.forDefaultLanguage().matchingAny(searchCriteria);
         Query query = TextQuery.queryText(criteria);
         return template.find(query, Note.class);
     }

@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Notes Application</title>
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <script src="js/jquery-3.2.1.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/jquery.fastLiveFilter.js"></script>
+    <script src="js/common.js"></script>
+    <link rel="stylesheet" href="css/common.css"/>
+    <script>
+        $(document).ready(function() {
+            $.ajax({
+                type: 'GET',
+                url: '/tags-rest/search',
+                contentType: 'application/json; charset=utf-8',
+                dataType: 'json',
+                success: function(data) {
+                    $('#tags-list').append(
+                            $.map(data, function(tag) {
+                                return '<li><a href="#" class="btn btn-primary" role="button">' +
+                                        '<b style="display:none;">' + tag.tagId + '</b>' +
+                                        '<b>' + tag.tag + '</b></a></li>';
+                            }).join(' ')
+                    );
+                    $('#search-input').fastLiveFilter('#tags-list', {
+                        selector: 'a'
+                    });
+                }
+            });
+            $('#create-tag').click(function() {
+                $.ajax({
+                    url: "/tags-rest/tag",
+                    type: "POST",
+                    data: JSON.stringify($('#new-tag-form').serializeForm()),
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "json",
+                    success: function(createdTag) {
+                        $('#add-tag-modal').modal('hide');
+                        $('#tags-list').append(
+                                '<li><a href="#" class="btn btn-primary" role="button">' +
+                                '<b style="display:none;">' + createdTag.tagId + '</b>' +
+                                '<b>' + createdTag.tag + '</b></a></li>'
+                        );
+                    }
+                });
+            });
+        });
+    </script>
+</head>
+<body>
+<nav class="navbar navbar-inverse navbar-static-top">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <a class="navbar-brand" href="#">
+                Notes App
+            </a>
+        </div>
+        <div class="collapse navbar-collapse">
+            <ul class="nav navbar-nav">
+                <li><a href="notes">Notes</a></li>
+                <li><a href="tags">Tags</a></li>
+            </ul>
+        </div>
+    </div>
+</nav>
+    <div class="container">
+        <div class="well">
+            <div class="row">
+                <form>
+                    <div class="form-group">
+                        <input id="search-input" class="form-control" placeholder="Search tag..." type="text">
+                    </div>
+                    <div class="form-group">
+                        <div class="tag-list well">
+                            <ul id="tags-list" class="hr"></ul>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="row">
+                <button type="button" class="btn btn-default pull-right" data-toggle="modal" data-target="#add-tag-modal">
+                    Add new tag
+                </button>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" tabindex="-1" role="dialog" id="add-tag-modal">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    <h4 class="modal-title">Create Tag</h4>
+                </div>
+                <div class="modal-body">
+                    <form class="form-horizontal" id="new-tag-form">
+                        <div class="form-group">
+                            <label for="inputTagName" class="col-sm-2 control-label">Name</label>
+                            <div class="col-sm-10">
+                                <input name="tag" type="text" class="form-control" id="inputTagName">
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <button id="create-tag" type="button" class="btn btn-primary">Create</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

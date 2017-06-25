@@ -3,6 +3,7 @@ package com.epam.lab.mentoring.rest;
 import com.epam.lab.mentoring.domain.Note;
 import com.epam.lab.mentoring.repository.NoteRepository;
 import com.epam.lab.mentoring.rest.dto.NoteDto;
+import com.epam.lab.mentoring.rest.facade.NoteRepositoryFacade;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +18,9 @@ public class NoteRest {
     private NoteRepository noteRepository;
 
     @Autowired
+    private NoteRepositoryFacade noteRepositoryFacade;
+
+    @Autowired
     private ConversionService conversionService;
 
     @GetMapping("/notes-rest/note/{noteId}")
@@ -26,15 +30,15 @@ public class NoteRest {
     }
 
     @PostMapping("/notes-rest/note")
-    public void addNote(@RequestBody NoteDto noteDto) {
+    public Note addNote(@RequestBody NoteDto noteDto) {
         LOGGER.info("Attempt to insert note: [{}].", noteDto);
-        noteRepository.insert(conversionService.convert(noteDto, Note.class));
+        return noteRepositoryFacade.addNote(conversionService.convert(noteDto, Note.class));
     }
 
     @PutMapping("/notes-rest/note")
     public Note updateNote(@RequestBody NoteDto noteDto) {
         LOGGER.info("Attempt to update note: [{}].", noteDto);
-        return noteRepository.save(conversionService.convert(noteDto, Note.class));
+        return noteRepositoryFacade.updateNote(conversionService.convert(noteDto, Note.class));
     }
 
     @DeleteMapping("/notes-rest/note/{noteId}")

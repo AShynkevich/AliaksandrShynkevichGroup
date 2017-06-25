@@ -8,6 +8,7 @@ import org.springframework.core.convert.ConversionService;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.stereotype.Component;
 
+import java.time.ZoneId;
 import java.util.Arrays;
 import java.util.stream.Collectors;
 
@@ -22,11 +23,19 @@ public class NoteDtoToNoteConverter implements Converter<NoteDto, Note> {
         Note note = new Note();
         note.setName(source.getName());
         note.setText(source.getText());
-        note.setDate(source.getDate());
+        note.setDate(source.getDate()
+                .toInstant()
+                .atZone(ZoneId.systemDefault())
+                .toLocalDate()
+        );
         note.setNoteId(source.getNoteId());
         note.setOwner(source.getOwner());
-        note.setTags(source.getTags().stream()
-                .map(tag -> conversionService.convert(tag, Tag.class))
+        note.setTags(Arrays.stream(source.getTags().split(","))
+                .map(tag -> {
+                    Tag tagx = new Tag();
+                    tagx.setTag(tag);
+                    return tagx;
+                })
                 .collect(Collectors.toList()));
 
         return note;

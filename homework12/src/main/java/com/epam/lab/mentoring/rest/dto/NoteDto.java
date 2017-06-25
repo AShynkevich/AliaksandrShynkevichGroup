@@ -1,22 +1,17 @@
 package com.epam.lab.mentoring.rest.dto;
 
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateDeserializer;
-import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateSerializer;
+import com.fasterxml.jackson.annotation.JsonFormat;
 
-import java.time.LocalDate;
-import java.util.List;
+import java.util.Date;
 
 public class NoteDto {
     private String noteId;
     private String owner;
     private String name;
     private String text;
-    private List<TagDto> tags;
-    @JsonDeserialize(using = LocalDateDeserializer.class)
-    @JsonSerialize(using = LocalDateSerializer.class)
-    private LocalDate date;
+    private String tags;
+    @JsonFormat(pattern = "dd/MM/yyyy")
+    private Date date;
 
     public String getNoteId() {
         return noteId;
@@ -50,19 +45,19 @@ public class NoteDto {
         this.text = text;
     }
 
-    public List<TagDto> getTags() {
+    public String getTags() {
         return tags;
     }
 
-    public void setTags(List<TagDto> tags) {
+    public void setTags(String tags) {
         this.tags = tags;
     }
 
-    public LocalDate getDate() {
+    public Date getDate() {
         return date;
     }
 
-    public void setDate(LocalDate date) {
+    public void setDate(Date date) {
         this.date = date;
     }
 }
