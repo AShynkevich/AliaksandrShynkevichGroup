@@ -44,11 +44,15 @@ public class SearchRest {
         }
     }
 
-    // full text search
+    // TODO: implement full text search
     @GetMapping("/notes-rest/search/custom")
-    public List<Note> searchNotes(@RequestParam("criteria") String searchCriteria) {
+    public List<Note> searchNotes(@RequestParam(value="criteria", required=false) String searchCriteria) {
         LOGGER.info("Attempt to perform full text search by criteria: [{}].", searchCriteria);
-        return searchRepository.findNotesByCriteria(searchCriteria);
+        if (searchCriteria == null || searchCriteria.trim().equals("")) {
+            return noteRepository.findAll();
+        } else {
+            return searchRepository.findNotesByCriteria(searchCriteria);
+        }
     }
 
     @GetMapping("/tags-rest/search")

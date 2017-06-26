@@ -56,6 +56,7 @@
                                     '<td><ul id="tags-list" class="hr">' + processTags(note.tags) + '</ul></td>' +
                                     '<td><a href="#" onclick="deleteRecord(' + tableRows + ');">delete</a> | <a href="#" onclick="updateRecord(' + tableRows + ');"">update</a></td>'
                                     + '</tr>');
+                            $('#add-note-dialog').modal('hide');
                         }
                     });
                 });
@@ -74,14 +75,14 @@
 
             function updateRecord(id) {
                 var rowCells = $('#notes-table').find("tr")[id].cells;
-                // u-id, u-name, u-owner, u-text, u-date, u-tags
                 $('#update-note-dialog #u-id').val(rowCells[0].innerHTML);
                 $('#update-note-dialog #u-name').val(rowCells[3].innerHTML);
                 $('#update-note-dialog #u-owner').val(rowCells[2].innerHTML);
                 $('#update-note-dialog #u-text').val(rowCells[4].innerHTML);
                 $('#update-note-dialog #u-date').val(rowCells[1].innerHTML);
                 // TODO: add tags processing
-                $('#update-note-dialog #u-tags').val(rowCells[5].innerHTML);
+                //var tags = $.parseHTML(rowCells[5].innerHTML).find('li');
+                //alert(tags);
                 $('#update-note-dialog').modal('show');
             }
 
@@ -98,11 +99,39 @@
                  });
             });
 
+            function performSearch() {
+                $("#notes-table tbody tr").remove();
+
+                $.ajax({
+                    type: 'GET',
+                    url: '/notes-rest/search/custom?criteria=' + $("#search-criteria").val(),
+                    contentType: 'application/json; charset=utf-8',
+                    dataType: 'json',
+                    success: function(data) {
+                        $('#notes-table tbody').append(
+                                $.map(data, function(note, index) {
+                                    var rowIndex = index + 1;
+                                    return '<tr id="row-' + rowIndex + '">' +
+                                            '<td style="display:none;">' + note.noteId + '</td>' +
+                                            '<td>' + $.format.date(new Date(note.date), "dd/MM/yyyy") + '</td>' +
+                                            '<td>' + note.owner + '</td>' +
+                                            '<td>' + note.name + '</td>' +
+                                            '<td>' + note.text + '</td>' +
+                                            '<td><ul id="tags-list" class="hr">' + processTags(note.tags) + '</ul></td>' +
+                                            '<td><a href="#" onclick="deleteRecord(' + rowIndex + ');">delete</a> | <a href="#" onclick="updateRecord(' + rowIndex + ');">update</a></td>'
+                                            + '</tr>';
+                                }).join()
+                        );
+                    }
+                });
+            }
+
             function createTagRecord(createdTag) {
                 return '<li>' +
                 '<b style="display:none;">' + createdTag.tagId + '</b>' +
                 '<span class="label label-primary">' + createdTag.tag + '</span></li>'
             }
+
             function processTags(tagList) {
                 if (tagList !== 'null') {
                     return $.map(tagList, function (tag, index) {
@@ -125,6 +154,12 @@
                         <li><a href="notes">Notes</a></li>
                         <li><a href="tags">Tags</a></li>
                     </ul>
+                    <form class="navbar-form navbar-left">
+                        <div class="form-group">
+                            <input name="criteria" type="text" class="form-control" id="search-criteria" placeholder="Full text search">
+                        </div>
+                        <button id="search-notes-btn" type="button" class="btn btn-default" onclick="performSearch()">Search notes</button>
+                    </form>
                 </div>
             </div>
         </nav>
@@ -186,9 +221,16 @@
                                             </div>
                                         </div>
                                         <div class="form-group">
-                                            <label for="tags" class="col-sm-2 control-label">Tags</label>
+                                            <label for="chosen-something" class="col-sm-2 control-label">Tags</label>
                                             <div class="col-sm-10">
-                                                <input type="text" class="form-control" id="tags" name="tags">
+                                                <div class="form-group">
+                                                    <div class="chosen-container chosen-container-multi" id="chosen-something">
+                                                        <ul class="chosen-choices" id="chosen-choices"></ul>
+                                                        <div class="chosen-drop">
+                                                            <ul class="chosen-results" id="chosen-results"></ul>
+                                                        </div>
+                                                    </div>
+                                                </div>
                                             </div>
                                         </div>
                                     </form>
