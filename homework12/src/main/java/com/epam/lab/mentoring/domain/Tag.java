@@ -26,4 +26,23 @@ public @Data class Tag {
     public void setTag(String tag) {
         this.tag = tag;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Tag tag1 = (Tag) o;
+
+        if (tagId != null ? !tagId.equals(tag1.tagId) : tag1.tagId != null) return false;
+        return tag != null ? tag.equals(tag1.tag) : tag1.tag == null;
+
+    }
+
+    @Override
+    public int hashCode() {
+        int result = tagId != null ? tagId.hashCode() : 0;
+        result = 31 * result + (tag != null ? tag.hashCode() : 0);
+        return result;
+    }
 }

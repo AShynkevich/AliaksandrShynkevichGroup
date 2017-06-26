@@ -22,14 +22,15 @@
                     success: function(data) {
                         $('#notes-table tbody').append(
                                 $.map(data, function(note, index) {
-                                    return '<tr>' +
+                                    var rowIndex = index + 1;
+                                    return '<tr id="row-' + rowIndex + '">' +
                                             '<td style="display:none;">' + note.noteId + '</td>' +
                                             '<td>' + $.format.date(new Date(note.date), "dd/MM/yyyy") + '</td>' +
                                             '<td>' + note.owner + '</td>' +
                                             '<td>' + note.name + '</td>' +
                                             '<td>' + note.text + '</td>' +
                                             '<td><ul id="tags-list" class="hr">' + processTags(note.tags) + '</ul></td>' +
-                                            '<td>delete, update</td>'
+                                            '<td><a href="#" onclick="deleteRecord(' + rowIndex + ');">delete</a> | <a href="#" onclick="updateRecord(' + rowIndex + ');">update</a></td>'
                                             + '</tr>';
                                 }).join()
                         );
@@ -44,20 +45,52 @@
                         dataType: "json",
                         success: function(note) {
                             $('add-note-dialog').modal('hide');
+                            var tableRows = document.getElementById('notes-table').rows.length + 1;
                             $('#notes-table tbody').append(
-                                    '<tr>' +
+                                    '<tr id="row-' + tableRows + '">' +
                                     '<td style="display:none;">' + note.noteId + '</td>' +
                                     '<td>' + $.format.date(new Date(note.date), "dd/MM/yyyy") + '</td>' +
                                     '<td>' + note.owner + '</td>' +
                                     '<td>' + note.name + '</td>' +
                                     '<td>' + note.text + '</td>' +
                                     '<td><ul id="tags-list" class="hr">' + processTags(note.tags) + '</ul></td>' +
-                                    '<td>delete, update</td>'
+                                    '<td><a href="#" onclick="deleteRecord(' + tableRows + ');">delete</a> | <a href="#" onclick="updateRecord(' + tableRows + ');"">update</a></td>'
                                     + '</tr>');
                         }
                     });
                 });
             });
+
+            function deleteRecord(id) {
+                var recordId = $('#notes-table').find("tr")[id].cells[0].innerHTML;
+                $.ajax({
+                    url: '/notes-rest/note/' + recordId,
+                    type: 'DELETE',
+                    success: function() {
+                        location.reload();
+                    }
+                });
+            }
+
+            function updateRecord(id) {
+                var rowCells = $('#notes-table').find("tr")[id].cells;
+                $('#update-note-dialog #
+                $('#update-note-dialog').modal('show');
+            }
+
+            $('#update-note').click(function() {
+                 $.ajax({
+                        url: "/notes-rest/note",
+                        type: "PUT",
+                        data: JSON.stringify($('#new-note-form').serializeForm()),
+                        contentType: "application/json; charset=utf-8",
+                        dataType: "json",
+                        success: function() {
+                            location.reload();
+                        }
+                 });
+            });
+
             function createTagRecord(createdTag) {
                 return '<li>' +
                 '<b style="display:none;">' + createdTag.tagId + '</b>' +
@@ -119,7 +152,7 @@
                                     <h4 class="modal-title">Create Note</h4>
                                 </div>
                                 <div class="modal-body">
-                                    <form class="form-horizontal" id="new-note-form" method="post" action="/notes-rest/note">
+                                    <form class="form-horizontal" id="new-note-form">
                                         <div class="form-group">
                                             <label for="name" class="col-sm-2 control-label">Name</label>
                                             <div class="col-sm-10">
@@ -163,5 +196,64 @@
                 </div>
             </div>
         </div>
+
+        <div class="modal fade" tabindex="-1" role="dialog" id="update-note-dialog">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                        <h4 class="modal-title">Update Note</h4>
+                    </div>
+                    <div class="modal-body">
+                        // u-id, u-name, u-owner, u-text, u-date, u-tags
+                        <form class="form-horizontal" id="update-note-form">
+                            <div class="form-group" style="display:none;">
+                                <label for="u-id" class="col-sm-2 control-label">ID</label>
+                                <div class="col-sm-10">
+                                    <input type="text" class="form-control" name="id" id="u-id">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="u-name" class="col-sm-2 control-label">Name</label>
+                                <div class="col-sm-10">
+                                    <input type="text" class="form-control" name="name" id="u-name">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="u-owner" class="col-sm-2 control-label">Owner</label>
+                                <div class="col-sm-10">
+                                    <input type="text" class="form-control" name="owner" id="u-owner">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="u-text" class="col-sm-2 control-label">Text</label>
+                                <div class="col-sm-10">
+                                    <input type="text" class="form-control" name="text" id="u-text">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="u-date" class="col-sm-2 control-label">Date</label>
+                                <div class="col-sm-10">
+                                    <input type="text" class="form-control" data-provide="datepicker-inline" name="date" id="u-date">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="u-tags" class="col-sm-2 control-label">Tags</label>
+                                <div class="col-sm-10">
+                                    <input type="text" class="form-control" name="tags" id="u-tags">
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                        <button id="update-note" type="button" class="btn btn-primary">Update</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
     </body>
 </html>
