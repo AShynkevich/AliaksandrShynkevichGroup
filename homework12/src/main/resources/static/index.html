@@ -74,7 +74,14 @@
 
             function updateRecord(id) {
                 var rowCells = $('#notes-table').find("tr")[id].cells;
-                $('#update-note-dialog #
+                // u-id, u-name, u-owner, u-text, u-date, u-tags
+                $('#update-note-dialog #u-id').val(rowCells[0].innerHTML);
+                $('#update-note-dialog #u-name').val(rowCells[3].innerHTML);
+                $('#update-note-dialog #u-owner').val(rowCells[2].innerHTML);
+                $('#update-note-dialog #u-text').val(rowCells[4].innerHTML);
+                $('#update-note-dialog #u-date').val(rowCells[1].innerHTML);
+                // TODO: add tags processing
+                $('#update-note-dialog #u-tags').val(rowCells[5].innerHTML);
                 $('#update-note-dialog').modal('show');
             }
 
@@ -207,7 +214,6 @@
                         <h4 class="modal-title">Update Note</h4>
                     </div>
                     <div class="modal-body">
-                        // u-id, u-name, u-owner, u-text, u-date, u-tags
                         <form class="form-horizontal" id="update-note-form">
                             <div class="form-group" style="display:none;">
                                 <label for="u-id" class="col-sm-2 control-label">ID</label>
