@@ -37,8 +37,8 @@ public class NoteRest {
 
     @PutMapping("/notes-rest/note")
     public Note updateNote(@RequestBody NoteDto noteDto) {
-        LOGGER.info("Attempt to update note: [{}].", noteDto);
-        return noteRepositoryFacade.updateNote(conversionService.convert(noteDto, Note.class));
+        LOGGER.info("Attempt to update note: [{}].", noteDto.getTags());
+        return noteRepository.save(conversionService.convert(noteDto, Note.class));
     }
 
     @DeleteMapping("/notes-rest/note/{noteId}")

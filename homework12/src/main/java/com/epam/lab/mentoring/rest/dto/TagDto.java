@@ -19,4 +19,12 @@ public class TagDto {
     public void setTag(String tag) {
         this.tag = tag;
     }
+
+    @Override
+    public String toString() {
+        return "TagDto{" +
+                "tagId='" + tagId + '\'' +
+                ", tag='" + tag + '\'' +
+                '}';
+    }
 }

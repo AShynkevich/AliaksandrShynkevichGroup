@@ -38,11 +38,13 @@
                     dataType: "json",
                     success: function(createdTag) {
                         $('#add-tag-modal').modal('hide');
-                        $('#tags-list').append(
-                                '<li><a href="#" class="btn btn-primary" role="button">' +
-                                '<b style="display:none;">' + createdTag.tagId + '</b>' +
-                                '<b>' + createdTag.tag + '</b></a></li>'
-                        );
+                        if (createdTag.tag) {
+                            $('#tags-list').append(
+                                    '<li><a href="#" class="btn btn-primary" role="button">' +
+                                    '<b style="display:none;">' + createdTag.tagId + '</b>' +
+                                    '<b>' + createdTag.tag + '</b></a></li>'
+                            );
+                        }
                     }
                 });
             });

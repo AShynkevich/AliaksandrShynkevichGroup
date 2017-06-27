@@ -60,4 +60,16 @@ public class NoteDto {
     public void setDate(Date date) {
         this.date = date;
     }
+
+    @Override
+    public String toString() {
+        return "NoteDto{" +
+                "noteId='" + noteId + '\'' +
+                ", owner='" + owner + '\'' +
+                ", name='" + name + '\'' +
+                ", text='" + text + '\'' +
+                ", tags='" + tags + '\'' +
+                ", date=" + date +
+                '}';
+    }
 }

@@ -68,4 +68,16 @@ public @Data class Note {
     public void setDate(LocalDate date) {
         this.date = date;
     }
+
+    @Override
+    public String toString() {
+        return "Note{" +
+                "noteId='" + noteId + '\'' +
+                ", owner='" + owner + '\'' +
+                ", name='" + name + '\'' +
+                ", text='" + text + '\'' +
+                ", tags=" + tags +
+                ", date=" + date +
+                '}';
+    }
 }

@@ -45,7 +45,6 @@
                         contentType: "application/json; charset=utf-8",
                         dataType: "json",
                         success: function(note) {
-                            $('add-note-dialog').modal('hide');
                             var tableRows = document.getElementById('notes-table').rows.length + 1;
                             $('#notes-table tbody').append(
                                     '<tr id="row-' + tableRows + '">' +
@@ -56,7 +55,7 @@
                                     '<td>' + note.text + '</td>' +
                                     '<td><ul id="tags-list" class="hr">' + processTags(note.tags) + '</ul></td>' +
                                     //'<td><a href="#" onclick="deleteRecord(' + tableRows + ');">delete</a> | <a href="#" onclick="updateRecord(' + tableRows + ');"">update</a></td>'
-                                    '<td><a href="#" onclick="deleteRecord(' + rowIndex + ');">delete</a></td>'
+                                    '<td><a href="#" onclick="deleteRecord(' + tableRows + ');">delete</a></td>'
                                     + '</tr>');
                             $('#add-note-dialog').modal('hide');
                         }
@@ -83,7 +82,7 @@
                 $('#update-note-dialog #u-owner').val(rowCells[2].innerHTML);
                 $('#update-note-dialog #u-text').val(rowCells[4].innerHTML);
                 $('#update-note-dialog #u-date').val(rowCells[1].innerHTML);
-            }*/
+            }
 
             $('#update-note').click(function() {
                  $.ajax({
@@ -97,7 +96,7 @@
                         }
                  });
             });
-
+            */
             function performSearch() {
                 $("#notes-table tbody tr").remove();
 
@@ -221,17 +220,10 @@
                                             </div>
                                         </div>
                                         <div class="form-group">
-                                            <label for="chosen-something" class="col-sm-2 control-label">Tags</label>
-                                            <div class="col-sm-10">
-                                                <div class="form-group">
-                                                    <div class="chosen-container chosen-container-multi" id="chosen-something">
-                                                        <ul class="chosen-choices" id="chosen-choices"></ul>
-                                                        <div class="chosen-drop">
-                                                            <ul class="chosen-results" id="chosen-results"></ul>
-                                                        </div>
-                                                    </div>
+                                            <label for="tags-input" class="col-sm-2 control-label">Tags</label>
+                                                <div class="col-sm-10">
+                                                    <input type="text" class="form-control" id="tags-input" name="tags">
                                                 </div>
-                                            </div>
                                         </div>
                                     </form>
                                 </div>

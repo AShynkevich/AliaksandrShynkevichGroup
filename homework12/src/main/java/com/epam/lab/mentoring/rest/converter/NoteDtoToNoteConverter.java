@@ -31,7 +31,7 @@ public class NoteDtoToNoteConverter implements Converter<NoteDto, Note> {
         );
         note.setNoteId(source.getNoteId());
         note.setOwner(source.getOwner());
-        if (source.getTags() != null && "".equals(source.getTags().trim())) {
+        if (source.getTags() != null && !"".equals(source.getTags().trim())) {
             note.setTags(Arrays.stream(source.getTags().split(","))
                     .map(tag -> {
                         Tag tagx = new Tag();

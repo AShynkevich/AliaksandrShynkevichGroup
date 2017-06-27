@@ -45,4 +45,12 @@ public @Data class Tag {
         result = 31 * result + (tag != null ? tag.hashCode() : 0);
         return result;
     }
+
+    @Override
+    public String toString() {
+        return "Tag{" +
+                "tagId='" + tagId + '\'' +
+                ", tag='" + tag + '\'' +
+                '}';
+    }
 }
