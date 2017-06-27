@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>Notes Application</title>
+        <link rel="stylesheet" href="css/bootstrap.min.css">
+        <link rel="stylesheet" href="css/bootstrap-datepicker3.standalone.min.css">
+        <link rel="stylesheet" href="css/common.css">
+        <script src="js/jquery-3.2.1.min.js"></script>
+        <script src="js/bootstrap.min.js"></script>
+        <script src="js/bootstrap-datepicker.min.js"></script>
+        <script src="js/jquery-dateFormat.min.js"></script>
+        <script src="js/common.js"></script>
+        <script>
+            $(document).ready(function() {
+                $('.datepicker').datepicker();
+                $.ajax({
+                    type: 'GET',
+                    url: '/notes-rest/search',
+                    contentType: 'application/json; charset=utf-8',
+                    dataType: 'json',
+                    success: function(data) {
+                        $('#notes-table tbody').append(
+                                $.map(data, function(note, index) {
+                                    var rowIndex = index + 1;
+                                    return '<tr id="row-' + rowIndex + '">' +
+                                            '<td style="display:none;">' + note.noteId + '</td>' +
+                                            '<td>' + $.format.date(new Date(note.date), "dd/MM/yyyy") + '</td>' +
+                                            '<td>' + note.owner + '</td>' +
+                                            '<td>' + note.name + '</td>' +
+                                            '<td>' + note.text + '</td>' +
+                                            '<td><ul id="tags-list" class="hr">' + processTags(note.tags) + '</ul></td>' +
+                                            // '<td><a href="#" onclick="deleteRecord(' + rowIndex + ');">delete</a> | <a href="#" onclick="updateRecord(' + rowIndex + ');">update</a></td>'
+                                            '<td><a href="#" onclick="deleteRecord(' + rowIndex + ');">delete</a></td>'
+                                            + '</tr>';
+                                }).join()
+                        );
+                    }
+                });
+                $('#create-note').click(function() {
+                    $.ajax({
+                        url: "/notes-rest/note",
+                        type: "POST",
+                        data: JSON.stringify($('#new-note-form').serializeForm()),
+                        contentType: "application/json; charset=utf-8",
+                        dataType: "json",
+                        success: function(note) {
+                            var tableRows = document.getElementById('notes-table').rows.length + 1;
+                            $('#notes-table tbody').append(
+                                    '<tr id="row-' + tableRows + '">' +
+                                    '<td style="display:none;">' + note.noteId + '</td>' +
+                                    '<td>' + $.format.date(new Date(note.date), "dd/MM/yyyy") + '</td>' +
+                                    '<td>' + note.owner + '</td>' +
+                                    '<td>' + note.name + '</td>' +
+                                    '<td>' + note.text + '</td>' +
+                                    '<td><ul id="tags-list" class="hr">' + processTags(note.tags) + '</ul></td>' +
+                                    //'<td><a href="#" onclick="deleteRecord(' + tableRows + ');">delete</a> | <a href="#" onclick="updateRecord(' + tableRows + ');"">update</a></td>'
+                                    '<td><a href="#" onclick="deleteRecord(' + tableRows + ');">delete</a></td>'
+                                    + '</tr>');
+                            $('#add-note-dialog').modal('hide');
+                        }
+                    });
+                });
+            });
+
+            function deleteRecord(id) {
+                var recordId = $('#notes-table').find("tr")[id].cells[0].innerHTML;
+                $.ajax({
+                    url: '/notes-rest/note/' + recordId,
+                    type: 'DELETE',
+                    success: function() {
+                        location.reload();
+                    }
+                });
+            }
+
+            /*
+            function updateRecord(id) {
+                var rowCells = $('#notes-table').find("tr")[id].cells;
+                $('#update-note-dialog #u-id').val(rowCells[0].innerHTML);
+                $('#update-note-dialog #u-name').val(rowCells[3].innerHTML);
+                $('#update-note-dialog #u-owner').val(rowCells[2].innerHTML);
+                $('#update-note-dialog #u-text').val(rowCells[4].innerHTML);
+                $('#update-note-dialog #u-date').val(rowCells[1].innerHTML);
+            }
+
+            $('#update-note').click(function() {
+                 $.ajax({
+                        url: "/notes-rest/note",
+                        type: "PUT",
+                        data: JSON.stringify($('#new-note-form').serializeForm()),
+                        contentType: "application/json; charset=utf-8",
+                        dataType: "json",
+                        success: function() {
+                            location.reload();
+                        }
+                 });
+            });
+            */
+            function performSearch() {
+                $("#notes-table tbody tr").remove();
+
+                $.ajax({
+                    type: 'GET',
+                    url: '/notes-rest/search/custom?criteria=' + $("#search-criteria").val(),
+                    contentType: 'application/json; charset=utf-8',
+                    dataType: 'json',
+                    success: function(data) {
+                        $('#notes-table tbody').append(
+                                $.map(data, function(note, index) {
+                                    var rowIndex = index + 1;
+                                    return '<tr id="row-' + rowIndex + '">' +
+                                            '<td style="display:none;">' + note.noteId + '</td>' +
+                                            '<td>' + $.format.date(new Date(note.date), "dd/MM/yyyy") + '</td>' +
+                                            '<td>' + note.owner + '</td>' +
+                                            '<td>' + note.name + '</td>' +
+                                            '<td>' + note.text + '</td>' +
+                                            '<td><ul id="tags-list" class="hr">' + processTags(note.tags) + '</ul></td>' +
+                                            //'<td><a href="#" onclick="deleteRecord(' + rowIndex + ');">delete</a> | <a href="#" onclick="updateRecord(' + rowIndex + ');">update</a></td>'
+                                            '<td><a href="#" onclick="deleteRecord(' + rowIndex + ');">delete</a></td>'
+                                            + '</tr>';
+                                }).join()
+                        );
+                    }
+                });
+            }
+
+            function createTagRecord(createdTag) {
+                return '<li>' +
+                '<b style="display:none;">' + createdTag.tagId + '</b>' +
+                '<span class="label label-primary">' + createdTag.tag + '</span></li>'
+            }
+
+            function processTags(tagList) {
+                if (tagList !== 'null') {
+                    return $.map(tagList, function (tag, index) {
+                        return createTagRecord(tag);
+                    }).join(' ');
+                }
+            }
+        </script>
+    </head>
+    <body>
+        <nav class="navbar navbar-inverse navbar-static-top">
+            <div class="container-fluid">
+                <div class="navbar-header">
+                    <a class="navbar-brand" href="#">
+                        Notes App
+                    </a>
+                </div>
+                <div class="collapse navbar-collapse">
+                    <ul class="nav navbar-nav">
+                        <li><a href="notes">Notes</a></li>
+                        <li><a href="tags">Tags</a></li>
+                    </ul>
+                    <form class="navbar-form navbar-left">
+                        <div class="form-group">
+                            <input name="criteria" type="text" class="form-control" id="search-criteria" placeholder="Full text search">
+                        </div>
+                        <button id="search-notes-btn" type="button" class="btn btn-default" onclick="performSearch()">Search notes</button>
+                    </form>
+                </div>
+            </div>
+        </nav>
+        <div class="container">
+            <div id="table-component">
+                <table class="table table-striped table-hover" style="table-layout: fixed" id="notes-table">
+                    <thead>
+                    <tr>
+                        <th>Date</th>
+                        <th>Owner</th>
+                        <th>Name</th>
+                        <th>Text</th>
+                        <th>Tags</th>
+                        <th>Actions</th>
+                    </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+            <div id="buttons-component">
+                <button type="button" class="btn btn-default pull-right" data-toggle="modal" data-target="#add-note-dialog">
+                    Add new note
+                </button>
+                <div id="modal-place">
+                    <div class="modal fade" tabindex="-1" role="dialog" id="add-note-dialog">
+                        <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                    <h4 class="modal-title">Create Note</h4>
+                                </div>
+                                <div class="modal-body">
+                                    <form class="form-horizontal" id="new-note-form">
+                                        <div class="form-group">
+                                            <label for="name" class="col-sm-2 control-label">Name</label>
+                                            <div class="col-sm-10">
+                                                <input type="text" class="form-control" id="name" name="name">
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="owner" class="col-sm-2 control-label">Owner</label>
+                                            <div class="col-sm-10">
+                                                <input type="text" class="form-control" id="owner" name="owner">
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="text" class="col-sm-2 control-label">Text</label>
+                                            <div class="col-sm-10">
+                                                <input type="text" class="form-control" id="text" name="text">
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="date" class="col-sm-2 control-label">Date</label>
+                                            <div class="col-sm-10">
+                                                <input type="text" class="form-control" data-provide="datepicker-inline"
+                                                       name="date" id="date">
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="tags-input" class="col-sm-2 control-label">Tags</label>
+                                                <div class="col-sm-10">
+                                                    <input type="text" class="form-control" id="tags-input" name="tags">
+                                                </div>
+                                        </div>
+                                    </form>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                    <button id="create-note" type="button" class="btn btn-primary">Create</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+<!--
+        <div class="modal fade" tabindex="-1" role="dialog" id="update-note-dialog">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                        <h4 class="modal-title">Update Note</h4>
+                    </div>
+                    <div class="modal-body">
+                        <form class="form-horizontal" id="update-note-form">
+                            <div class="form-group" style="display:none;">
+                                <label for="u-id" class="col-sm-2 control-label">ID</label>
+                                <div class="col-sm-10">
+                                    <input type="text" class="form-control" name="id" id="u-id">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="u-name" class="col-sm-2 control-label">Name</label>
+                                <div class="col-sm-10">
+                                    <input type="text" class="form-control" name="name" id="u-name">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="u-owner" class="col-sm-2 control-label">Owner</label>
+                                <div class="col-sm-10">
+                                    <input type="text" class="form-control" name="owner" id="u-owner">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="u-text" class="col-sm-2 control-label">Text</label>
+                                <div class="col-sm-10">
+                                    <input type="text" class="form-control" name="text" id="u-text">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="u-date" class="col-sm-2 control-label">Date</label>
+                                <div class="col-sm-10">
+                                    <input type="text" class="form-control" data-provide="datepicker-inline" name="date" id="u-date">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="u-tags" class="col-sm-2 control-label">Tags</label>
+                                <div class="col-sm-10">
+                                    <input type="text" class="form-control" name="tags" id="u-tags">
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                        <button id="update-note" type="button" class="btn btn-primary">Update</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+-->
+    </body>
+</html>
