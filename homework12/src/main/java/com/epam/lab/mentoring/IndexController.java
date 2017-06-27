@@ -15,5 +15,4 @@ public class IndexController {
     public String tags() {
         return "tag.html";
     }
-
 }
