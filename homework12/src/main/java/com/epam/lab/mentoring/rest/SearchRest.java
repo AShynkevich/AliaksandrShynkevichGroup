@@ -4,15 +4,16 @@ import com.epam.lab.mentoring.domain.Note;
 import com.epam.lab.mentoring.domain.Tag;
 import com.epam.lab.mentoring.repository.NoteRepository;
 import com.epam.lab.mentoring.repository.TagRepository;
-import com.epam.lab.mentoring.repository.search.ISearchRepository;
-import com.epam.lab.mentoring.rest.dto.TagDto;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.mongodb.core.query.TextCriteria;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.lang.reflect.Array;
+import java.util.Arrays;
 import java.util.List;
 
 @RestController
@@ -24,9 +25,6 @@ public class SearchRest {
 
     @Autowired
     private TagRepository tagRepository;
-
-    @Autowired
-    private ISearchRepository searchRepository;
 
     // owner -> tag -> all
     @GetMapping("/notes-rest/search")
@@ -44,14 +42,13 @@ public class SearchRest {
         }
     }
 
-    // TODO: implement full text search
     @GetMapping("/notes-rest/search/custom")
     public List<Note> searchNotes(@RequestParam(value="criteria", required=false) String searchCriteria) {
         LOGGER.info("Attempt to perform full text search by criteria: [{}].", searchCriteria);
         if (searchCriteria == null || searchCriteria.trim().equals("")) {
             return noteRepository.findAll();
         } else {
-            return searchRepository.findNotesByCriteria(searchCriteria);
+            return noteRepository.findAllBy(TextCriteria.forDefaultLanguage().matchingAny(searchCriteria.split(" ")));
         }
     }
 

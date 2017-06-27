@@ -14,9 +14,9 @@ public @Data class Note {
     @Id
     private String noteId;
     private String owner;
-    @TextIndexed
+    @TextIndexed(weight = 2)
     private String name;
-    @TextIndexed
+    @TextIndexed(weight = 3)
     private String text;
     private List<Tag> tags;
     private LocalDate date;

@@ -30,7 +30,8 @@
                                             '<td>' + note.name + '</td>' +
                                             '<td>' + note.text + '</td>' +
                                             '<td><ul id="tags-list" class="hr">' + processTags(note.tags) + '</ul></td>' +
-                                            '<td><a href="#" onclick="deleteRecord(' + rowIndex + ');">delete</a> | <a href="#" onclick="updateRecord(' + rowIndex + ');">update</a></td>'
+                                            // '<td><a href="#" onclick="deleteRecord(' + rowIndex + ');">delete</a> | <a href="#" onclick="updateRecord(' + rowIndex + ');">update</a></td>'
+                                            '<td><a href="#" onclick="deleteRecord(' + rowIndex + ');">delete</a></td>'
                                             + '</tr>';
                                 }).join()
                         );
@@ -54,7 +55,8 @@
                                     '<td>' + note.name + '</td>' +
                                     '<td>' + note.text + '</td>' +
                                     '<td><ul id="tags-list" class="hr">' + processTags(note.tags) + '</ul></td>' +
-                                    '<td><a href="#" onclick="deleteRecord(' + tableRows + ');">delete</a> | <a href="#" onclick="updateRecord(' + tableRows + ');"">update</a></td>'
+                                    //'<td><a href="#" onclick="deleteRecord(' + tableRows + ');">delete</a> | <a href="#" onclick="updateRecord(' + tableRows + ');"">update</a></td>'
+                                    '<td><a href="#" onclick="deleteRecord(' + rowIndex + ');">delete</a></td>'
                                     + '</tr>');
                             $('#add-note-dialog').modal('hide');
                         }
@@ -73,6 +75,7 @@
                 });
             }
 
+            /*
             function updateRecord(id) {
                 var rowCells = $('#notes-table').find("tr")[id].cells;
                 $('#update-note-dialog #u-id').val(rowCells[0].innerHTML);
@@ -80,11 +83,7 @@
                 $('#update-note-dialog #u-owner').val(rowCells[2].innerHTML);
                 $('#update-note-dialog #u-text').val(rowCells[4].innerHTML);
                 $('#update-note-dialog #u-date').val(rowCells[1].innerHTML);
-                // TODO: add tags processing
-                //var tags = $.parseHTML(rowCells[5].innerHTML).find('li');
-                //alert(tags);
-                $('#update-note-dialog').modal('show');
-            }
+            }*/
 
             $('#update-note').click(function() {
                  $.ajax({
@@ -118,7 +117,8 @@
                                             '<td>' + note.name + '</td>' +
                                             '<td>' + note.text + '</td>' +
                                             '<td><ul id="tags-list" class="hr">' + processTags(note.tags) + '</ul></td>' +
-                                            '<td><a href="#" onclick="deleteRecord(' + rowIndex + ');">delete</a> | <a href="#" onclick="updateRecord(' + rowIndex + ');">update</a></td>'
+                                            //'<td><a href="#" onclick="deleteRecord(' + rowIndex + ');">delete</a> | <a href="#" onclick="updateRecord(' + rowIndex + ');">update</a></td>'
+                                            '<td><a href="#" onclick="deleteRecord(' + rowIndex + ');">delete</a></td>'
                                             + '</tr>';
                                 }).join()
                         );
@@ -245,7 +245,7 @@
                 </div>
             </div>
         </div>
-
+<!--
         <div class="modal fade" tabindex="-1" role="dialog" id="update-note-dialog">
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
@@ -302,6 +302,6 @@
                 </div>
             </div>
         </div>
-
+-->
     </body>
 </html>

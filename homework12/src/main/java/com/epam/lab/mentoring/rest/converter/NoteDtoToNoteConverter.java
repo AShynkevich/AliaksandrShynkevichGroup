@@ -10,6 +10,7 @@ import org.springframework.stereotype.Component;
 
 import java.time.ZoneId;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.stream.Collectors;
 
 @Component
@@ -30,13 +31,17 @@ public class NoteDtoToNoteConverter implements Converter<NoteDto, Note> {
         );
         note.setNoteId(source.getNoteId());
         note.setOwner(source.getOwner());
-        note.setTags(Arrays.stream(source.getTags().split(","))
-                .map(tag -> {
-                    Tag tagx = new Tag();
-                    tagx.setTag(tag);
-                    return tagx;
-                })
-                .collect(Collectors.toList()));
+        if (source.getTags() != null && "".equals(source.getTags().trim())) {
+            note.setTags(Arrays.stream(source.getTags().split(","))
+                    .map(tag -> {
+                        Tag tagx = new Tag();
+                        tagx.setTag(tag);
+                        return tagx;
+                    })
+                    .collect(Collectors.toList()));
+        } else {
+            note.setTags(Collections.emptyList());
+        }
 
         return note;
     }
